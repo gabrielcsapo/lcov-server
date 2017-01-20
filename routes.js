@@ -3,11 +3,8 @@ const FS = require('fs');
 const querystring = require('querystring');
 const Coverage = require('./db/coverage');
 
-const CoveragePage = FS.readFileSync(Path.resolve(__dirname, 'views', 'coverage.html'));
-const CoveragePageJS = FS.readFileSync(Path.resolve(__dirname, 'views', 'dist', 'coverage.js'));
-
-const HomePage = FS.readFileSync(Path.resolve(__dirname, 'views', 'home.html'));
-const ErrorPage = FS.readFileSync(Path.resolve(__dirname, 'views', 'error.html'));
+const BuildHtml = FS.readFileSync(Path.resolve(__dirname, 'src', 'index.html'));
+const BuildJS = FS.readFileSync(Path.resolve(__dirname, 'dist', 'build.js'));
 const CSS = FS.readFileSync(Path.resolve(__dirname, 'node_modules', 'psychic-ui', 'dist', 'psychic-min.css'));
 
 const parseBody = (request, response, callback) => {
@@ -35,9 +32,9 @@ module.exports = {
     response.writeHead(200, {'Content-Type': 'text/css; charset=utf-8'});
     response.end(CSS);
   },
-  '/coverage.js': function(request, response) {
+  '/build.js': function(request, response) {
     response.writeHead(200, {'Content-Type': 'text/js; charset=utf-8'});
-    response.end(CoveragePageJS);
+    response.end(BuildJS);
   },
   '/api/v1/upload': function(request, response) {
     switch(request.method) {
@@ -76,13 +73,15 @@ module.exports = {
     });
   },
   '/': function(request, response) {
-    response.end(HomePage);
+    response.writeHead(200, {'Content-Type': 'text/html; charset=utf-8'});
+    response.end(BuildHtml);
   },
   '/coverage': function(request, response) {
-    response.end(CoveragePage);
+    response.writeHead(200, {'Content-Type': 'text/html; charset=utf-8'});
+    response.end(BuildHtml);
   },
   'default': function(request, response) {
     response.writeHead(200, {'Content-Type': 'text/html; charset=utf-8'});
-    response.end(ErrorPage);
+    response.end(BuildHtml);
   }
 };

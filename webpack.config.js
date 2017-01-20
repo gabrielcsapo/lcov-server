@@ -1,16 +1,22 @@
 module.exports = {
-  entry: './views/src/coverage.js',
-  output: { path: './views/dist', filename: 'coverage.js' },
-  module: {
-    loaders: [
-      {
-        test: /.jsx?$/,
-        loader: 'babel-loader',
-        exclude: /node_modules/,
-        query: {
-          presets: ['es2015', 'react']
-        }
-      }
-    ]
-  },
+    entry: './src/router.js',
+    output: {
+        path: './dist',
+        filename: 'build.js'
+    },
+    module: {
+        loaders: [{
+                test: /\.css$/,
+                loader: 'style!css'
+            },
+            {
+                test: /.jsx?$/,
+                loader: 'babel-loader',
+                exclude: /node_modules/,
+                query: {
+                    presets: ['es2015', 'react']
+                }
+            }
+        ]
+    },
 };

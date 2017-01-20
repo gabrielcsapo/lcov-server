@@ -5,7 +5,7 @@ import ReactDOM from 'react-dom';
 import CoverageChart from './coverageChart';
 import moment from 'moment';
 
-class Coverages extends React.Component {
+class Coverage extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -69,9 +69,11 @@ class Coverages extends React.Component {
         })}
       </div>);
     } else {
-      return (<div> No Coverages </div>);
+      return (<div className="text-center" style={{width:"100%",position: "absolute",top: "50%",transform: "translateY(-50%)"}}>
+        No Coverage 🌧
+      </div>);
     }
   }
 }
 
-ReactDOM.render(<Coverages/>, document.getElementById('coverage-area'));
+export default Coverage;
