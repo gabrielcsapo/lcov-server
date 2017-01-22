@@ -32,7 +32,9 @@ class Coverage extends React.Component {
   render() {
     const { coverages, error, point, text } = this.state;
     if(error) {
-      return (<div> {error} </div>);
+        return (<div className="text-center" style={{width:"100%",position: "absolute",top: "50%",transform: "translateY(-50%)"}}>
+          Oh no 🙈 something happened...
+        </div>);
     } else if(coverages.length > 0) {
       return (<div>
         {coverages.map((coverage) => {

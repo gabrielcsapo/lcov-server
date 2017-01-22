@@ -1,13 +1,12 @@
 const fs = require('fs');
 const path = require('path');
 
-/* istanbul ignore next */
 const exists = fs.exists || path.exists;
 
 var walkFile = function(str, cb) {
     var data = [], item;
 
-    [ 'end_of_record' ].concat(str.split('\n')).forEach(function(line) {
+    [ 'end_of_record' ].concat(str.split('\n')).forEach((line) => {
         line = line.trim();
         var allparts = line.split(':'),
             parts = [allparts.shift(), allparts.join(':')],
@@ -48,7 +47,7 @@ var walkFile = function(str, cb) {
                 break;
             case 'FNDA':
                 fn = parts[1].split(',');
-                item.functions.details.some(function(i, k) {
+                item.functions.details.some((i, k) => {
                     if (i.name === fn[1] && i.hit === undefined) {
                         item.functions.details[k].hit = Number(fn[0]);
                         return true;
@@ -103,12 +102,12 @@ var walkFile = function(str, cb) {
     }
 };
 
-module.exports.parse = function(file, cb) {
+module.exports.parse = (file, cb) => {
     exists(file, function(x) {
         if (!x) {
             return walkFile(file, cb);
         }
-        fs.readFile(file, 'utf8', function(err, str) {
+        fs.readFile(file, 'utf8', (err, str) => {
             walkFile(str, cb);
         });
     });
