@@ -20,13 +20,13 @@ class CoverageChart extends React.Component {
   }
 
   render() {
-    const { data, color } = this.props;
+    const { data, color, height } = this.props;
     const { point, text } = this.state;
 
     return (
-      <Sparklines data={data}>
+      <Sparklines data={data} height={height} margin={5}>
         <SparklinesLine color={color} onMouseMove={this.showTooltip.bind(this)}/>
-        <SparklinesText point={point} fontSize={5} text={text} />
+        <SparklinesText point={point} fontSize={3} text={text} />
       </Sparklines>
     )
   }

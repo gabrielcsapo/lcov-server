@@ -15,163 +15,7 @@ const MongoClient = require('mongodb').MongoClient;
  *               "details": [{
  *                   "line": 1,
  *                   "hit": 1
- *               }, {
- *                   "line": 2,
- *                   "hit": 1
- *               }, {
- *                   "line": 7,
- *                   "hit": 1
- *               }, {
- *                   "line": 8,
- *                   "hit": 3
- *               }, {
- *                   "line": 10,
- *                   "hit": 3
- *               }, {
- *                   "line": 11,
- *                   "hit": 424
- *               }, {
- *                   "line": 12,
- *                   "hit": 424
- *               }, {
- *                   "line": 13,
- *                   "hit": 424
- *               }, {
- *                   "line": 16,
- *                   "hit": 424
- *               }, {
- *                   "line": 18,
- *                   "hit": 4
- *               }, {
- *                   "line": 19,
- *                   "hit": 4
- *               }, {
- *                   "line": 21,
- *                   "hit": 4
- *               }, {
- *                   "line": 22,
- *                   "hit": 4
- *               }, {
- *                   "line": 24,
- *                   "hit": 3
- *               }, {
- *                   "line": 25,
- *                   "hit": 3
- *               }, {
- *                   "line": 27,
- *                   "hit": 3
- *               }, {
- *                   "line": 28,
- *                   "hit": 3
- *               }, {
- *                   "line": 30,
- *                   "hit": 3
- *               }, {
- *                   "line": 31,
- *                   "hit": 3
- *               }, {
- *                   "line": 33,
- *                   "hit": 3
- *               }, {
- *                   "line": 34,
- *                   "hit": 3
- *               }, {
- *                   "line": 36,
- *                   "hit": 263
- *               }, {
- *                   "line": 37,
- *                   "hit": 263
- *               }, {
- *                   "line": 41,
- *                   "hit": 263
- *               }, {
- *                   "line": 43,
- *                   "hit": 48
- *               }, {
- *                   "line": 44,
- *                   "hit": 48
- *               }, {
- *                   "line": 48,
- *                   "hit": 48
- *               }, {
- *                   "line": 50,
- *                   "hit": 48
- *               }, {
- *                   "line": 51,
- *                   "hit": 48
- *               }, {
- *                   "line": 52,
- *                   "hit": 591
- *               }, {
- *                   "line": 53,
- *                   "hit": 48
- *               }, {
- *                   "line": 54,
- *                   "hit": 48
- *               }, {
- *                   "line": 57,
- *                   "hit": 48
- *               }, {
- *                   "line": 59,
- *                   "hit": 23
- *               }, {
- *                   "line": 60,
- *                   "hit": 23
- *               }, {
- *                   "line": 66,
- *                   "hit": 23
- *               }, {
- *                   "line": 68,
- *                   "hit": 2
- *               }, {
- *                   "line": 69,
- *                   "hit": 2
- *               }, {
- *                   "line": 71,
- *                   "hit": 2
- *               }, {
- *                   "line": 72,
- *                   "hit": 2
- *               }, {
- *                   "line": 75,
- *                   "hit": 424
- *               }, {
- *                   "line": 76,
- *                   "hit": 7
- *               }, {
- *                   "line": 77,
- *                   "hit": 7
- *               }, {
- *                   "line": 97,
- *                   "hit": 3
- *               }, {
- *                   "line": 99,
- *                   "hit": 3
- *               }, {
- *                   "line": 100,
- *                   "hit": 2
- *               }, {
- *                   "line": 102,
- *                   "hit": 1
- *               }, {
- *                   "line": 106,
- *                   "hit": 1
- *               }, {
- *                   "line": 107,
- *                   "hit": 3
- *               }, {
- *                   "line": 108,
- *                   "hit": 3
- *               }, {
- *                   "line": 109,
- *                   "hit": 2
- *               }, {
- *                   "line": 111,
- *                   "hit": 1
- *               }, {
- *                   "line": 112,
- *                   "hit": 1
- *               }]
+ *               }, {...}]
  *           },
  *           "functions": {
  *               "hit": 6,
@@ -180,27 +24,7 @@ const MongoClient = require('mongodb').MongoClient;
  *                   "name": "(anonymous_0)",
  *                   "line": 7,
  *                   "hit": 3
- *               }, {
- *                   "name": "(anonymous_1)",
- *                   "line": 10,
- *                   "hit": 424
- *               }, {
- *                   "name": "(anonymous_2)",
- *                   "line": 51,
- *                   "hit": 591
- *               }, {
- *                   "name": "(anonymous_3)",
- *                   "line": 106,
- *                   "hit": 3
- *               }, {
- *                   "name": "(anonymous_4)",
- *                   "line": 107,
- *                   "hit": 3
- *               }, {
- *                   "name": "(anonymous_5)",
- *                   "line": 111,
- *                   "hit": 1
- *               }]
+ *               }, {...}]
  *           },
  *           "branches": {
  *               "hit": 24,
@@ -210,122 +34,7 @@ const MongoClient = require('mongodb').MongoClient;
  *                   "block": 0,
  *                   "branch": 0,
  *                   "taken": 4
- *               }, {
- *                   "line": 16,
- *                   "block": 0,
- *                   "branch": 1,
- *                   "taken": 4
- *               }, {
- *                   "line": 16,
- *                   "block": 0,
- *                   "branch": 2,
- *                   "taken": 3
- *               }, {
- *                   "line": 16,
- *                   "block": 0,
- *                   "branch": 3,
- *                   "taken": 3
- *               }, {
- *                   "line": 16,
- *                   "block": 0,
- *                   "branch": 4,
- *                   "taken": 3
- *               }, {
- *                   "line": 16,
- *                   "block": 0,
- *                   "branch": 5,
- *                   "taken": 3
- *               }, {
- *                   "line": 16,
- *                   "block": 0,
- *                   "branch": 6,
- *                   "taken": 263
- *               }, {
- *                   "line": 16,
- *                   "block": 0,
- *                   "branch": 7,
- *                   "taken": 48
- *               }, {
- *                   "line": 16,
- *                   "block": 0,
- *                   "branch": 8,
- *                   "taken": 48
- *               }, {
- *                   "line": 16,
- *                   "block": 0,
- *                   "branch": 9,
- *                   "taken": 23
- *               }, {
- *                   "line": 16,
- *                   "block": 0,
- *                   "branch": 10,
- *                   "taken": 2
- *               }, {
- *                   "line": 16,
- *                   "block": 0,
- *                   "branch": 11,
- *                   "taken": 2
- *               }, {
- *                   "line": 52,
- *                   "block": 1,
- *                   "branch": 0,
- *                   "taken": 48
- *               }, {
- *                   "line": 52,
- *                   "block": 1,
- *                   "branch": 1,
- *                   "taken": 543
- *               }, {
- *                   "line": 52,
- *                   "block": 2,
- *                   "branch": 0,
- *                   "taken": 591
- *               }, {
- *                   "line": 52,
- *                   "block": 2,
- *                   "branch": 1,
- *                   "taken": 53
- *               }, {
- *                   "line": 64,
- *                   "block": 3,
- *                   "branch": 0,
- *                   "taken": 1
- *               }, {
- *                   "line": 64,
- *                   "block": 3,
- *                   "branch": 1,
- *                   "taken": 22
- *               }, {
- *                   "line": 75,
- *                   "block": 4,
- *                   "branch": 0,
- *                   "taken": 7
- *               }, {
- *                   "line": 75,
- *                   "block": 4,
- *                   "branch": 1,
- *                   "taken": 417
- *               }, {
- *                   "line": 99,
- *                   "block": 5,
- *                   "branch": 0,
- *                   "taken": 2
- *               }, {
- *                   "line": 99,
- *                   "block": 5,
- *                   "branch": 1,
- *                   "taken": 1
- *               }, {
- *                   "line": 108,
- *                   "block": 6,
- *                   "branch": 0,
- *                   "taken": 2
- *               }, {
- *                   "line": 108,
- *                   "block": 6,
- *                   "branch": 1,
- *                   "taken": 1
- *               }]
+ *               }, {...}]
  *           },
  *           "title": "",
  *           "source": "",
@@ -352,41 +61,45 @@ const MongoClient = require('mongodb').MongoClient;
  *}
  **/
 module.exports = {
-    save: function(model) {
-      return new Promise(function(resolve, reject) {
-          MongoClient.connect('mongodb://localhost:32768/node-coverage-server', function(err, db) {
-              if (err) { return reject(err); }
-              var collection = db.collection('coverages');
-              collection.insertOne(model, function(err, result) {
+    save: (model) => {
+      return new Promise((resolve, reject) => {
+          MongoClient.connect('mongodb://localhost:32769/node-coverage-server', (err, db) => {
+              if (err) return reject(err);
+              const collection = db.collection('coverages');
+              collection.insertOne(model, (err, result) => {
                 if(err) { return reject(err); }
                 resolve(result);
               });
           });
       });
     },
-    getAll: function() {
-        return new Promise(function(resolve, reject) {
-            MongoClient.connect('mongodb://localhost:32768/node-coverage-server', function(err, db) {
-                if (err) { return reject(err); }
-                var docs = [];
-                var collection = db.collection('coverages');
-                var cursor = collection.aggregate([{
+    get: (repo) => {
+        return new Promise((resolve, reject) => {
+            MongoClient.connect('mongodb://localhost:32769/node-coverage-server', (err, db) => {
+                if (err) return reject(err);
+
+                const docs = [];
+                const collection = db.collection('coverages');
+                const options = [{
                     $group: {
                         _id: "$git.remotes.url",
                         history: {
                             $push: "$$ROOT"
                         }
                     }
-                }]);
+                }];
 
-                cursor.on('data', function(doc) {
-                    docs.push(doc);
-                });
+                if(repo)
+                    options.unshift({ $match: { "git.remotes.url": repo} })
 
-                cursor.once('end', function() {
-                    resolve(docs);
-                    db.close();
-                });
+                collection.aggregate(options)
+                    .on('data', (doc) => {
+                        docs.push(doc);
+                    })
+                    .once('end', () => {
+                        resolve(docs);
+                        db.close();
+                    });
             });
         });
     }
