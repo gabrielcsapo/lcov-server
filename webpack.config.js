@@ -4,10 +4,19 @@ module.exports = {
         path: './dist',
         filename: 'build.js'
     },
+    devServer: {
+        proxy: {
+            "/api/*": "http://localhost:5000"
+        },
+        contentBase: 'dist',
+        inline: true,
+        hot: true,
+        historyApiFallback: true
+    },
     module: {
         loaders: [{
                 test: /\.css$/,
-                loader: 'style!css'
+                loaders: ['style-loader', 'css-loader']
             },
             {
                 test: /.jsx?$/,

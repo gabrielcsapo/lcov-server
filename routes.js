@@ -3,9 +3,8 @@ const FS = require('fs');
 const querystring = require('querystring');
 const Coverage = require('./db/coverage');
 
-const BuildHtml = FS.readFileSync(Path.resolve(__dirname, 'src', 'index.html'));
+const BuildHtml = FS.readFileSync(Path.resolve(__dirname, 'dist', 'index.html'));
 const BuildJS = FS.readFileSync(Path.resolve(__dirname, 'dist', 'build.js'));
-const CSS = FS.readFileSync(Path.resolve(__dirname, 'node_modules', 'psychic-ui', 'dist', 'psychic-min.css'));
 
 const parseBody = (request, response, callback) => {
   var body = '';
@@ -28,10 +27,6 @@ const parseBody = (request, response, callback) => {
 };
 
 module.exports = {
-  '/psychic.css': function(request, response) {
-    response.writeHead(200, {'Content-Type': 'text/css; charset=utf-8'});
-    response.end(CSS);
-  },
   '/build.js': function(request, response) {
     response.writeHead(200, {'Content-Type': 'text/js; charset=utf-8'});
     response.end(BuildJS);

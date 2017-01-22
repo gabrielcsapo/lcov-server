@@ -1,3 +1,5 @@
+import css from 'psychic-ui/dist/psychic-min.css';
+
 import React from 'react';
 import { render } from 'react-dom';
 import { Router, Route, Link, browserHistory } from 'react-router';
