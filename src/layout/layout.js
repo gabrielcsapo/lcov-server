@@ -1,32 +1,10 @@
 import React from 'react';
 
 class Layout extends React.Component {
-
-  getFooter(absolute=false) {
-    if(absolute) {
-      return (<div className="navbar navbar-center" style={{bottom: "0", position: "absolute"}}>
-        <div className="container text-center">
-          <div className="text-black">node-coverage-server by
-            <a href="http://gabrielcsapo.com">@gabrielcsapo</a>
-          </div>
-        </div>
-      </div>);
-    } else {
-        return (<div className="navbar navbar-center">
-          <div className="container text-center">
-            <div className="text-black">node-coverage-server by
-              <a href="http://gabrielcsapo.com">@gabrielcsapo</a>
-            </div>
-          </div>
-        </div>);
-    }
-  }
-
   render () {
     const { children } = this.props;
     const { absoluteFooter } = this.props.children.props.routes[1];
-    const footer = this.getFooter(absoluteFooter);
-
+    
     return (
       <div>
         <div className="navbar navbar-center">
@@ -49,8 +27,14 @@ class Layout extends React.Component {
         <div>
           { children }
         </div>
-          { footer }
-        }}
+          <div className="navbar navbar-center" style={{bottom: "0", position: absoluteFooter ? 'absolute' : 'relative'}}>
+            <div className="container text-center">
+              <div className="text-black">
+                <a href="https://github.com/gabrielcsapo/node-coverage-server">node-coverage-server</a> by
+                <a href="http://gabrielcsapo.com">@gabrielcsapo</a>
+              </div>
+            </div>
+          </div>
       </div>
     )
   }

@@ -6,11 +6,6 @@ import CoverageChart from './coverageChart';
 import moment from 'moment';
 
 class Coverage extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {}
-  }
-
   componentDidMount() {
      const url = this.props.params.repoLink;
      fetch(`/api/v1/coverage/${encodeURIComponent(url).replace(/\./g, '%2E')}`)
