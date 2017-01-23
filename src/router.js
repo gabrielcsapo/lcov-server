@@ -1,20 +1,19 @@
-import 'psychic-ui/dist/psychic-min.css';
-import './style.css';
-
 import React from 'react';
-import { render } from 'react-dom';
 import { Router, Route, Link, browserHistory } from 'react-router';
 
+import Layout from './layout/layout';
 import Main from './main/main';
 import Coverages from './coverage/coverages';
 import Coverage from './coverage/coverage';
 import Error from './error/error';
 
-render((
+export default (
   <Router history={browserHistory}>
-    <Route path="/" component={Main}/>
-    <Route path="/coverage" component={Coverages}/>
-    <Route path="/coverage/:repoLink" component={Coverage}/>
-    <Route path="*" component={Error}/>
+    <Route component={Layout}>
+      <Route path="/" component={Main} />
+      <Route path="/coverage" component={Coverages} />
+      <Route path="/coverage/:repoLink" component={Coverage} />
+      <Route path="*" component={Error} />
+    </Route>
   </Router>
-), document.getElementById('root'))
+);

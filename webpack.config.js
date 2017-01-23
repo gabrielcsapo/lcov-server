@@ -1,5 +1,5 @@
 module.exports = {
-    entry: './src/router.js',
+    entry: './src/app.js',
     output: {
         path: './dist',
         filename: 'build.js'

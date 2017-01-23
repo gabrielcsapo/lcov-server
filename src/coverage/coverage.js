@@ -101,22 +101,29 @@ class Coverage extends React.Component {
               <hr/>
               <h4> Source Files </h4>
               <table className="table responsive">
-                <tr>
-                    <th>Coverage</th>
-                    <th>File</th>
-                    <th>Lines</th>
-                    <th>Branches</th>
-                    <th>Functions</th>
-                </tr>
+                <thead>
+                  <tr>
+                      <th>Coverage</th>
+                      <th>File</th>
+                      <th>Lines</th>
+                      <th>Branches</th>
+                      <th>Functions</th>
+                  </tr>
+                </thead>
+                <tbody>
                 {history[0].source_files.map((f) => {
+                    const totalFound = f.lines.found + f.branches.found + f.functions.found;
+                    const totalHit = f.lines.hit + f.branches.hit + f.functions.hit;
+
                     return (<tr>
-                        <td> 0% </td>
+                        <td> { parseInt(totalHit / totalFound) * 100}% </td>
                         <td> { f.title }</td>
-                        <td> { parseInt((f.lines.hit / f.lines.found) * 100) }</td>
-                        <td> { parseInt((f.branches.hit / f.branches.found) * 100) }</td>
-                        <td> { parseInt((f.functions.hit / f.functions.found) * 100) }</td>
+                        <td> { `${f.lines.hit} / ${f.lines.found}` }</td>
+                        <td> { `${f.branches.hit} / ${f.branches.found}` }</td>
+                        <td> { `${f.functions.hit} / ${f.functions.found}` }</td>
                     </tr>)
                 })}
+                </tbody>
               </table>
               <h4> Recent Builds </h4>
               <table className="table responsive">
