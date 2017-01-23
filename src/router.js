@@ -10,10 +10,10 @@ import Error from './error/error';
 export default (
   <Router history={browserHistory}>
     <Route component={Layout}>
-      <Route path="/" component={Main} />
+      <Route path="/" component={Main} absoluteFooter={true} />
       <Route path="/coverage" component={Coverages} />
       <Route path="/coverage/:repoLink" component={Coverage} />
-      <Route path="*" component={Error} />
+      <Route path="*" component={Error} absoluteFooter={true} />
     </Route>
   </Router>
 );
