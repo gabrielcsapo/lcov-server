@@ -29,6 +29,7 @@ process.stdin.on('end', function() {
         // Go through and set the file contents
         for(var i = 0; i < _lcov.length; i++) {
           _lcov[i].source = fs.readFileSync(_lcov[i].file).toString('utf8');
+          _lcov[i].title = _lcov[i].file.substring(_lcov[i].file.lastIndexOf('/') + 1, _lcov[i].file.length);
         }
         output['source_files'] = _lcov;
 

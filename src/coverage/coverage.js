@@ -73,31 +73,70 @@ class Coverage extends React.Component {
               <CoverageChart data={data} color={color} height={20} />
               <hr/>
               <ul style={{listStyle: 'none', textAlign: 'center'}}>
-                 <li style={{lineHeight: '1.4', display: 'inline-block', margin: '5px', padding: '5px', backgroundColor: 'rgba(53, 74, 87, 0.05)'}}>
+                 <li style={{lineHeight: '1.4', display: 'inline-block', margin: '5px', padding: '15px', backgroundColor: 'rgba(53, 74, 87, 0.05)'}}>
                      Last Build
                      <div>
-                         <b> { history[history.length - 1].run_at } </b>
+                         <b> { moment(history[history.length - 1].run_at).fromNow() } </b>
                      </div>
                  </li>
-                 <li style={{lineHeight: '1.4', display: 'inline-block', margin: '5px', padding: '5px', backgroundColor: 'rgba(53, 74, 87, 0.05)'}}>
+                 <li style={{lineHeight: '1.4', display: 'inline-block', margin: '5px', padding: '15px', backgroundColor: 'rgba(53, 74, 87, 0.05)'}}>
                      Total Files
                      <div>
                          <b> { history[history.length - 1].source_files.length } </b>
                      </div>
                  </li>
-                 <li style={{lineHeight: '1.4', display: 'inline-block', margin: '5px', padding: '5px', backgroundColor: 'rgba(53, 74, 87, 0.05)'}}>
+                 <li style={{lineHeight: '1.4', display: 'inline-block', margin: '5px', padding: '15px', backgroundColor: 'rgba(53, 74, 87, 0.05)'}}>
                      Total Builds
                      <div>
                          <b> { history.length } </b>
                      </div>
                  </li>
-                 <li style={{display: 'inline-block', margin: '5px', padding: '5px', backgroundColor: 'rgba(53, 74, 87, 0.05)'}}>
+                 <li style={{display: 'inline-block', margin: '5px', padding: '15px', backgroundColor: 'rgba(53, 74, 87, 0.05)'}}>
                      Badge
                      <div>
                          <img src={`/${encodeURIComponent(url).replace(/\./g, '%2E')}.svg`} />
                      </div>
                  </li>
               </ul>
+              <hr/>
+              <h4> Source Files </h4>
+              <table className="table responsive">
+                <tr>
+                    <th>Coverage</th>
+                    <th>File</th>
+                    <th>Lines</th>
+                    <th>Branches</th>
+                    <th>Functions</th>
+                </tr>
+                {history[0].source_files.map((f) => {
+                    return (<tr>
+                        <td> 0% </td>
+                        <td> { f.title }</td>
+                        <td> { parseInt((f.lines.hit / f.lines.found) * 100) }</td>
+                        <td> { parseInt((f.branches.hit / f.branches.found) * 100) }</td>
+                        <td> { parseInt((f.functions.hit / f.functions.found) * 100) }</td>
+                    </tr>)
+                })}
+              </table>
+              <h4> Recent Builds </h4>
+              <table className="table responsive">
+                <tr>
+                    <th>Branch</th>
+                    <th>Coverage</th>
+                    <th>Commit</th>
+                    <th>Committer</th>
+                    <th>Time</th>
+                </tr>
+                {history.map((h) => {
+                    return (<tr>
+                        <td> { h.git.branch } </td>
+                        <td> 0% </td>
+                        <td> { h.git.message } </td>
+                        <td> { h.git.committer_name } </td>
+                        <td> { moment(h.git.committer_date * 1000).fromNow() } </td>
+                    </tr>)
+                })}
+              </table>
              </div>
           </div>);
       } else {
