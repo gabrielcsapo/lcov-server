@@ -1,7 +1,6 @@
 import 'whatwg-fetch';
 
 import React from 'react';
-import ReactDOM from 'react-dom';
 import CoverageChart from './coverageChart';
 import moment from 'moment';
 
@@ -40,16 +39,22 @@ class Coverage extends React.Component {
       } else if(project) {
           const url = project._id;
           const history = project.history;
-          const data = history.map((h) => {
-            const { lines } = h.source_files[0];
-            return lines.hit / lines.found;
+          const data = [[], [], []];
+          history.forEach(function(history) {
+            const { lines, branches, functions } = history.source_files[0];
+            data[0].push(parseInt((lines.hit / lines.found) * 100))
+            data[1].push(parseInt((branches.hit / branches.found) * 100))
+            data[2].push(parseInt((functions.hit / functions.found) * 100))
           }, []);
           // If there is only one data point
           // add another that is the same value to make a line
-          if(data.length == 1) {
-              data[1] = data[0];
-          }
-          const percentage = parseInt(data[data.length - 1] * 100);
+          if(data[0].length == 1) {
+              data[0].push(data[0][0]);
+              data[1].push(data[1][0]);
+              data[2].push(data[2][0]);
+          };
+
+          const percentage = parseInt(data[0][data[0].length - 1]);
           const owner = url.split('/')[url.split('/').length - 2];
           const repo = url.split('/')[url.split('/').length - 1].replace('.git', '');
           const { message, commit, branch, author_name, author_date } = history[history.length - 1].git;
@@ -58,20 +63,22 @@ class Coverage extends React.Component {
 
           return (<div style={{marginBottom: '50px'}}>
              <div style={{marginLeft: '50px', marginRight: '50px'}}>
-              <div style={{float: 'left', textAlign: 'left'}}>
-                  <h3> {owner} / <a href={`coverage/${encodeURIComponent(url).replace(/\./g, '%2E')}`}>{repo}</a> </h3>
-                  <p>
-                    <a href={commitUrl} target="_blank"> {message} </a>
-                    on branch
-                    <b> {branch} </b>
-                    {moment(author_date * 1000).fromNow()}
-                    &nbsp;by
-                    <b> {author_name} </b>
-                  </p>
-              </div>
+              <div style={{display: 'inline-block', width: '100%'}}>
+                <div style={{float: 'left', textAlign: 'left'}}>
+                    <h3> {owner} / <a href={`/coverage/${encodeURIComponent(url).replace(/\./g, '%2E')}`}>{repo}</a> </h3>
+                    <p>
+                      <a href={commitUrl} target="_blank"> {message} </a>
+                      on branch
+                      <b> {branch} </b>
+                      {moment(author_date * 1000).fromNow()}
+                      &nbsp;by
+                      <b> {author_name} </b>
+                    </p>
+                </div>
 
-              <h3 style={{float: 'right', color: color}}>{percentage}%</h3>
-              <CoverageChart data={data} color={color} height={20} />
+                <h3 style={{float: 'right', color: color}}>{percentage}%</h3>
+              </div>
+              <CoverageChart width={window.innerWidth - 200} data={data} color={color} height={100} />
               <hr/>
               <ul style={{listStyle: 'none', textAlign: 'center'}}>
                  <li style={{lineHeight: '1.4', display: 'inline-block', margin: '5px', padding: '15px', backgroundColor: 'rgba(53, 74, 87, 0.05)'}}>
@@ -115,9 +122,9 @@ class Coverage extends React.Component {
                 {history[0].source_files.map((f) => {
                     const totalFound = f.lines.found + f.branches.found + f.functions.found;
                     const totalHit = f.lines.hit + f.branches.hit + f.functions.hit;
-
+                    const totalCoverage = parseInt((totalHit / totalFound) * 100);
                     return (<tr>
-                        <td> { parseInt(totalHit / totalFound) * 100}% </td>
+                        <td> { totalCoverage }% </td>
                         <td> { f.title }</td>
                         <td> { `${f.lines.hit} / ${f.lines.found}` }</td>
                         <td> { `${f.branches.hit} / ${f.branches.found}` }</td>
@@ -136,9 +143,15 @@ class Coverage extends React.Component {
                     <th>Time</th>
                 </tr>
                 {history.map((h) => {
+                    let totalCoverage = h.source_files.map((f) => {
+                      const totalFound = f.lines.found + f.branches.found + f.functions.found;
+                      const totalHit = f.lines.hit + f.branches.hit + f.functions.hit;
+                      const totalCoverage = parseInt((totalHit / totalFound) * 100);
+                      return totalCoverage;
+                    }, []).reduce((p, c, _ ,a) => p + c / a.length, 0);
                     return (<tr>
                         <td> { h.git.branch } </td>
-                        <td> 0% </td>
+                        <td> { totalCoverage }% </td>
                         <td> { h.git.message } </td>
                         <td> { h.git.committer_name } </td>
                         <td> { moment(h.git.committer_date * 1000).fromNow() } </td>

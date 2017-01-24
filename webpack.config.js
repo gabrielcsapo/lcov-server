@@ -1,3 +1,5 @@
+const webpack = require('webpack');
+
 module.exports = {
     entry: './src/app.js',
     output: {
@@ -29,4 +31,28 @@ module.exports = {
             }
         ]
     },
+    plugins: [
+      new webpack.DefinePlugin({
+        'process.env': {
+          'NODE_ENV': JSON.stringify('production')
+        }
+      }),
+      new webpack.ContextReplacementPlugin(/moment[\\\/]locale$/, /^\.\/(en)$/),
+      new webpack.optimize.DedupePlugin(),
+      new webpack.optimize.UglifyJsPlugin({
+        comments: false,
+        compress: {
+          unused: true,
+          dead_code: true,
+          warnings: false,
+          drop_debugger: true,
+          conditionals: true,
+          evaluate: true,
+          drop_console: true,
+          sequences: true,
+          booleans: true,
+        }
+      }),
+      new webpack.optimize.AggressiveMergingPlugin(),
+    ]
 };

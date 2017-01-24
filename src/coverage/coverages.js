@@ -1,7 +1,6 @@
 import 'whatwg-fetch';
 
 import React from 'react';
-import ReactDOM from 'react-dom';
 import CoverageChart from './coverageChart';
 import moment from 'moment';
 
@@ -65,7 +64,7 @@ class Coverages extends React.Component {
             return (<div style={{marginBottom: '50px'}}>
                <div style={{paddingLeft: '2.5%', paddingRight: '2.5%', display: 'inline-block', width: '95%'}}>
                 <div style={{float: 'left', textAlign: 'left'}}>
-                    <h3> {owner} / <a href={`coverage/${encodeURIComponent(url).replace(/\./g, '%2E')}`}>{repo}</a> </h3>
+                    <h3> {owner} / <a href={`/coverage/${encodeURIComponent(url).replace(/\./g, '%2E')}`}>{repo}</a> </h3>
                     <p>
                       <a href={commitUrl} target="_blank"> {message} </a>
                       on branch

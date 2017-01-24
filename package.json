@@ -8,7 +8,9 @@
     "coverage": "tap test/**/*.js --coverage",
     "generate-docs": "node_modules/.bin/jsdoc -c jsdoc.json",
     "lint": "eslint .",
-    "dev": "webpack-dev-server --hot"
+    "dev": "webpack-dev-server --hot",
+    "storybook": "start-storybook -p 6006",
+    "build-storybook": "build-storybook"
   },
   "author": "Gabriel J. Csapo <gabecsapo@gmail.com>",
   "bin": {
@@ -16,6 +18,8 @@
   },
   "license": "ISC",
   "devDependencies": {
+    "@kadira/storybook": "^2.21.0",
+    "@kadira/storybook-addon-knobs": "^1.7.1",
     "babel-core": "^6.4.5",
     "babel-loader": "^6.2.1",
     "babel-preset-es2015": "^6.3.13",
@@ -24,6 +28,7 @@
     "docdash": "^0.4.0",
     "eslint": "^3.13.1",
     "eslint-plugin-react": "^6.9.0",
+    "getstorybook": "^1.7.0",
     "jsdoc": "^3.4.3",
     "moment": "^2.17.1",
     "openbadge": "^1.0.4",

@@ -1,17 +1,5 @@
 import React from 'react';
-
-var opt = {
-  data: [[97,92,89,30,72],[43,62,84,98,3],[23,88,52,14,4],[76,9,1,67,84]],
-  colors: ['#7B43A1', '#F2317A', '#FF9824', '#58CF6C'],
-  labels: ['Cats', 'Dogs', 'Ducks', 'Cows'],
-	 axis: ['October', 'November', 'December', 'January', 'February', 'Marsh'],
-}
-
-/**
- * <LineChart {...opt} area={ true } />
- * <LineChart {...opt} dots={ true } lines={ true } />
- * <LineChart {...opt} width={ 600 } height={ 50 } stroke={ 2 } radius={ 6 } dots={ true } grid={ false } hideLabels={ true } />
- */
+import './style.css'
 
 const LineChart = React.createClass({
 	getInitialState: function () {
