@@ -1,7 +1,23 @@
 import React from 'react';
 
-const Tooltip = React.createClass({
-	render: function () {
+class Tooltip extends React.Component {
+  propTypes: {
+    value: React.PropTypes.number,
+    label: React.PropTypes.string,
+    x: React.PropTypes.number,
+    y: React.PropTypes.number,
+    color: React.PropTypes.string
+  }
+
+  defaultProps: {
+    value: 0,
+    label: '',
+    x: 0,
+    y: 0,
+    color: ''
+  }
+
+	render() {
 		const { value, label, x, y, color } = this.props;
     const style = {
 			left: ~~x,
@@ -15,7 +31,7 @@ const Tooltip = React.createClass({
 			</span>
 		)
 	}
-})
+};
 
 module.exports = {
   Tooltip

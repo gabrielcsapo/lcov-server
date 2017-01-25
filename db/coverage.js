@@ -90,7 +90,7 @@ module.exports = {
                 }];
 
                 if(repo)
-                    options.unshift({ $match: { "git.remotes.url": repo} })
+                    options.unshift({ $match: { "git.remotes.url": repo} });
 
                 collection.aggregate(options)
                     .on('data', (doc) => {

@@ -2,10 +2,10 @@ const path = require('path');
 const fs = require('fs');
 const querystring = require('querystring');
 const Coverage = require('./db/coverage');
-const Badge = require('openbadge')
+const Badge = require('openbadge');
 
-const BuildHtml = fs.readFileSync(path.resolve(__dirname, 'dist', 'index.html'));
-const BuildJS = fs.readFileSync(path.resolve(__dirname, 'dist', 'build.js'));
+const html = fs.readFileSync(path.resolve(__dirname, 'dist', 'index.html'));
+const js = fs.readFileSync(path.resolve(__dirname, 'dist', 'build.js'));
 
 const parseBody = (req, res, callback) => {
   let body = '';
@@ -30,7 +30,7 @@ const parseBody = (req, res, callback) => {
 module.exports = {
   '/build.js': (req, res) => {
     res.writeHead(200, { 'Content-Type': 'text/js; charset=utf-8'} );
-    res.end(BuildJS);
+    res.end(js);
   },
   '/api/v1/upload': (req, res) => {
     switch(req.method) {
@@ -92,23 +92,25 @@ module.exports = {
       const lastRun = history[history.length - 1];
       const { lines } = lastRun.source_files[0];
       const percentage = parseInt((lines.hit / lines.found) * 100);
-      Badge({text: ['coverage', `${percentage}%`] }, function(err, badgeSvg) {
+      Badge({text: ['coverage', `${percentage}%`] }, function(err, badge) {
+          if(err) { throw new Error(err); }
           res.writeHead(200, { 'Content-Type': 'image/svg+xml; charset=utf-8'} );
-          res.end(badgeSvg);
+          res.end(badge);
       });
-    }).catch(function(err) {
-        Badge({ color: { right: "#b63b3b" }, text: ['coverage', 'not found'] }, function(err, badgeSvg) {
+    }).catch(function() {
+        Badge({ color: { right: "#b63b3b" }, text: ['coverage', 'not found'] }, function(err, badge) {
+            if(err) { throw new Error(err); }
             res.writeHead(200, { 'Content-Type': 'image/svg+xml; charset=utf-8'} );
-            res.end(badgeSvg);
+            res.end(badge);
         });
     });
   },
   '/coverage': (req, res) => {
     res.writeHead(200, { 'Content-Type': 'text/html; charset=utf-8'} );
-    res.end(BuildHtml);
+    res.end(html);
   },
   'default': (req, res) => {
     res.writeHead(200, { 'Content-Type': 'text/html; charset=utf-8'} );
-    res.end(BuildHtml);
+    res.end(html);
   }
 };

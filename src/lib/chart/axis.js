@@ -1,26 +1,34 @@
 import React from 'react';
 
-const XAxis = React.createClass({
-	render: function () {
-		var padding = this.props.padding,
-						lines = [1, 2, 3],
-						segment = this.props.height / 4,
-						maxValue = ~~(this.props.maxValue / 4)
+class XAxis extends React.Component {
+	render() {
+		let { padding, height, width, maxValue } = this.props;
+		let segment = height / 4;
+		let lines = [1, 2, 3];
+
+		maxValue = ~~(maxValue / 4);
 
 		return (
 			<g>
 				{ lines.map((l, li) => {
-					var y = ~~(l * segment + padding) + .5
+					const y = ~~(l * segment + padding) + .5;
 					return (
 					<g>
 						<line
-							x1={ padding } y1={ y }
-							x2={ this.props.width + padding } y2={ y }
+							x1={ padding }
+							y1={ y }
+							x2={ width + padding }
+							y2={ y }
 							stroke="#eaeaea"
 							strokeWidth="1px"
 						/>
 
-						<text className="LineChart--axis" x={ padding - 10 } y={ y + 2 } textAnchor="end">{ maxValue * (3 - li) }</text>
+						<text
+              className="LineChart--axis"
+              x={ padding - 10 } y={ y + 2 }
+              textAnchor="end">
+              { maxValue * (3 - li) }
+            </text>
 
 					</g>
 				)})}
@@ -28,15 +36,28 @@ const XAxis = React.createClass({
 			</g>
 		)
 	}
-})
+}
 
-const YAxis = React.createClass({
-	render: function () {
-		var padding = this.props.padding,
-						lines = [0, 1, 2, 3, 4],
-						segment = this.props.width / 4,
-						height = this.props.height + padding,
-						axis = this.props.axis
+XAxis.propTypes = {
+  padding: React.PropTypes.number,
+  height: React.PropTypes.number,
+  width: React.PropTypes.number,
+  maxValue: React.PropTypes.number
+};
+
+XAxis.defaultProps = {
+  padding: 0,
+  height: 0,
+  width: 0,
+  maxValue: 0
+};
+
+class YAxis extends React.Component {
+	render() {
+    let { axis, padding, height, width, maxValue } = this.props;
+    let lines = [0, 1, 2, 3, 4];
+    let segment = width / 4;
+		height = height + padding;
 
 		return (
 			<g>
@@ -60,9 +81,25 @@ const YAxis = React.createClass({
 			</g>
 		)
 	}
-})
+}
+
+YAxis.propTypes = {
+  padding: React.PropTypes.number,
+  height: React.PropTypes.number,
+  width: React.PropTypes.number,
+  maxValue: React.PropTypes.number,
+  axis: React.PropTypes.array
+};
+
+YAxis.defaultProps = {
+  padding: 0,
+  height: 0,
+  width: 0,
+  maxValue: 0,
+  axis: []
+};
 
 module.exports = {
-  XAxis,
-  YAxis
+  YAxis,
+  XAxis
 }

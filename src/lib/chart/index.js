@@ -3,11 +3,11 @@ import './style.css'
 
 import { Curve } from './curve';
 import { XAxis, YAxis } from './axis';
-import { Points, Point } from './points';
+import { Points } from './points';
 import { Tooltip } from './tooltip';
 
 const LineChart = React.createClass({
-	getInitialState: function () {
+	getInitialState() {
 		return {
 			tooltip: false,
 			value: '',
@@ -15,21 +15,22 @@ const LineChart = React.createClass({
 			index: 0,
 			x: 0,
 			y: 0,
-			color: ''
+			color: '',
+      updating: false
 		}
 	},
 
-	componentWillReceiveProps: function () {
+	componentWillReceiveProps() {
 		this.setState({ updating: true }, this.endUpdate)
 	},
 
-	endUpdate: function () {
+	endUpdate() {
 		setTimeout(() => {
         this.setState({ updating: false });
     }, 300)
 	},
 
-	showTooltip: function (point, dataSetIndex, index) {
+	showTooltip(point, dataSetIndex, index) {
 		this.setState({
 			updating: false,
 			tooltip: true,
@@ -42,11 +43,11 @@ const LineChart = React.createClass({
 		})
 	},
 
-	hideTooltip: function () {
+	hideTooltip() {
 		this.setState(this.getInitialState())
 	},
 
-	render: function () {
+	render() {
 		let {
       data,
       lines,
@@ -65,6 +66,9 @@ const LineChart = React.createClass({
       heightRatio,
       padding
     } = this.props;
+
+    const { updating } = this.state;
+
     let dataSet = [];
     const size = data[0].length - 1;
 
@@ -128,7 +132,7 @@ const LineChart = React.createClass({
   								height={ height }
   								padding={ padding }
   								color={ colors[pi % colors.length] }
-  								updating={ this.state.updating }
+  								updating={ updating }
   								stroke={ stroke }
   							/>
 

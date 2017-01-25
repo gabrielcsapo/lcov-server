@@ -1,13 +1,14 @@
 import React from 'react';
 
-const Curve = React.createClass({
+const Curve = React.createClass({  
 	render: function () {
-		var { points, dataSetIndex, width, height, padding, lines, area, dots, color, stroke, updating } = this.props,
-					path = [], areaPath = [],	style, fn
+		let { points, dataSetIndex, width, height, padding, lines, area, dots, color, stroke, updating } = this.props;
+		let path = [];
+		let areaPath = [];
+		let style = {	pointerEvents: 'none' };
+		let fn = lines === true ? 'L' : 'R';
 
-		fn = lines === true ? 'L' : 'R'
 		height += padding
-		style = {	pointerEvents: 'none' }
 
 		if (updating === true) {
 			style['opacity'] = 0
@@ -20,7 +21,6 @@ const Curve = React.createClass({
 		if (lines !== true) {
 			path = parsePath(path, height).join(' ')
 		}
-
 
 		if (area === true) {
 			areaPath = path.replace('M', 'L')
@@ -36,6 +36,20 @@ const Curve = React.createClass({
 		)
 	}
 })
+
+Curve.propTypes = {
+  points: React.PropTypes.object,
+  dataSetIndex: React.PropTypes.number,
+  width: React.PropTypes.number,
+  height: React.PropTypes.number,
+  padding: React.PropTypes.number,
+  lines: React.PropTypes.array,
+  area: React.PropTypes.boolean,
+  dots: React.PropTypes.boolean,
+  color: React.PropTypes.string,
+  stroke: React.PropTypes.number,
+  updating: React.PropTypes.updating
+};
 
 module.exports = {
   Curve

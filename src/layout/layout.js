@@ -3,8 +3,9 @@ import React from 'react';
 class Layout extends React.Component {
   render () {
     const { children } = this.props;
-    const { absoluteFooter } = this.props.children.props.routes[1];
-    
+    const { absoluteFooter } = this.props.children.props.routes[1]; // eslint-disable-line
+    console.log(typeof children);
+    console.log(this.props);
     return (
       <div>
         <div className="navbar navbar-center">
@@ -36,8 +37,12 @@ class Layout extends React.Component {
             </div>
           </div>
       </div>
-    )
+    );
   }
 }
+
+Layout.propTypes = {
+  children: React.PropTypes.object
+};
 
 export default Layout;

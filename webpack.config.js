@@ -48,7 +48,6 @@ module.exports = {
           drop_debugger: true,
           conditionals: true,
           evaluate: true,
-          drop_console: true,
           sequences: true,
           booleans: true,
         }

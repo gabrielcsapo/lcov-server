@@ -1,5 +1,8 @@
 {
-  "extends": ["eslint:recommended", "plugin:react/recommended"],
+  "extends": [
+    "eslint:recommended",
+    "plugin:react/recommended"
+  ],
   "env": {
     "es6": true,
     "node": true,
@@ -9,11 +12,11 @@
     "ecmaVersion": 6,
     "sourceType": "module",
     "ecmaFeatures": {
-        "jsx": true
+      "jsx": true
     }
   },
   "rules": {
-      "semi": 2
+    "semi": 2
   },
   "plugins": [
     "react"
