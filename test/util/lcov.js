@@ -11,11 +11,14 @@ test('lcov', function(t) {
   });
 
   t.test('should return error on bad file parsing', function(t) {
-    lcov.parse('foobar', function(err, data) {
-      t.ok(typeof err === 'string', 'error is a string');
-      t.ok(typeof data === 'undefined', 'data is undefined');
-    });
-    t.end();
+    lcov.parse('foobar')
+      .then(function(data) {
+        t.fail('should not return error');
+        t.end();
+      }).catch(function(err) {
+        t.ok(typeof err !== 'undefined', 'error is not undefined');
+        t.end();
+      });
   });
 
   t.test('should be able to parse string', function(t) {
@@ -39,11 +42,14 @@ test('lcov', function(t) {
         title: 'TestName',
         file: 'foobar.js'
     }];
-    lcov.parse(data, function(err, data) {
-      t.ok(typeof err === 'undefined', 'error is undefined');
-      t.deepEqual(data, expected, 'data is correctly formed');
-    });
-    t.end();
+    lcov.parse(data)
+      .then(function(data) {
+        t.deepEqual(data, expected, 'data is correctly formed');
+        t.end();
+      }).catch(function(err) {
+        t.fail('should not return error');
+        t.end();
+      });
   });
 
   t.test('should be able to parse file', function(t) {
@@ -1199,11 +1205,14 @@ test('lcov', function(t) {
         "title": "Test #3",
         "file": "javascript/common.js"
     }];
-    lcov.parse(file, function(err, data) {
-      t.ok(typeof err === 'undefined', 'error is undefined');
-      t.deepEqual(data, expected, 'data is correctly formed');
-    });
-    t.end();
+    lcov.parse(file)
+      .then(function(data) {
+        t.deepEqual(data, expected, 'data is correctly formed');
+        t.end();
+      }).catch(function(err) {
+        t.fail('should not return error');
+        t.end();
+      });
   });
 
 

@@ -21,6 +21,8 @@ class Main extends React.Component {
           <div className="text-black">A simple lcov server / cli parser</div>
           <br/>
           <small className="text-black">
+            <pre style={{display: "inline-block"}}>npm install -g node-coverage-server</pre>
+            <br/>
             <pre style={{display: "inline-block"}}>tap --coverage-report=text-lcov | node-coverage-server</pre>
           </small>
           <div style={{display:'block', margin: '0 auto'}}>

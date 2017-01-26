@@ -1,3 +1,7 @@
+* {
+  font-family: Sans-serif, "Helvetica Neue", Arial;
+}
+
 html {
     box-sizing: border-box;
     height: 100%;
@@ -8,7 +12,6 @@ body {
     padding-bottom: 6rem;
     min-height: 100%;
     width: 100%;
-    font-family: "Helvetica Neue", Arial, sans-serif;
 }
 *,
 *:before,

@@ -1,28 +1,36 @@
-var test = require('tape').test;
-var path = require('path');
-var git = require('../../util/git');
+const test = require('tape').test;
+const path = require('path');
+const git = require('../../util/git');
 
-test('git', function(t) {
+test('git', (t) => {
   t.plan(2);
 
-  t.test('should fail because directory is not a git directory', function(t) {
+  t.test('should fail because directory is not a git directory', (t) => {
     process.chdir(__dirname);
-    git(function(err, data) {
-      t.ok(err === 'directory does not contain git');
-      t.ok(typeof data === 'undefined');
-      t.end();
-    });
+    git.parse()
+      .then((data) => {
+        t.fail('should not return data');
+        t.end();
+      })
+      .catch((err) => {
+        t.ok(err === 'directory does not contain git');
+        t.end();
+      });
   });
 
-  t.test('should return the correct data', function(t) {
+  t.test('should return the correct data', (t) => {
     var keys = [ 'author_date', 'author_email', 'author_name', 'branch', 'commit',
       'committer_date', 'committer_email', 'committer_name', 'message', 'remotes' ];
     process.chdir(path.resolve(__dirname, '..', '..'));
-    git(function(err, data) {
-      t.ok(typeof err === 'undefined');
-      t.deepEqual(Object.keys(data).sort(), keys);
-      t.end();
-    });
+    git.parse()
+      .then((data) => {
+        t.deepEqual(Object.keys(data).sort(), keys);
+        t.end();
+      })
+      .catch((err) => {
+        t.fail('should not return an error');
+        t.end();
+      });
   });
 
   t.end();

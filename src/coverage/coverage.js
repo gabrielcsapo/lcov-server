@@ -126,7 +126,7 @@ class Coverage extends React.Component {
                     return (<tr>
                         <td> { totalCoverage }% </td>
                         <td>
-                            <a href={`/coverage/${encodeURIComponent(url).replace(/\./g, '%2E')}/file/${encodeURIComponent(f.title).replace(/\./g, '%2E')}`}> 
+                            <a href={`/coverage/${encodeURIComponent(url).replace(/\./g, '%2E')}/file/${encodeURIComponent(f.title).replace(/\./g, '%2E')}`}>
                                 { f.title }
                             </a>
                         </td>
@@ -144,7 +144,8 @@ class Coverage extends React.Component {
                     <th>Coverage</th>
                     <th>Commit</th>
                     <th>Committer</th>
-                    <th>Time</th>
+                    <th>Commit Time</th>
+                    <th>Recieved</th>
                 </tr>
                 {history.map((h) => {
                     let totalCoverage = h.source_files.map((f) => {
@@ -159,6 +160,7 @@ class Coverage extends React.Component {
                         <td> { h.git.message } </td>
                         <td> { h.git.committer_name } </td>
                         <td> { moment(h.git.committer_date * 1000).fromNow() } </td>
+                        <td> { moment(h.run_at).fromNow() } </td>
                     </tr>)
                 })}
               </table>
