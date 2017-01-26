@@ -82,25 +82,25 @@ class Coverage extends React.Component {
               <hr/>
               <ul style={{listStyle: 'none', textAlign: 'center'}}>
                  <li style={{lineHeight: '1.4', display: 'inline-block', margin: '5px', padding: '15px', backgroundColor: 'rgba(53, 74, 87, 0.05)'}}>
-                     Last Build
+                     <div style={{marginBottom: '5px'}}> Last Build </div>
                      <div>
                          <b> { moment(history[history.length - 1].run_at).fromNow() } </b>
                      </div>
                  </li>
                  <li style={{lineHeight: '1.4', display: 'inline-block', margin: '5px', padding: '15px', backgroundColor: 'rgba(53, 74, 87, 0.05)'}}>
-                     Total Files
+                     <div style={{marginBottom: '5px'}}> Total Files </div>
                      <div>
                          <b> { history[history.length - 1].source_files.length } </b>
                      </div>
                  </li>
                  <li style={{lineHeight: '1.4', display: 'inline-block', margin: '5px', padding: '15px', backgroundColor: 'rgba(53, 74, 87, 0.05)'}}>
-                     Total Builds
+                     <div style={{marginBottom: '5px'}}> Total Builds </div>
                      <div>
                          <b> { history.length } </b>
                      </div>
                  </li>
                  <li style={{display: 'inline-block', margin: '5px', padding: '15px', backgroundColor: 'rgba(53, 74, 87, 0.05)'}}>
-                     Badge
+                     <div style={{marginBottom: '5px'}}> Badge </div>
                      <div>
                          <img src={`/${encodeURIComponent(url).replace(/\./g, '%2E')}.svg`} />
                      </div>
@@ -125,7 +125,11 @@ class Coverage extends React.Component {
                     const totalCoverage = parseInt((totalHit / totalFound) * 100);
                     return (<tr>
                         <td> { totalCoverage }% </td>
-                        <td> { f.title }</td>
+                        <td>
+                            <a href={`/coverage/${encodeURIComponent(url).replace(/\./g, '%2E')}/file/${encodeURIComponent(f.title).replace(/\./g, '%2E')}`}> 
+                                { f.title }
+                            </a>
+                        </td>
                         <td> { `${f.lines.hit} / ${f.lines.found}` }</td>
                         <td> { `${f.branches.hit} / ${f.branches.found}` }</td>
                         <td> { `${f.functions.hit} / ${f.functions.found}` }</td>

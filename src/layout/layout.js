@@ -3,9 +3,7 @@ import React from 'react';
 class Layout extends React.Component {
   render () {
     const { children } = this.props;
-    const { absoluteFooter } = this.props.children.props.routes[1]; // eslint-disable-line
-    console.log(typeof children);
-    console.log(this.props);
+
     return (
       <div>
         <div className="navbar navbar-center">
@@ -28,10 +26,11 @@ class Layout extends React.Component {
         <div>
           { children }
         </div>
-          <div className="navbar navbar-center" style={{bottom: "0", position: absoluteFooter ? 'absolute' : 'relative'}}>
+          <div className="navbar navbar-center footer">
             <div className="container text-center">
               <div className="text-black">
-                <a href="https://github.com/gabrielcsapo/node-coverage-server">node-coverage-server</a> by
+                <a href="https://github.com/gabrielcsapo/node-coverage-server">node-coverage-server</a>
+                &nbsp;by&nbsp;
                 <a href="http://gabrielcsapo.com">@gabrielcsapo</a>
               </div>
             </div>

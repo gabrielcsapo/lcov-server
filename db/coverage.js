@@ -2,6 +2,42 @@ const MongoClient = require('mongodb').MongoClient;
 
 /**
  * @class Coverage
+ * @property {string} run_at - the iso date when the coverage was send to the server
+ * @property {string} repo_token - the token that references the project on the server
+ * @property {Object[]} source_files - a list of all the source files related to the coverage report
+ * @property {string} source_files[].name - the name of the file parsed
+ * @property {string} source_files[].source - the content of the file parsed into a string
+ * @property {Object[]} source_files[].coverage - an array of objects describing the state of the parsed file
+ * @property {object} source_files[].coverage[].lines - an object descibing the lines covered in the file
+ * @property {number} source_files[].coverage[].lines.found - total number of lines found in the file
+ * @property {number} source_files[].coverage[].lines.hits - total number of lines covered in the file
+ * @property {Object[]} source_files[].coverage[].lines.details - an array of points in the file that descibes the line and the amount of times it was covered
+ * @property {number} source_files[].coverage[].lines.details.line - the line number that is covered
+ * @property {number} source_files[].coverage[].lines.details.hit - how many times the line was hit
+ * @property {object} source_files[].coverage[].functions - an object descibing the functions covered in the file
+ * @property {number} source_files[].coverage[].functions.found - total number of functions found in the file
+ * @property {number} source_files[].coverage[].functions.hits - total number of functions covered in the file
+ * @property {Object[]} source_files[].coverage[].functions.details - an array of points in the file that descibes the line and the amount of times it was covered
+ * @property {number} source_files[].coverage[].functions.details.line - the line number that is covered
+ * @property {number} source_files[].coverage[].functions.details.hit - how many times the line was hit
+ * @property {object} source_files[].coverage[].branches - an object descibing the branches covered in the file
+ * @property {number} source_files[].coverage[].branches.found - total number of branches found in the file
+ * @property {number} source_files[].coverage[].branches.hits - total number of branches covered in the file
+ * @property {Object[]} source_files[].coverage[].branches.details - an array of points in the file that descibes the line and the amount of times it was covered
+ * @property {number} source_files[].coverage[].branches.details.line - the line number that is covered
+ * @property {number} source_files[].coverage[].branches.details.hit - how many times the line was hit
+ * @property {object} git - the state of the git config at the time of sending coverage
+ * @property {object} git.head - git head details
+ * @property {string} git.head.id - the commit id
+ * @property {string} git.head.committer_name - the committer name
+ * @property {string} git.head.committer_email - the committer email
+ * @property {string} git.head.message - the commit message
+ * @property {string} git.head.author_name - the author of the commit's name
+ * @property {string} git.head.author_email - the author of the commit's email
+ * @property {string} git.head.branch - the current working branch
+ * @property {Object[]} git.head.remotes - an array of all the remotes
+ * @property {string} git.head.remotes[].name - the name of the remote
+ * @property {string} git.head.remotes[].url - the url of the remote
  * @example
  *
  *{
@@ -61,9 +97,16 @@ const MongoClient = require('mongodb').MongoClient;
  *}
  **/
 module.exports = {
+    /**
+     * saves a coverage model the collection
+     * @function save
+     * @memberof Coverage
+     * @param  {Coverage} model - the coverage model
+     * @return {Promise} - a promise that resolves with the model after it was inserted
+     */
     save: (model) => {
       return new Promise((resolve, reject) => {
-          MongoClient.connect('mongodb://localhost:32768/node-coverage-server', (err, db) => {
+          MongoClient.connect('mongodb://localhost:32769/node-coverage-server', (err, db) => {
               if (err) return reject(err);
               const collection = db.collection('coverages');
               collection.insertOne(model, (err, result) => {
@@ -73,9 +116,16 @@ module.exports = {
           });
       });
     },
+    /**
+     * gets a repos coverage model or all coverage models
+     * @function get
+     * @memberof Coverage
+     * @param  {string=} repo - the url of the repo
+     * @return {Coverage[]} - a promise that resolves with the model after it was inserted
+     */
     get: (repo) => {
         return new Promise((resolve, reject) => {
-            MongoClient.connect('mongodb://localhost:32768/node-coverage-server', (err, db) => {
+            MongoClient.connect('mongodb://localhost:32769/node-coverage-server', (err, db) => {
                 if (err) return reject(err);
 
                 const docs = [];

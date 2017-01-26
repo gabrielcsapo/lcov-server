@@ -22,7 +22,7 @@
 <label for="nav-trigger" class="overlay"></label>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Coverage.html">Coverage</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Coverage.html">Coverage</a><ul class='methods'><li data-type='method'><a href="Coverage.html#.get">get</a></li><li data-type='method'><a href="Coverage.html#.save">save</a></li></ul></li></ul>
 </nav>
 
 <div id="main">
@@ -65,7 +65,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="coverage.js.html">coverage.js</a>, <a href="coverage.js.html#line5">line 5</a>
+        <a href="coverage.js.html">coverage.js</a>, <a href="coverage.js.html#line3">line 3</a>
     </li></ul></dd>
     
 
@@ -102,6 +102,1063 @@
 
 
 
+    <h5 class="subsection-title">Properties:</h5>
+
+    
+
+<table class="props">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>run_at</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>the iso date when the coverage was send to the server</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>repo_token</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>the token that references the project on the server</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>source_files</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Array.&lt;Object></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>a list of all the source files related to the coverage report</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>source_files[].name</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>the name of the file parsed</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>source_files[].source</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>the content of the file parsed into a string</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>source_files[].coverage</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Array.&lt;Object></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>an array of objects describing the state of the parsed file</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>source_files[].coverage[].lines</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">object</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>an object descibing the lines covered in the file</p>
+                <h6>Properties</h6>
+
+<table class="props">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>found</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>total number of lines found in the file</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>hits</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>total number of lines covered in the file</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>details</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Array.&lt;Object></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>an array of points in the file that descibes the line and the amount of times it was covered</p>
+                <h6>Properties</h6>
+
+<table class="props">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>line</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>the line number that is covered</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>hit</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>how many times the line was hit</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+            </td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+            </td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>source_files[].coverage[].functions</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">object</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>an object descibing the functions covered in the file</p>
+                <h6>Properties</h6>
+
+<table class="props">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>found</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>total number of functions found in the file</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>hits</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>total number of functions covered in the file</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>details</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Array.&lt;Object></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>an array of points in the file that descibes the line and the amount of times it was covered</p>
+                <h6>Properties</h6>
+
+<table class="props">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>line</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>the line number that is covered</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>hit</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>how many times the line was hit</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+            </td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+            </td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>source_files[].coverage[].branches</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">object</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>an object descibing the branches covered in the file</p>
+                <h6>Properties</h6>
+
+<table class="props">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>found</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>total number of branches found in the file</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>hits</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>total number of branches covered in the file</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>details</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Array.&lt;Object></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>an array of points in the file that descibes the line and the amount of times it was covered</p>
+                <h6>Properties</h6>
+
+<table class="props">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>line</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>the line number that is covered</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>hit</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>how many times the line was hit</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+            </td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+            </td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>git</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">object</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>the state of the git config at the time of sending coverage</p>
+                <h6>Properties</h6>
+
+<table class="props">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>head</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">object</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>git head details</p>
+                <h6>Properties</h6>
+
+<table class="props">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>id</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>the commit id</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>committer_name</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>the committer name</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>committer_email</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>the committer email</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>message</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>the commit message</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>author_name</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>the author of the commit's name</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>author_email</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>the author of the commit's email</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>branch</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>the current working branch</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>remotes</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Array.&lt;Object></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>an array of all the remotes</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>remotes[].name</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>the name of the remote</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>remotes[].url</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>the url of the remote</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+            </td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+            </td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
 
 
 
@@ -125,163 +1182,7 @@
               "details": [{
                   "line": 1,
                   "hit": 1
-              }, {
-                  "line": 2,
-                  "hit": 1
-              }, {
-                  "line": 7,
-                  "hit": 1
-              }, {
-                  "line": 8,
-                  "hit": 3
-              }, {
-                  "line": 10,
-                  "hit": 3
-              }, {
-                  "line": 11,
-                  "hit": 424
-              }, {
-                  "line": 12,
-                  "hit": 424
-              }, {
-                  "line": 13,
-                  "hit": 424
-              }, {
-                  "line": 16,
-                  "hit": 424
-              }, {
-                  "line": 18,
-                  "hit": 4
-              }, {
-                  "line": 19,
-                  "hit": 4
-              }, {
-                  "line": 21,
-                  "hit": 4
-              }, {
-                  "line": 22,
-                  "hit": 4
-              }, {
-                  "line": 24,
-                  "hit": 3
-              }, {
-                  "line": 25,
-                  "hit": 3
-              }, {
-                  "line": 27,
-                  "hit": 3
-              }, {
-                  "line": 28,
-                  "hit": 3
-              }, {
-                  "line": 30,
-                  "hit": 3
-              }, {
-                  "line": 31,
-                  "hit": 3
-              }, {
-                  "line": 33,
-                  "hit": 3
-              }, {
-                  "line": 34,
-                  "hit": 3
-              }, {
-                  "line": 36,
-                  "hit": 263
-              }, {
-                  "line": 37,
-                  "hit": 263
-              }, {
-                  "line": 41,
-                  "hit": 263
-              }, {
-                  "line": 43,
-                  "hit": 48
-              }, {
-                  "line": 44,
-                  "hit": 48
-              }, {
-                  "line": 48,
-                  "hit": 48
-              }, {
-                  "line": 50,
-                  "hit": 48
-              }, {
-                  "line": 51,
-                  "hit": 48
-              }, {
-                  "line": 52,
-                  "hit": 591
-              }, {
-                  "line": 53,
-                  "hit": 48
-              }, {
-                  "line": 54,
-                  "hit": 48
-              }, {
-                  "line": 57,
-                  "hit": 48
-              }, {
-                  "line": 59,
-                  "hit": 23
-              }, {
-                  "line": 60,
-                  "hit": 23
-              }, {
-                  "line": 66,
-                  "hit": 23
-              }, {
-                  "line": 68,
-                  "hit": 2
-              }, {
-                  "line": 69,
-                  "hit": 2
-              }, {
-                  "line": 71,
-                  "hit": 2
-              }, {
-                  "line": 72,
-                  "hit": 2
-              }, {
-                  "line": 75,
-                  "hit": 424
-              }, {
-                  "line": 76,
-                  "hit": 7
-              }, {
-                  "line": 77,
-                  "hit": 7
-              }, {
-                  "line": 97,
-                  "hit": 3
-              }, {
-                  "line": 99,
-                  "hit": 3
-              }, {
-                  "line": 100,
-                  "hit": 2
-              }, {
-                  "line": 102,
-                  "hit": 1
-              }, {
-                  "line": 106,
-                  "hit": 1
-              }, {
-                  "line": 107,
-                  "hit": 3
-              }, {
-                  "line": 108,
-                  "hit": 3
-              }, {
-                  "line": 109,
-                  "hit": 2
-              }, {
-                  "line": 111,
-                  "hit": 1
-              }, {
-                  "line": 112,
-                  "hit": 1
-              }]
+              }, {...}]
           },
           "functions": {
               "hit": 6,
@@ -290,27 +1191,7 @@
                   "name": "(anonymous_0)",
                   "line": 7,
                   "hit": 3
-              }, {
-                  "name": "(anonymous_1)",
-                  "line": 10,
-                  "hit": 424
-              }, {
-                  "name": "(anonymous_2)",
-                  "line": 51,
-                  "hit": 591
-              }, {
-                  "name": "(anonymous_3)",
-                  "line": 106,
-                  "hit": 3
-              }, {
-                  "name": "(anonymous_4)",
-                  "line": 107,
-                  "hit": 3
-              }, {
-                  "name": "(anonymous_5)",
-                  "line": 111,
-                  "hit": 1
-              }]
+              }, {...}]
           },
           "branches": {
               "hit": 24,
@@ -320,124 +1201,10 @@
                   "block": 0,
                   "branch": 0,
                   "taken": 4
-              }, {
-                  "line": 16,
-                  "block": 0,
-                  "branch": 1,
-                  "taken": 4
-              }, {
-                  "line": 16,
-                  "block": 0,
-                  "branch": 2,
-                  "taken": 3
-              }, {
-                  "line": 16,
-                  "block": 0,
-                  "branch": 3,
-                  "taken": 3
-              }, {
-                  "line": 16,
-                  "block": 0,
-                  "branch": 4,
-                  "taken": 3
-              }, {
-                  "line": 16,
-                  "block": 0,
-                  "branch": 5,
-                  "taken": 3
-              }, {
-                  "line": 16,
-                  "block": 0,
-                  "branch": 6,
-                  "taken": 263
-              }, {
-                  "line": 16,
-                  "block": 0,
-                  "branch": 7,
-                  "taken": 48
-              }, {
-                  "line": 16,
-                  "block": 0,
-                  "branch": 8,
-                  "taken": 48
-              }, {
-                  "line": 16,
-                  "block": 0,
-                  "branch": 9,
-                  "taken": 23
-              }, {
-                  "line": 16,
-                  "block": 0,
-                  "branch": 10,
-                  "taken": 2
-              }, {
-                  "line": 16,
-                  "block": 0,
-                  "branch": 11,
-                  "taken": 2
-              }, {
-                  "line": 52,
-                  "block": 1,
-                  "branch": 0,
-                  "taken": 48
-              }, {
-                  "line": 52,
-                  "block": 1,
-                  "branch": 1,
-                  "taken": 543
-              }, {
-                  "line": 52,
-                  "block": 2,
-                  "branch": 0,
-                  "taken": 591
-              }, {
-                  "line": 52,
-                  "block": 2,
-                  "branch": 1,
-                  "taken": 53
-              }, {
-                  "line": 64,
-                  "block": 3,
-                  "branch": 0,
-                  "taken": 1
-              }, {
-                  "line": 64,
-                  "block": 3,
-                  "branch": 1,
-                  "taken": 22
-              }, {
-                  "line": 75,
-                  "block": 4,
-                  "branch": 0,
-                  "taken": 7
-              }, {
-                  "line": 75,
-                  "block": 4,
-                  "branch": 1,
-                  "taken": 417
-              }, {
-                  "line": 99,
-                  "block": 5,
-                  "branch": 0,
-                  "taken": 2
-              }, {
-                  "line": 99,
-                  "block": 5,
-                  "branch": 1,
-                  "taken": 1
-              }, {
-                  "line": 108,
-                  "block": 6,
-                  "branch": 0,
-                  "taken": 2
-              }, {
-                  "line": 108,
-                  "block": 6,
-                  "branch": 1,
-                  "taken": 1
-              }]
+              }, {...}]
           },
           "title": "",
+          "source": "",
           "file": "/Users/gacsapo/Documents/temp/node-coverage-server/util/lcov.js"
       }]
   }],
@@ -493,6 +1260,336 @@
     
 
     
+        <h3 class="subsection-title">Methods</h3>
+
+        
+            
+
+    
+
+    <h4 class="name" id=".get"><span class="type-signature">(static) </span>get<span class="signature">(repo<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {Array.&lt;<a href="Coverage.html">Coverage</a>>}</span></h4>
+
+    
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="coverage.js.html">coverage.js</a>, <a href="coverage.js.html#line119">line 119</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description">
+    <p>gets a repos coverage model or all coverage models</p>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+        <th>Attributes</th>
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>repo</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>the url of the repo</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    <ul>
+<li>a promise that resolves with the model after it was inserted</li>
+</ul>
+</div>
+
+
+
+<dl class="param-type">
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Array.&lt;<a href="Coverage.html">Coverage</a>></span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+        
+            
+
+    
+
+    <h4 class="name" id=".save"><span class="type-signature">(static) </span>save<span class="signature">(model)</span><span class="type-signature"> &rarr; {Promise}</span></h4>
+
+    
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="coverage.js.html">coverage.js</a>, <a href="coverage.js.html#line100">line 100</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description">
+    <p>saves a coverage model the collection</p>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>model</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="Coverage.html">Coverage</a></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>the coverage model</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    <ul>
+<li>a promise that resolves with the model after it was inserted</li>
+</ul>
+</div>
+
+
+
+<dl class="param-type">
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Promise</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+        
+    
 
     
 
@@ -509,7 +1606,7 @@
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.3</a> on Wed Jan 18 2017 10:39:15 GMT-0800 (PST) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.3</a> on Wed Jan 25 2017 17:59:39 GMT-0800 (PST) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
 </footer>
 
 <script>prettyPrint();</script>
