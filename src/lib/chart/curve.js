@@ -1,6 +1,6 @@
 import React from 'react';
 
-const Curve = React.createClass({  
+const Curve = React.createClass({
 	render: function () {
 		let { points, dataSetIndex, width, height, padding, lines, area, dots, color, stroke, updating } = this.props;
 		let path = [];
