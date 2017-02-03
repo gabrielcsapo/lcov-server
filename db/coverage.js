@@ -1,4 +1,5 @@
 const MongoClient = require('mongodb').MongoClient;
+const MONGO_URL = process.env.MONGO_URL;
 
 /**
  * @class Coverage
@@ -106,7 +107,7 @@ module.exports = {
      */
     save: (model) => {
       return new Promise((resolve, reject) => {
-          MongoClient.connect('mongodb://localhost:32768/node-coverage-server', (err, db) => {
+          MongoClient.connect(MONGO_URL, (err, db) => {
               if (err) return reject(err);
               const collection = db.collection('coverages');
               collection.insertOne(model, (err, result) => {
@@ -125,7 +126,7 @@ module.exports = {
      */
     get: (repo) => {
         return new Promise((resolve, reject) => {
-            MongoClient.connect('mongodb://localhost:32768/node-coverage-server', (err, db) => {
+            MongoClient.connect(MONGO_URL, (err, db) => {
                 if (err) return reject(err);
 
                 const docs = [];

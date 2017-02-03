@@ -9,10 +9,12 @@ test('git', (t) => {
     process.chdir(__dirname);
     git.parse()
       .then((data) => {
+        t.ok(data !== undefined);
         t.fail('should not return data');
         t.end();
       })
       .catch((err) => {
+        t.ok(typeof err !== 'undefined', 'error is not undefined');
         t.ok(err === 'directory does not contain git');
         t.end();
       });
@@ -28,6 +30,7 @@ test('git', (t) => {
         t.end();
       })
       .catch((err) => {
+        t.ok(typeof err !== 'undefined', 'error is not undefined');
         t.fail('should not return an error');
         t.end();
       });

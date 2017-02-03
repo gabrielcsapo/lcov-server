@@ -9,12 +9,22 @@ class Coverages extends React.Component {
     super(props);
     this.state = {
       coverages: [],
-      error: ''
+      error: '',
+      title: ''
     };
   }
 
   componentDidMount() {
-    fetch('/api/v1/coverage')
+    const { service, owner } = this.props.params;
+    let url = '/api/v1/coverage'; // Fetches all the coverage saved on the server
+    // filters the coverages to only show the ones that are based on this service and owner
+    if(service && owner) {
+      url = `/api/v1/coverage/${service}/${owner}`
+      this.setState({
+        title: `showing coverage reports for ${owner} on ${service}`
+      });
+    }
+    fetch(url)
       .then((response) => {
         return response.json();
       }).then((coverages) => {
@@ -22,6 +32,7 @@ class Coverages extends React.Component {
           coverages: coverages
         });
       }).catch((ex) => {
+        console.log(ex);
         this.setState({
           error: ex.toString()
         });
@@ -29,16 +40,23 @@ class Coverages extends React.Component {
   }
 
   render() {
-    const { coverages, error } = this.state;
+    const { coverages, title, error } = this.state;
+
     if(error) {
-        console.log(error);
         return (<div className="text-center" style={{width:"100%",position: "absolute",top: "50%",transform: "translateY(-50%)"}}>
           Oh no 🙈 something happened...
         </div>);
     } else if(coverages.length > 0) {
       return (<div>
+        { title ?
+          <div className="text-center">
+            <br/>
+            <i> { title } </i>
+          </div>
+        : null}
         {coverages.map((coverage) => {
             const url = coverage._id;
+            const urlParts = url.split('/');
             const data = [[], [], []];
             coverage.history.forEach(function(history) {
               const { lines, branches, functions } = history.source_files[0];
@@ -55,8 +73,9 @@ class Coverages extends React.Component {
             };
 
             const percentage = parseInt(data[0][data[0].length - 1]);
-            const owner = url.split('/')[url.split('/').length - 2];
-            const repo = url.split('/')[url.split('/').length - 1].replace('.git', '');
+            const service = urlParts[urlParts.length - 3].replace('.org', '').replace('.com', '');
+            const owner = urlParts[urlParts.length - 2];
+            const repo = urlParts[urlParts.length - 1].replace('.git', '');
             const { message, commit, branch, author_name, author_date } = coverage.history[coverage.history.length - 1].git;
             const color = percentage >= 90 ? '#008a44' : percentage <= 89 && percentage >= 80 ? '#cfaf2a' : '#c75151';
             const commitUrl = url.replace('.git', `/commit/${commit}`);
@@ -64,7 +83,7 @@ class Coverages extends React.Component {
             return (<div style={{marginBottom: '50px'}}>
                <div style={{paddingLeft: '2.5%', paddingRight: '2.5%', display: 'inline-block', width: '95%'}}>
                 <div style={{float: 'left', textAlign: 'left'}}>
-                    <h3> {owner} / <a href={`/coverage/${encodeURIComponent(url).replace(/\./g, '%2E')}`}>{repo}</a> </h3>
+                    <h3> <a href={`/coverage/${service}/${owner}/`}>{owner}</a> / <a href={`/coverage/${service}/${owner}/${repo}`}>{repo}</a> </h3>
                     <p>
                       <a href={commitUrl} target="_blank"> {message} </a>
                       on branch

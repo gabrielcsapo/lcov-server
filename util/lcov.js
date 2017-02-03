@@ -111,18 +111,18 @@ const lcov = {
                   reject(err);
                 }
                 return lcov.walkFile(str, function(err, result) {
-                  if(err) return reject(err)
+                  if(err) return reject(err);
                   resolve(result);
                 });
             });
           } else {
             return lcov.walkFile(file, function(err, result) {
-              if(err) return reject(err)
+              if(err) return reject(err);
               resolve(result);
             });
           }
     });
   }
-}
+};
 
 module.exports = lcov;

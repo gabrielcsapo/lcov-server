@@ -1,5 +1,5 @@
 import React from 'react';
-import { Router, Route, Link, browserHistory } from 'react-router';
+import { Router, Route, browserHistory } from 'react-router';
 
 import Layout from './layout/layout';
 import Main from './main/main';
@@ -13,8 +13,9 @@ export default (
     <Route component={Layout}>
       <Route path="/" component={Main} />
       <Route path="/coverage" component={Coverages} />
-      <Route path="/coverage/:repoLink" component={Coverage} />
-      <Route path="/coverage/:repoLink/file/:fileName" component={CoverageFile} />
+      <Route path="/coverage/:service/:owner/" component={Coverages} />
+      <Route path="/coverage/:service/:owner/:repo" component={Coverage} />
+      <Route path="/coverage/:service/:owner/:repo/:file" component={CoverageFile} />
       <Route path="*" component={Error} />
     </Route>
   </Router>

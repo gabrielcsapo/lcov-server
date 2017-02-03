@@ -1,31 +1,43 @@
 import React from 'react';
 
 const Curve = React.createClass({
+	propTypes: {
+    points: React.PropTypes.object,
+    width: React.PropTypes.number,
+    height: React.PropTypes.number,
+    padding: React.PropTypes.number,
+    lines: React.PropTypes.array,
+    area: React.PropTypes.boolean,
+    color: React.PropTypes.string,
+    stroke: React.PropTypes.number,
+    updating: React.PropTypes.updating
+	},
+
 	render: function () {
-		let { points, dataSetIndex, width, height, padding, lines, area, dots, color, stroke, updating } = this.props;
+		let { points, width, height, padding, lines, area, color, stroke, updating } = this.props;
 		let path = [];
 		let areaPath = [];
 		let style = {	pointerEvents: 'none' };
 		let fn = lines === true ? 'L' : 'R';
 
-		height += padding
+		height += padding;
 
 		if (updating === true) {
-			style['opacity'] = 0
-			style['transition'] = 'none'
+      style['opacity'] = 0;
+      style['transition'] = 'none';
 		}
 
 		path = points.map((p, pi) => (pi === 0  ? '' : (pi === 1 ? fn : '')) + p[0] + ',' + p[1]);
-		path = 'M' + path.join(' ')
+		path = 'M' + path.join(' ');
 
 		if (lines !== true) {
-			path = parsePath(path, height).join(' ')
+			path = parsePath(path, height).join(' ');
 		}
 
 		if (area === true) {
-			areaPath = path.replace('M', 'L')
-			areaPath = 'M' + padding + ',' + height + areaPath
-			areaPath += 'L' + (width + padding) + ',' + height
+			areaPath = path.replace('M', 'L');
+			areaPath = 'M' + padding + ',' + height + areaPath;
+			areaPath += 'L' + (width + padding) + ',' + height;
 		}
 
 		return (
@@ -33,32 +45,18 @@ const Curve = React.createClass({
 				{ area === true ? <path d={ areaPath } fill={ color } fillOpacity=".05" /> : null }
 				<path d={ path } fill="none" stroke={ color } strokeWidth={ stroke } />
 			</g>
-		)
+		);
 	}
-})
-
-Curve.propTypes = {
-  points: React.PropTypes.object,
-  dataSetIndex: React.PropTypes.number,
-  width: React.PropTypes.number,
-  height: React.PropTypes.number,
-  padding: React.PropTypes.number,
-  lines: React.PropTypes.array,
-  area: React.PropTypes.boolean,
-  dots: React.PropTypes.boolean,
-  color: React.PropTypes.string,
-  stroke: React.PropTypes.number,
-  updating: React.PropTypes.updating
-};
+});
 
 module.exports = {
   Curve
-}
+};
 
 // Catmull-Rom to Bezier found here: http://jsdo.it/ynakajima/catmullrom2bezier
 // Whoever wrote this is AWESOME! Thank you!
 function parsePath(d, maxHeight) {
-  var pathArray = [], lastX = '', lastY = ''
+  var pathArray = [], lastX = '', lastY = '';
 
   if ( -1 != d.search(/[rR]/) ) {
     // no need to redraw the path if no Catmull-Rom segments are found
@@ -70,7 +68,7 @@ function parsePath(d, maxHeight) {
 
       // make command code lower case, for easier matching
       // NOTE: this code assumes absolution coordinates, and doesn't account for relative command coordinates
-      var command = segment.toLowerCase()
+      var command = segment.toLowerCase();
       if ( -1 != segment.search(/[A-Za-z]/) ) {
         var val = "";
         if ( "z" != command ) {
@@ -107,7 +105,7 @@ function parsePath(d, maxHeight) {
     // recombine path segments and set new path description in DOM
   }
 
-	return pathArray
+	return pathArray;
 }
 
 function catmullRom2bezier( points, maxHeight ) {
@@ -147,11 +145,11 @@ function catmullRom2bezier( points, maxHeight ) {
 
 			bp = bp.map(_ => {
 				if (_.y > maxHeight) {
-					_.y = maxHeight
+					_.y = maxHeight;
 				}
 
-				return _
-			})
+				return _;
+			});
 
     d += "C" + bp[1].x + "," + bp[1].y + " " + bp[2].x + "," + bp[2].y + " " + bp[3].x + "," + bp[3].y + " ";
   }

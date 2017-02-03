@@ -2,13 +2,13 @@ import React from 'react';
 import Point from './point';
 
 const Points = React.createClass({
-  propTypes:  {
+  propTypes: {
     points:  React.PropTypes.object,
     dataSetIndex: React.PropTypes.number,
     showTooltip: React.PropTypes.func,
     hideTooltip: React.PropTypes.func,
     radius: React.PropTypes.number,
-    stroke: React.PropTypes.number,
+    stroke: React.PropTypes.string,
     label: React.PropTypes.string,
     dots: React.PropTypes.boolean,
     hideLabels: React.PropTypes.boolean
@@ -20,7 +20,7 @@ const Points = React.createClass({
     showTooltip: () => {},
     hideTooltip: () => {},
     radius: 0,
-    stroke: 0,
+    stroke: '#fff',
     label: '',
     dots: true,
     hideLabels: false
@@ -39,7 +39,7 @@ const Points = React.createClass({
 				{ dots === true ?
 				points.map((p, pi) =>
 					<Point
-				 		point={ p }
+            point={ p }
 						dataSetIndex={ dataSetIndex }
 						showTooltip={ showTooltip }
 						hideTooltip={ hideTooltip }
@@ -54,7 +54,7 @@ const Points = React.createClass({
 					<text className="LineChart--label" x={ x + 5 } y={ y + 2 } fill={ color }>{ label }</text>
 				: null }
 			</g>
-		)
+		);
 	}
 });
 

@@ -1,7 +1,7 @@
 import 'whatwg-fetch';
 
 import React from 'react';
-import Chart from '../lib/chart';
+import { LineChart } from '../lib/chart';
 
 class CoverageChart extends React.Component {
   render() {
@@ -21,7 +21,7 @@ class CoverageChart extends React.Component {
     };
 
     return (
-      <Chart {...opt} />
+      <LineChart {...opt} />
     )
   }
 }

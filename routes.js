@@ -61,20 +61,8 @@ module.exports = {
     }
   },
   '/api/v1/coverage': (req, res) => {
-    Coverage.get().then((coverages) => {
-      res.writeHead(200, { 'Content-Type': 'application/json; charset=utf-8'} );
-      res.end(JSON.stringify(coverages));
-    }).catch(function(err) {
-      res.writeHead(500, { 'Content-Type': 'application/json; charset=utf-8'} );
-      res.end(JSON.stringify({error: err}));
-    });
-  },
-  '/api/v1/coverage/:repo': (req, res) => {
-      let { repo } = req.params;
-      // the repo is going to be uri encoded
-      repo = decodeURIComponent(repo);
-
-      Coverage.get(repo).then((coverages) => {
+    Coverage.get()
+      .then((coverages) => {
         res.writeHead(200, { 'Content-Type': 'application/json; charset=utf-8'} );
         res.end(JSON.stringify(coverages));
       }).catch(function(err) {
@@ -82,28 +70,56 @@ module.exports = {
         res.end(JSON.stringify({error: err}));
       });
   },
-  '/:repo.svg': (req, res) => {
-    let { repo } = req.params;
-    // the repo is going to be uri encoded
-    repo = decodeURIComponent(repo);
-    Coverage.get(repo).then((coverages) => {
-      const coverage = coverages[0];
-      const { history } = coverage;
-      const lastRun = history[history.length - 1];
-      const { lines } = lastRun.source_files[0];
-      const percentage = parseInt((lines.hit / lines.found) * 100);
-      Badge({text: ['coverage', `${percentage}%`] }, function(err, badge) {
-          if(err) { throw new Error(err); }
-          res.writeHead(200, { 'Content-Type': 'image/svg+xml; charset=utf-8'} );
-          res.end(badge);
-      });
-    }).catch(function() {
-        Badge({ color: { right: "#b63b3b" }, text: ['coverage', 'not found'] }, function(err, badge) {
+  '/api/v1/coverage/:service/:owner': (req, res) => {
+      const { service, owner } = req.params;
+      const url = `https://${service}.com/${owner}`;
+
+      Coverage.get(new RegExp(url))
+        .then((coverages) => {
+          res.writeHead(200, { 'Content-Type': 'application/json; charset=utf-8'} );
+          res.end(JSON.stringify(coverages));
+        }).catch(function(err) {
+          res.writeHead(500, { 'Content-Type': 'application/json; charset=utf-8'} );
+          res.end(JSON.stringify({error: err}));
+        });
+  },
+  '/api/v1/coverage/:repo': (req, res) => {
+      let { repo } = req.params;
+      // the repo is going to be uri encoded
+      repo = decodeURIComponent(repo);
+
+      Coverage.get(repo)
+        .then((coverages) => {
+          res.writeHead(200, { 'Content-Type': 'application/json; charset=utf-8'} );
+          res.end(JSON.stringify(coverages));
+        }).catch(function(err) {
+          res.writeHead(500, { 'Content-Type': 'application/json; charset=utf-8'} );
+          res.end(JSON.stringify({error: err}));
+        });
+  },
+  '/badge/:service/:owner/:repo.svg': (req, res) => {
+    const { service, owner, repo } = req.params;
+    const url = `https://${service}.com/${owner}/${repo}.git`;
+
+    Coverage.get(url)
+      .then((coverages) => {
+        const coverage = coverages[0];
+        const { history } = coverage;
+        const lastRun = history[history.length - 1];
+        const { lines } = lastRun.source_files[0];
+        const percentage = parseInt((lines.hit / lines.found) * 100);
+        Badge({text: ['coverage', `${percentage}%`] }, function(err, badge) {
             if(err) { throw new Error(err); }
             res.writeHead(200, { 'Content-Type': 'image/svg+xml; charset=utf-8'} );
             res.end(badge);
         });
-    });
+      }).catch(function() {
+          Badge({ color: { right: "#b63b3b" }, text: ['coverage', 'not found'] }, function(err, badge) {
+              if(err) { throw new Error(err); }
+              res.writeHead(200, { 'Content-Type': 'image/svg+xml; charset=utf-8'} );
+              res.end(badge);
+          });
+      });
   },
   '/coverage': (req, res) => {
     res.writeHead(200, { 'Content-Type': 'text/html; charset=utf-8'} );

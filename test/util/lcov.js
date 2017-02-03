@@ -13,6 +13,7 @@ test('lcov', function(t) {
   t.test('should return error on bad file parsing', function(t) {
     lcov.parse('foobar')
       .then(function(data) {
+        t.ok(data !== undefined);
         t.fail('should not return error');
         t.end();
       }).catch(function(err) {
@@ -47,6 +48,7 @@ test('lcov', function(t) {
         t.deepEqual(data, expected, 'data is correctly formed');
         t.end();
       }).catch(function(err) {
+        t.ok(typeof err !== 'undefined', 'error is not undefined');
         t.fail('should not return error');
         t.end();
       });
@@ -1210,6 +1212,7 @@ test('lcov', function(t) {
         t.deepEqual(data, expected, 'data is correctly formed');
         t.end();
       }).catch(function(err) {
+        t.ok(typeof err !== 'undefined', 'error is not undefined');
         t.fail('should not return error');
         t.end();
       });

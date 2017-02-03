@@ -14,6 +14,7 @@
   },
   "author": "Gabriel J. Csapo <gabecsapo@gmail.com>",
   "bin": {
+    "node-coverage-cli": "./bin/node-coverage-cli.js",
     "node-coverage-server": "./bin/node-coverage-server.js"
   },
   "license": "ISC",
@@ -24,6 +25,7 @@
     "babel-loader": "^6.2.1",
     "babel-preset-es2015": "^6.3.13",
     "babel-preset-react": "^6.3.13",
+    "commander": "^2.9.0",
     "css-loader": "^0.26.1",
     "docdash": "^0.4.0",
     "eslint": "^3.13.1",

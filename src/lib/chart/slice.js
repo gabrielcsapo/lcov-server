@@ -1,6 +1,40 @@
 import React from 'react';
 
 var Slice = React.createClass({
+  propTypes: {
+    fill: React.PropTypes.string,
+    stroke: React.PropTypes.number,
+    strokeWidth: React.PropTypes.number,
+    showLabel: React.PropTypes.boolean,
+    percent: React.PropTypes.boolean,
+    percentValue: React.PropTypes.number,
+    value: React.PropTypes.number,
+    radius: React.PropTypes.number,
+    hole: React.PropTypes.number,
+    angle: React.PropTypes.angle,
+    startAngle: React.PropTypes.number,
+    trueHole: React.PropTypes.boolean,
+    showTooltip: React.PropTypes.func,
+    hideTooltip: React.PropTypes.func
+  },
+
+  defaultProps: {
+    fill: '#fff',
+    stroke: 3,
+    strokeWidth: 3,
+    showLabel: true,
+    percent: true,
+    percentValue: 0,
+    value: 0,
+    radius: 0,
+    hole: 0,
+    angle: 0,
+    startAngle: 0,
+    trueHole: true,
+    showTooltip: () => {},
+    hideTooltip: () => {}
+  },
+
 	getInitialState: function () {
 		return {
 			path: '',
@@ -9,15 +43,15 @@ var Slice = React.createClass({
 		};
 	},
 	getAnglePoint(startAngle, endAngle, radius, x, y) {
-    	var x1, y1, x2, y2;
+		var x1, y1, x2, y2;
 
-    	x1 = x + radius * Math.cos(Math.PI * startAngle / 180);
-    	y1 = y + radius * Math.sin(Math.PI * startAngle / 180);
-    	x2 = x + radius * Math.cos(Math.PI * endAngle / 180);
-    	y2 = y + radius * Math.sin(Math.PI * endAngle / 180);
+		x1 = x + radius * Math.cos(Math.PI * startAngle / 180);
+		y1 = y + radius * Math.sin(Math.PI * startAngle / 180);
+		x2 = x + radius * Math.cos(Math.PI * endAngle / 180);
+		y2 = y + radius * Math.sin(Math.PI * endAngle / 180);
 
-    	return { x1, y1, x2, y2 };
-    },
+		return { x1, y1, x2, y2 };
+	},
 	componentWillReceiveProps: function () {
 		this.setState({ path: '' });
 		this.draw();
@@ -54,8 +88,11 @@ var Slice = React.createClass({
 			});
 		}
 	},
-    mouseEnter() {
-		this.props.showTooltip([this.state.x, this.state.y, this.props.value, this.props.percent ? this.props.percentValue + '%' : this.props.value, this.props.fill])
+  mouseEnter() {
+		const { x, y } = this.state;
+		const { value, percent, percentValue, fill } = this.props;
+
+		this.props.showTooltip([x, y, value, percent ? percentValue + '%' : value, fill]);
 	},
 	mouseLeave() {
 		this.props.hideTooltip();
@@ -70,38 +107,18 @@ var Slice = React.createClass({
 					fill={ fill }
 					stroke={ stroke }
 					strokeWidth={ strokeWidth }
-                    onMouseEnter={ this.mouseEnter }
-                    onMouseLeave={ this.mouseLeave }
-					 />
-    				{ showLabel && percentValue > 5 ?
-    					<text x={ x } y={ y } fill="#fff" textAnchor="middle">
-    						{ percent ? percentValue + '%' : value }
-    					</text>
-    				: null }
+          onMouseEnter={ this.mouseEnter }
+          onMouseLeave={ this.mouseLeave }
+        />
+        { showLabel && percentValue > 5 ?
+          <text x={ x } y={ y } fill="#fff" textAnchor="middle">
+            { percent ? percentValue + '%' : value }
+          </text>
+        : null }
 			</g>
 		);
 	}
 });
-
-Slice.propTypes = {
-	fill: React.PropTypes.string,
-	stoke: React.PropTypes.number,
-	strokeWidth: React.PropTypes.number,
-	showLabel: React.PropTypes.boolean,
-	percent: React.PropTypes.boolean,
-	percentValue: React.PropTypes.number,
-	value: React.PropTypes.number
-};
-
-Slice.defaultProps = {
-	fill: '#fff',
-	stoke: 3,
-	strokeWidth: 3,
-	showLabel: true,
-	percent: true,
-	percentValue: 0,
-	value: 0
-};
 
 module.exports = {
     Slice

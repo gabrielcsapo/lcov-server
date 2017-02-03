@@ -1,6 +1,6 @@
 import React from 'react';
 import { storiesOf } from '@kadira/storybook';
-import { withKnobs, color, text, boolean, number, array } from '@kadira/storybook-addon-knobs';
+import { withKnobs, color, boolean, number, array } from '@kadira/storybook-addon-knobs';
 
 import { LineChart, PieChart } from '../src/lib/chart';
 
@@ -12,11 +12,6 @@ const opt = {
   colors: ['#7B43A1', '#F2317A', '#FF9824', '#58CF6C'],
   labels: ['Cats', 'Dogs', 'Ducks', 'Cows']
 };
-
-const handleChange = function(e) {
-  opt[e.target.name] = e.target.value;
-
-}
 
 const lineChart = storiesOf('LineChart', module);
 lineChart.addDecorator(withKnobs);
@@ -62,45 +57,45 @@ lineChart
         stroke={stroke}
         radius={radius}
     />);
-});
+  });
 
 const pieChart = storiesOf('PieChart', module);
 pieChart.addDecorator(withKnobs);
 pieChart
-    .add('with basic options', () => {
-        return (<PieChart
-            data={ [5, 12, 8, 3, 10] }
-            radius={ 150 }
-            hole={ 50 }
-            colors={ ['#43A19E', '#7B43A1', '#F2317A', '#FF9824', '#58CF6C'] }
-            labels={ true }
-            percent={ true }
-            strokeWidth={ 3 }
-            stroke={ '#fff' }
-        />)
-    })
-    .add('with custom options', () => {
-        let data = array('data', [5, 12, 8, 3, 10]);
-        const radius = number('radius', 150)
-        const hole = number('hole', 50);
-        const colors = array('colors', ['#43A19E', '#7B43A1', '#F2317A', '#FF9824', '#58CF6C']);
-        const labels = boolean('labels', true);
-        const percent = boolean('percent', true);
-        const strokeWidth = number('strokeWidth', 3);
-        const stroke = color('stroke', '#fff');
+  .add('with basic options', () => {
+      return (<PieChart
+          data={ [5, 12, 8, 3, 10] }
+          radius={ 150 }
+          hole={ 50 }
+          colors={ ['#43A19E', '#7B43A1', '#F2317A', '#FF9824', '#58CF6C'] }
+          labels={ true }
+          percent={ true }
+          strokeWidth={ 3 }
+          stroke={ '#fff' }
+      />);
+  })
+  .add('with custom options', () => {
+      let data = array('data', [5, 12, 8, 3, 10]);
+      const radius = number('radius', 150);
+      const hole = number('hole', 50);
+      const colors = array('colors', ['#43A19E', '#7B43A1', '#F2317A', '#FF9824', '#58CF6C']);
+      const labels = boolean('labels', true);
+      const percent = boolean('percent', true);
+      const strokeWidth = number('strokeWidth', 3);
+      const stroke = color('stroke', '#fff');
 
-        data = data.map((d) => {
-            return parseInt(d);
-        });
-        
-        return (<PieChart
-            data={ data }
-            radius={ radius }
-            hole={ hole }
-            colors={ colors }
-            labels={ labels }
-            percent={ percent }
-            strokeWidth={ strokeWidth }
-            stroke={ stroke }
-        />)
-    })
+      data = data.map((d) => {
+          return parseInt(d);
+      });
+
+      return (<PieChart
+          data={ data }
+          radius={ radius }
+          hole={ hole }
+          colors={ colors }
+          labels={ labels }
+          percent={ percent }
+          strokeWidth={ strokeWidth }
+          stroke={ stroke }
+      />);
+  });

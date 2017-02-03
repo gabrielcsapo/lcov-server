@@ -13,41 +13,46 @@ class Coverage extends React.Component {
   }
 
   componentDidMount() {
-     const url = this.props.params.repoLink;
-     fetch(`/api/v1/coverage/${encodeURIComponent(url).replace(/\./g, '%2E')}`)
-       .then((response) => {
-         return response.json();
-       }).then((project) => {
-         this.setState({
-           project: project[0]
-         });
-       }).catch((ex) => {
-         this.setState({
-           error: ex.toString()
-         });
+    const { service, owner, repo } = this.props.params;
+    const url = `https://${service}.com/${owner}/${repo}.git`;
+
+    fetch(`/api/v1/coverage/${encodeURIComponent(url).replace(/\./g, '%2E')}`)
+     .then((response) => {
+       return response.json();
+     }).then((project) => {
+       this.setState({
+         project: project[0]
        });
+     }).catch((ex) => {
+       this.setState({
+         error: ex.toString()
+       });
+     });
   }
 
   render() {
       const { project, error } = this.state;
-      const { fileName } = this.props.params;
+      const { service, owner, repo } = this.props.params;
+      const file = this.props.params.file.replace('$2E', '.');
+
+      const url = `https://${service}.com/${owner}/${repo}.git`;
 
       if(error) {
-          console.log(error);
           return (<div className="text-center" style={{width:"100%",position: "absolute",top: "50%",transform: "translateY(-50%)"}}>
             Oh no 🙈 something happened...
           </div>);
       } else if(project) {
           const lineMap = {};
-          const url = this.props.params.repoLink;
           const history = project.history;
-          const file = history[0].source_files.filter((f) => {
-              return f.title === fileName;
+          const source = history[0].source_files.filter((f) => {
+            console.log(f);
+            console.log(file);
+              return f.title === file;
           })[0];
           const data = [[],[],[]];
           project.history.forEach((h) => {
             h.source_files.forEach(function(f) {
-              if(f.title === fileName) {
+              if(f.title === file) {
                 const { lines, branches, functions } = f;
                 const linePercentage = parseInt((lines.hit / lines.found) * 100);
                 const branchPercentage = parseInt((branches.hit / branches.found) * 100);
@@ -59,16 +64,14 @@ class Coverage extends React.Component {
             });
           });
 
-          file.lines.details.forEach(function(l) {
+          const { lines, branches, functions } = source;
+          lines.details.forEach(function(l) {
               lineMap[l.line - 1] = l.hit;
           });
-          const { lines, branches, functions } = file;
           const linePercentage = parseInt((lines.hit / lines.found) * 100);
           const branchPercentage = parseInt((branches.hit / branches.found) * 100);
           const functionPercentage = parseInt((functions.hit / functions.found) * 100);
 
-          const owner = url.split('/')[url.split('/').length - 2];
-          const repo = url.split('/')[url.split('/').length - 1].replace('.git', '');
           const { message, commit, branch, author_name, author_date } = history[0].git;
           const color = linePercentage >= 90 ? '#008a44' : linePercentage <= 89 && linePercentage >= 80 ? '#cfaf2a' : '#c75151';
           const commitUrl = url.replace('.git', `/commit/${commit}`);
@@ -77,7 +80,7 @@ class Coverage extends React.Component {
               <div style={{margin: '5%'}}>
                   <div style={{display: 'inline-block', 'width': '100%'}}>
                     <div style={{float: 'left', textAlign: 'left'}}>
-                        <h3> {owner} / <a href={`/coverage/${encodeURIComponent(url).replace(/\./g, '%2E')}`}>{repo}</a> / <a href={`/coverage/${encodeURIComponent(url).replace(/\./g, '%2E')}/file/${encodeURIComponent(fileName).replace(/\./g, '%2E')}`}>{fileName}</a> </h3>
+                        <h3> <a href={`/coverage/${service}/${owner}/`}>{owner}</a> / <a href={`/coverage/${service}/${owner}/${repo}`}>{repo}</a> / <a href={`/coverage/${service}/${owner}/${repo}/${encodeURIComponent(file).replace(/\./g, '$2E')}`}>{file}</a> </h3>
                         <p>
                           <a href={commitUrl} target="_blank"> {message} </a>
                           on branch
@@ -117,7 +120,7 @@ class Coverage extends React.Component {
                 <hr/>
                 <br/>
                 <ul className="list" style={{width:'75%', margin:'0 auto'}}>
-                    {file.source.replace(/ /g, '\u00a0').split('\n').map(function(l, i){
+                    {source.source.replace(/ /g, '\u00a0').split('\n').map(function(l, i){
                         const hit = lineMap[i];
                         if(l.length > 0) {
                             return (<li className="list-item">
@@ -128,8 +131,6 @@ class Coverage extends React.Component {
                                 <div className="badge badge-danger">0</div>
                               }
                             </li>)
-                        } else {
-                          return (<li className="list-item"></li>)
                         }
                     }, [])}
                 </ul>

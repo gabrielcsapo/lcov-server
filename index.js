@@ -5,22 +5,22 @@ const pathToRegexp = require('path-to-regexp');
 
 const server = http.createServer((request, response) => {
     let found = routes['default'];
-    Object.keys(routes).forEach((k) => {
-        const keys = [];
-        const re = pathToRegexp(k, keys);
-        const result = re.exec(request.url);
-        if (result) {
-            found = routes[k];
-            // parse out the keys into the params object
-            // { $name: $value }
-            request.params = {};
-            if (keys) {
-                keys.forEach(function(k, i) {
-                    request.params[k.name] = result[i + 1];
-                });
-            }
-        }
-    });
+    for(var route in routes) {
+      const keys = [];
+      const re = pathToRegexp(route, keys);
+      const result = re.exec(request.url);
+      if (result) {
+          found = routes[route];
+          // parse out the keys into the params object
+          // { $name: $value }
+          request.params = {};
+          if (keys) {
+              keys.forEach(function(k, i) {
+                  request.params[k.name] = result[i + 1];
+              });
+          }
+      }
+    }
     found(request, response);
 });
 
@@ -28,5 +28,5 @@ server.listen(port, (err) => {
     if (err) {
         throw new Error(err);
     }
-    console.log(`node-coverage-server is listening on ${port}`); // eslint-disable-line
+    console.log(`node-coverage-server is listening on http://localhost:${port}`); // eslint-disable-line
 });

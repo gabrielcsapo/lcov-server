@@ -1,5 +1,5 @@
 import React from 'react';
-import Chart from '../lib/chart';
+import { LineChart } from '../lib/chart';
 
 class Main extends React.Component {
   render() {
@@ -26,7 +26,7 @@ class Main extends React.Component {
             <pre style={{display: "inline-block"}}>tap --coverage-report=text-lcov | node-coverage-server</pre>
           </small>
           <div style={{display:'block', margin: '0 auto'}}>
-              <Chart {...opt} />
+              <LineChart {...opt} />
           </div>
         </div>
     );
