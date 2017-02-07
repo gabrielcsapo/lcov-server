@@ -3,8 +3,8 @@ script:
   - npm test
   - npm run send-coverage
 node_js:
-  - "4"
   - "6"
+  - "7"
 os:
   - linux
 sudo: false
