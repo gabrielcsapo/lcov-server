@@ -10,7 +10,9 @@
 
 # What is this?
 
-It is a lcov server! It stores lcov reports and categorizes them based on their origin repo. 
+It is a lcov server! It stores lcov reports and categorizes them based on their origin repo.
+
+![main screenshot](./screenshots/main.png)
 
 # Install
 
