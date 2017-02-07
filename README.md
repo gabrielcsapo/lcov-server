@@ -28,6 +28,18 @@ npm install node-coverage-server -g
 tap test --coverage-report=text-lcov | node-coverage-cli
 ```
 
+> cli:help
+
+```
+Usage: node-coverage-cli [options]
+
+Options:
+
+  -h, --help      output usage information
+  -V, --version   output the version number
+  -u, --url [db]  Set the url to upload lcov data too
+```
+
 > server
 
 ```

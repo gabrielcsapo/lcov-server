@@ -1,20 +1,28 @@
 #!/usr/bin/env node
 
+const program = require('commander');
 const http = require('http');
+const https = require('https');
 const fs = require('fs');
+const url = require('url');
 
 const lcov = require('../util/lcov');
 const git = require('../util/git');
-let input = '';
 
+program
+  .version(require('../package.json').version)
+  .option('-u, --url [db]', 'Set the url to upload lcov data too', 'http://localhost:8080')
+  .parse(process.argv);
+
+const parsedUrl = url.parse(program.url);
+
+let input = '';
 process.stdin.resume();
 process.stdin.setEncoding('utf8');
-
-process.stdin.on('data', function(chunk) {
+process.stdin.on('data', (chunk) => {
     input += chunk;
 });
-
-process.stdin.on('end', function() {
+process.stdin.on('end', () => {
     const output = {
         source_files: [],
         git: {},
@@ -23,9 +31,9 @@ process.stdin.on('end', function() {
     };
 
     lcov.parse(input)
-        .then(function(_lcov) {
+        .then((_lcov) => {
             // Go through and set the file contents
-            for (var i = 0; i < _lcov.length; i++) {
+            for (let i = 0; i < _lcov.length; i++) {
                 _lcov[i].source = fs.readFileSync(_lcov[i].file).toString('utf8');
                 _lcov[i].title = _lcov[i].file.substring(_lcov[i].file.lastIndexOf('/') + 1, _lcov[i].file.length);
             }
@@ -34,33 +42,31 @@ process.stdin.on('end', function() {
             git.parse()
                 .then(function(_git) {
                     output['git'] = _git;
-
-                    var req = http.request({
-                        hostname: 'localhost',
-                        port: 5000,
+                    const options = {
+                        hostname: parsedUrl.hostname,
+                        port: parsedUrl.port || 80,
                         path: '/api/v1/upload',
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json',
                         }
-                    }, function(res) {
-                        res.setEncoding('utf8');
-                        res.on('data', function() {
-                            return;
-                        });
-                    });
-                    req.on('error', function(e) {
+                    };
+                    let req;
+                    if(parsedUrl.protocol == 'https') {
+                      req = https.request(options)
+                    } else {
+                      req = http.request(options);
+                    }
+                    req.on('error', (e) => {
                         console.error('problem with request: ' + e.message); // eslint-disable-line
                     });
                     req.write(JSON.stringify(output));
                     req.end();
                 })
-                .catch(function(err) {
+                .catch((err) => {
                     console.log(err); // eslint-disable-line
                 });
         })
-        .catch(function(err) {
-            throw err;
-        });
+        .catch((err) => { throw err; } );
 
 });

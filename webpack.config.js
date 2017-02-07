@@ -40,7 +40,6 @@ module.exports = {
         }
       }),
       new webpack.ContextReplacementPlugin(/moment[\\\/]locale$/, /^\.\/(en)$/),
-      new webpack.optimize.DedupePlugin(),
       new webpack.optimize.UglifyJsPlugin({
         comments: false,
         compress: {
