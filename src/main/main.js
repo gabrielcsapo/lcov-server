@@ -1,19 +1,15 @@
 import React from 'react';
-import { LineChart } from '../lib/chart';
+import CoverageChart from '../coverage/coverageChart';
 
 class Main extends React.Component {
   render() {
-    const opt = {
-        data: [[97,92,89,30,72],[43,62,84,98,3],[23,88,52,14,4]],
-        colors: ['#9a8585', '#a7daff', '#f7ca97'],
-        labels: ['Lines', 'Branches', 'Statements'],
-        width: 350,
-        height: 50,
-        area: true,
-        dots: true,
-        hideLabels: false,
-        grid: false
-    };
+    const data = [[],[],[]];
+    for(let i = 0; i < 6; i++) {
+      data[0].push(Math.floor(Math.random() * (100 - 1 + 1)) + 1);
+      data[1].push(Math.floor(Math.random() * (100 - 1 + 1)) + 1);
+      data[2].push(Math.floor(Math.random() * (100 - 1 + 1)) + 1);
+    }
+    const url = window.location.origin;
 
     return (
         <div className="text-center" style={{width:"100%",position: "absolute",top: "50%",transform: "translateY(-50%)"}}>
@@ -23,10 +19,10 @@ class Main extends React.Component {
           <small className="text-black">
             <pre style={{display: "inline-block"}}>npm install -g node-coverage-server</pre>
             <br/>
-            <pre style={{display: "inline-block"}}>tap --coverage-report=text-lcov | node-coverage-cli --url http://...</pre>
+            <pre style={{display: "inline-block"}}>tap --coverage-report=text-lcov | node-coverage-cli --url {url}</pre>
           </small>
           <div style={{display:'block', margin: '0 auto'}}>
-              <LineChart {...opt} />
+              <CoverageChart height={50} width={350} data={data} />
           </div>
         </div>
     );

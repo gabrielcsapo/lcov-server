@@ -34,9 +34,13 @@ class Coverage extends React.Component {
     const { project, error } = this.state;
 
     if(error) {
-        console.log(error);
         return (<div className="text-center" style={{width:"100%",position: "absolute",top: "50%",transform: "translateY(-50%)"}}>
           Oh no 🙈 something happened...
+          <br/>
+          <br/>
+          <pre style={{width: '50%', margin: '0 auto'}}>
+            {error}
+          </pre>
         </div>);
     } else if(project) {
         const { service, owner, repo } = this.props.params;
@@ -80,7 +84,7 @@ class Coverage extends React.Component {
 
               <h3 style={{float: 'right', color: color}}>{percentage}%</h3>
             </div>
-            <CoverageChart width={window.innerWidth - 200} data={data} color={color} height={100} />
+            <CoverageChart width={window.innerWidth - 200} data={data} height={100} />
             <hr/>
             <ul style={{listStyle: 'none', textAlign: 'center'}}>
                <li style={{lineHeight: '1.4', display: 'inline-block', margin: '5px', padding: '15px', backgroundColor: 'rgba(53, 74, 87, 0.05)'}}>

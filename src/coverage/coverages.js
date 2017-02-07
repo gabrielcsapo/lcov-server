@@ -32,7 +32,6 @@ class Coverages extends React.Component {
           coverages: coverages
         });
       }).catch((ex) => {
-        console.log(ex);
         this.setState({
           error: ex.toString()
         });
@@ -45,6 +44,11 @@ class Coverages extends React.Component {
     if(error) {
         return (<div className="text-center" style={{width:"100%",position: "absolute",top: "50%",transform: "translateY(-50%)"}}>
           Oh no 🙈 something happened...
+          <br/>
+          <br/>
+          <pre style={{width: '50%', margin: '0 auto'}}>
+            {error}
+          </pre>
         </div>);
     } else if(coverages.length > 0) {
       return (<div>

@@ -40,13 +40,16 @@ class Coverage extends React.Component {
       if(error) {
           return (<div className="text-center" style={{width:"100%",position: "absolute",top: "50%",transform: "translateY(-50%)"}}>
             Oh no 🙈 something happened...
+            <br/>
+            <br/>
+            <pre style={{width: '50%', margin: '0 auto'}}>
+              {error}
+            </pre>
           </div>);
       } else if(project) {
           const lineMap = {};
           const history = project.history;
           const source = history[0].source_files.filter((f) => {
-            console.log(f);
-            console.log(file);
               return f.title === file;
           })[0];
           const data = [[],[],[]];
@@ -77,7 +80,7 @@ class Coverage extends React.Component {
           const commitUrl = url.replace('.git', `/commit/${commit}`);
 
           return (
-              <div style={{margin: '5%'}}>
+              <div style={{marginLeft: '50px', marginRight: '50px'}}>
                   <div style={{display: 'inline-block', 'width': '100%'}}>
                     <div style={{float: 'left', textAlign: 'left'}}>
                         <h3> <a href={`/coverage/${service}/${owner}/`}>{owner}</a> / <a href={`/coverage/${service}/${owner}/${repo}`}>{repo}</a> / <a href={`/coverage/${service}/${owner}/${repo}/${encodeURIComponent(file).replace(/\./g, '$2E')}`}>{file}</a> </h3>
@@ -93,6 +96,7 @@ class Coverage extends React.Component {
 
                     <h3 style={{float: 'right', color: color}}>{ linePercentage }%</h3>
                 </div>
+                <CoverageChart width={window.innerWidth - (window.innerWidth * .20)} data={data} height={100} />
                 <hr/>
                 <ul style={{listStyle: 'none', textAlign: 'center'}}>
                    <li style={{lineHeight: '1.4', display: 'inline-block', margin: '5px', padding: '15px', backgroundColor: 'rgba(53, 74, 87, 0.05)'}}>
@@ -114,9 +118,6 @@ class Coverage extends React.Component {
                        </div>
                    </li>
                 </ul>
-                <hr/>
-                <h3> Coverage Over Time </h3>
-                <CoverageChart width={window.innerWidth - (window.innerWidth * .20)} data={data} height={100} />
                 <hr/>
                 <br/>
                 <ul className="list" style={{width:'75%', margin:'0 auto'}}>
