@@ -34,7 +34,6 @@
     "getstorybook": "^1.7.0",
     "jsdoc": "^3.4.3",
     "moment": "^2.17.1",
-    "openbadge": "^1.0.4",
     "psychic-ui": "^0.4.0",
     "react": "^15.4.2",
     "react-dom": "^15.4.2",
@@ -49,7 +48,8 @@
   "dependencies": {
     "mongodb": "^2.2.21",
     "path-to-regexp": "^1.7.0",
-    "commander": "^2.9.0"
+    "commander": "^2.9.0",
+    "openbadge": "^1.0.4"
   },
   "repository": {
     "type": "git",
