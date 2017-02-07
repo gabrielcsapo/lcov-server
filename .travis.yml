@@ -1,0 +1,16 @@
+addons:
+  apt:
+    sources:
+      - ubuntu-toolchain-r-test
+    packages:
+      - libstdc++-4.9-dev
+language: node_js
+script:
+  - npm test
+  - npm run send-coverage
+node_js:
+  - "4"
+  - "6"
+os:
+  - linux
+sudo: false
