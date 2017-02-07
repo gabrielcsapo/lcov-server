@@ -8,6 +8,10 @@
 [![npm](https://img.shields.io/npm/dt/node-coverage-server.svg)]()
 [![npm](https://img.shields.io/npm/dm/node-coverage-server.svg)]()
 
+# What is this?
+
+It is a lcov server! It stores lcov reports and categorizes them based on their origin repo. 
+
 # Install
 
 ```
