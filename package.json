@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "tape test/**/*.js",
+    "build": "webpack --progress",
     "coverage": "tap test/**/*.js --coverage",
     "generate-docs": "node_modules/.bin/jsdoc -c jsdoc.json",
     "lint": "eslint .",
@@ -25,7 +26,6 @@
     "babel-loader": "^6.2.1",
     "babel-preset-es2015": "^6.3.13",
     "babel-preset-react": "^6.3.13",
-    "commander": "^2.9.0",
     "css-loader": "^0.26.1",
     "docdash": "^0.4.0",
     "eslint": "^3.13.1",
@@ -47,7 +47,8 @@
   },
   "dependencies": {
     "mongodb": "^2.2.21",
-    "path-to-regexp": "^1.7.0"
+    "path-to-regexp": "^1.7.0",
+    "commander": "^2.9.0"
   },
   "repository": {
     "type": "git",
