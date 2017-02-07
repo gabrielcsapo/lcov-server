@@ -1,5 +1,5 @@
 const http = require('http');
-const port = 5000;
+const port = process.env.PORT || 8080;
 const startup = require('./startup');
 const routes = require('./routes');
 const pathToRegexp = require('path-to-regexp');

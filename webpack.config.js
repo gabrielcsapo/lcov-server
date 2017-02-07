@@ -1,16 +1,17 @@
 const webpack = require('webpack');
+const path = require('path');
 
 module.exports = {
     entry: './src/app.js',
     output: {
-        path: './dist',
+        path: path.resolve(__dirname, 'dist'),
         filename: 'build.js'
     },
     devServer: {
         proxy: {
-            "/api/**": "http://localhost:5000",
-            "/*.svg": "http://localhost:5000",
-            "/badge/**": "http://localhost:5000"
+            "/api/**": "http://localhost:8080",
+            "/*.svg": "http://localhost:8080",
+            "/badge/**": "http://localhost:8080"
         },
         contentBase: 'dist',
         inline: true,

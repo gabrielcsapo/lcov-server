@@ -9,7 +9,7 @@
     "coverage": "tap test/**/*.js --coverage",
     "generate-docs": "node_modules/.bin/jsdoc -c jsdoc.json",
     "lint": "eslint .",
-    "dev": "webpack-dev-server --hot",
+    "dev": "webpack-dev-server --hot --port 5000",
     "storybook": "start-storybook -p 6006",
     "build-storybook": "build-storybook"
   },
