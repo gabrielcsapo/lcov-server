@@ -4,6 +4,7 @@
   "description": "a server that recieves lcov data and generates a dashboard to view that data",
   "main": "index.js",
   "scripts": {
+    "start": "node index.js",
     "test": "tape test/**/*.js",
     "build": "webpack --progress",
     "coverage": "tap test/**/*.js --coverage",
