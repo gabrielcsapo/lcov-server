@@ -8,6 +8,7 @@
     "test": "tape test/**/*.js",
     "build": "webpack --progress",
     "coverage": "tap test/**/*.js --coverage",
+    "send-coverage": "tap --coverage-report=text-lcov | ./bin/node-coverage-cli.js --url https://node-coverage-server.herokuapp.com",
     "generate-docs": "node_modules/.bin/jsdoc -c jsdoc.json",
     "lint": "eslint .",
     "dev": "webpack-dev-server --hot --port 5000",
