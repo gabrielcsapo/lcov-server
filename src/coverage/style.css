@@ -1,0 +1,13 @@
+.coverage {
+  margin-bottom: 50px;
+  margin-left: 50px;
+  margin-right: 50px;
+}
+.coverage_header {}
+.coverage_commit_message {
+  text-overflow: ellipsis;
+	width: 200px;
+	white-space: nowrap;
+	overflow: hidden;
+  display: inline-block;
+}

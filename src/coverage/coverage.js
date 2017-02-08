@@ -4,11 +4,14 @@ import React from 'react';
 import CoverageChart from './coverageChart';
 import moment from 'moment';
 
+import './style.css';
+
 class Coverage extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      error: ''
+      error: '',
+      loading: true
     };
   }
 
@@ -21,19 +24,25 @@ class Coverage extends React.Component {
        return response.json();
      }).then((project) => {
        this.setState({
-         project: project[0]
+         project: project[0],
+         loading: false
        });
      }).catch((ex) => {
        this.setState({
-         error: ex.toString()
+         error: ex.toString(),
+         loading: false
        });
      });
   }
 
   render() {
-    const { project, error } = this.state;
+    const { project, error, loading } = this.state;
 
-    if(error) {
+    if(loading) {
+      return (<div className="text-center" style={{width:"100%",position: "absolute",top: "50%",transform: "translateY(-50%)"}}>
+        Loading 🌪
+      </div>);
+    } else if(error) {
         return (<div className="text-center" style={{width:"100%",position: "absolute",top: "50%",transform: "translateY(-50%)"}}>
           Oh no 🙈 something happened...
           <br/>
@@ -67,13 +76,13 @@ class Coverage extends React.Component {
         const color = percentage >= 90 ? '#008a44' : percentage <= 89 && percentage >= 80 ? '#cfaf2a' : '#c75151';
         const commitUrl = url.replace('.git', `/commit/${commit}`);
 
-        return (<div style={{marginBottom: '50px'}}>
-           <div style={{marginLeft: '50px', marginRight: '50px'}}>
+        return (<div className="coverage">
+           <div className="coverage_header">
             <div style={{display: 'inline-block', width: '100%'}}>
               <div style={{float: 'left', textAlign: 'left'}}>
                   <h3> <a href={`/coverage/${service}/${owner}/`}>{owner}</a> / <a href={`/coverage/${service}/${owner}/${repo}`}>{repo}</a> </h3>
                   <p>
-                    <a href={commitUrl} target="_blank"> {message} </a>
+                    <a className="coverage_commit_message" href={commitUrl} target="_blank"> {message} </a>
                     on branch
                     <b> {branch} </b>
                     {moment(author_date * 1000).fromNow()}
@@ -165,7 +174,7 @@ class Coverage extends React.Component {
                   return (<tr>
                       <td> { h.git.branch } </td>
                       <td> { totalCoverage }% </td>
-                      <td> { h.git.message } </td>
+                      <td><div className="coverage_commit_message"> { h.git.message } </div></td>
                       <td> { h.git.committer_name } </td>
                       <td> { moment(h.git.committer_date * 1000).fromNow() } </td>
                       <td> { moment(h.run_at).fromNow() } </td>

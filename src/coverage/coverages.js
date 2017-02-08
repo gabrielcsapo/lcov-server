@@ -4,13 +4,16 @@ import React from 'react';
 import CoverageChart from './coverageChart';
 import moment from 'moment';
 
+import './style.css';
+
 class Coverages extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       coverages: [],
       error: '',
-      title: ''
+      title: '',
+      loading: true
     };
   }
 
@@ -29,19 +32,25 @@ class Coverages extends React.Component {
         return response.json();
       }).then((coverages) => {
         this.setState({
-          coverages: coverages
+          coverages: coverages,
+          loading: false
         });
       }).catch((ex) => {
         this.setState({
-          error: ex.toString()
+          error: ex.toString(),
+          loading: false
         });
       });
   }
 
   render() {
-    const { coverages, title, error } = this.state;
+    const { coverages, title, loading, error } = this.state;
 
-    if(error) {
+    if(loading) {
+      return (<div className="text-center" style={{width:"100%",position: "absolute",top: "50%",transform: "translateY(-50%)"}}>
+        Loading 🌪
+      </div>);
+    } else if(error) {
         return (<div className="text-center" style={{width:"100%",position: "absolute",top: "50%",transform: "translateY(-50%)"}}>
           Oh no 🙈 something happened...
           <br/>
@@ -84,23 +93,25 @@ class Coverages extends React.Component {
             const color = percentage >= 90 ? '#008a44' : percentage <= 89 && percentage >= 80 ? '#cfaf2a' : '#c75151';
             const commitUrl = url.replace('.git', `/commit/${commit}`);
 
-            return (<div style={{marginBottom: '50px'}}>
-               <div style={{paddingLeft: '2.5%', paddingRight: '2.5%', display: 'inline-block', width: '95%'}}>
-                <div style={{float: 'left', textAlign: 'left'}}>
-                    <h3> <a href={`/coverage/${service}/${owner}/`}>{owner}</a> / <a href={`/coverage/${service}/${owner}/${repo}`}>{repo}</a> </h3>
-                    <p>
-                      <a href={commitUrl} target="_blank"> {message} </a>
-                      on branch
-                      <b> {branch} </b>
-                      {moment(author_date * 1000).fromNow()}
-                      &nbsp;by
-                      <b> {author_name} </b>
-                    </p>
-                </div>
+            return (<div className="coverage">
+              <div className="coverage_header">
+                 <div style={{display: 'inline-block', width: '100%'}}>
+                   <div style={{float: 'left', textAlign: 'left'}}>
+                       <h3> <a href={`/coverage/${service}/${owner}/`}>{owner}</a> / <a href={`/coverage/${service}/${owner}/${repo}`}>{repo}</a> </h3>
+                       <p>
+                         <a className="coverage_commit_message" href={commitUrl} target="_blank"> {message} </a>
+                         on branch
+                         <b> {branch} </b>
+                         {moment(author_date * 1000).fromNow()}
+                         &nbsp;by
+                         <b> {author_name} </b>
+                       </p>
+                   </div>
 
-                <h3 style={{float: 'right', color: color}}>{percentage}%</h3>
-               </div>
-               <CoverageChart data={data} height={150} width={window.innerWidth - 150} />
+                   <h3 style={{float: 'right', color: color}}>{percentage}%</h3>
+                 </div>
+                 <CoverageChart width={window.innerWidth - 200} data={data} height={100} />
+              </div>
             </div>);
         })}
       </div>);
