@@ -19,7 +19,7 @@ class Main extends React.Component {
           <small className="text-black">
             <pre style={{display: "inline-block"}}>npm install -g node-coverage-server</pre>
             <br/>
-            <pre style={{display: "inline-block"}}>tap --coverage-report=text-lcov | node-coverage-cli --url {url}</pre>
+            <pre style={{display: "inline-block"}}>tap test/**/*.js --coverage-report=text-lcov | node-coverage-cli --url {url}</pre>
           </small>
           <div style={{display:'block', margin: '0 auto'}}>
               <CoverageChart height={50} width={350} data={data} />

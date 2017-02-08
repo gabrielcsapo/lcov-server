@@ -36,15 +36,24 @@ module.exports = {
     switch(req.method) {
       case 'POST':
         parseBody(req, res, (json) => {
-          const source_files = json['source_files'];
-          const git = json['git'];
-          const run_at = json['run_at'];
-          const repo_token = json['repo_token'];
+          const {
+            git,
+            run_at,
+            repo_token,
+            source_files,
+            service_job_id,
+            service_pull_request,
+            service_name
+          } = json;
+
           Coverage.save({
-              source_files: source_files,
-              git: git,
-              run_at: run_at,
-              repo_token: repo_token
+              source_files,
+              git,
+              run_at,
+              repo_token,
+              service_job_id,
+              service_pull_request,
+              service_name
           }).then((result) => {
             res.writeHead(200, { 'Content-Type': 'application/json; charset=utf-8'} );
             res.end(JSON.stringify(result));
