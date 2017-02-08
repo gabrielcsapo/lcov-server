@@ -8,6 +8,7 @@ const url = require('url');
 
 const lcov = require('../util/lcov');
 const git = require('../util/git');
+const ci = require('../util/ci');
 
 program
   .version(require('../package.json').version)
@@ -23,7 +24,11 @@ process.stdin.on('data', (chunk) => {
     input += chunk;
 });
 process.stdin.on('end', () => {
+    const env = ci();
     const output = {
+        service_job_id: env.service_job_id,
+        service_pull_request: env.service_pull_request,
+        service_name: env.service_name,
         source_files: [],
         git: {},
         run_at: new Date(),
