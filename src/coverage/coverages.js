@@ -84,11 +84,17 @@ class Coverages extends React.Component {
                 data[1].push(data[1][0]);
                 data[2].push(data[2][0]);
             };
-
+            let service, owner, repo = '';
             const percentage = parseInt(data[0][data[0].length - 1]);
-            const service = urlParts[urlParts.length - 3].replace('.org', '').replace('.com', '');
-            const owner = urlParts[urlParts.length - 2];
-            const repo = urlParts[urlParts.length - 1].replace('.git', '');
+            if(urlParts.length == 2) {
+              service = urlParts[0].substring(urlParts[0].indexOf('@') + 1, urlParts[0].indexOf(':')).replace('.org', '').replace('.com', '');
+              owner = urlParts[0].substring(urlParts[0].indexOf(':') + 1, urlParts[0].length)
+              repo = urlParts[1].replace('.git', '');
+            } else {
+              service = urlParts[urlParts.length - 3].replace('.org', '').replace('.com', '');
+              owner = urlParts[urlParts.length - 2];
+              repo = urlParts[urlParts.length - 1].replace('.git', '');
+            }
             const { message, commit, branch, author_name, author_date } = coverage.history[coverage.history.length - 1].git;
             const color = percentage >= 90 ? '#008a44' : percentage <= 89 && percentage >= 80 ? '#cfaf2a' : '#c75151';
             const commitUrl = url.replace('.git', `/commit/${commit}`);
