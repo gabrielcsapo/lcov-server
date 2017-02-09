@@ -1,3 +1,15 @@
+# 0.1.0 (03/09/2017)
+
+- adds loading interstitial view for all coverage pages
+- separates out some styles into style.css (coverage pages)
+- truncates commit message if it is too large
+- fixes the coverageFile page to show the correct percentage
+- fixes the coverageFile page to show the correct point in history
+- updates screenshots
+- fixes routes to be more generic
+- removes redundant code
+- uses git-url-parse to format the urls before being sent to the service
+
 # 0.0.2 (03/08/2017)
 
 - updates travis script
