@@ -81,9 +81,8 @@ module.exports = {
   },
   '/api/v1/coverage/:service/:owner': (req, res) => {
       const { service, owner } = req.params;
-      const url = `https://${service}.com/${owner}`;
-
-      Coverage.get(new RegExp(url))
+      
+      Coverage.get(new RegExp(`${service}.*/${owner}/`))
         .then((coverages) => {
           res.writeHead(200, { 'Content-Type': 'application/json; charset=utf-8'} );
           res.end(JSON.stringify(coverages));
@@ -92,12 +91,10 @@ module.exports = {
           res.end(JSON.stringify({error: err}));
         });
   },
-  '/api/v1/coverage/:repo': (req, res) => {
-      let { repo } = req.params;
-      // the repo is going to be uri encoded
-      repo = decodeURIComponent(repo);
+  '/api/v1/coverage/:service/:owner/:repo': (req, res) => {
+      const { service, owner, repo } = req.params;
 
-      Coverage.get(repo)
+      Coverage.get(new RegExp(`${service}.*/${owner}/${repo}`))
         .then((coverages) => {
           res.writeHead(200, { 'Content-Type': 'application/json; charset=utf-8'} );
           res.end(JSON.stringify(coverages));

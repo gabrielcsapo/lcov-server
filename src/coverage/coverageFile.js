@@ -14,10 +14,9 @@ class Coverage extends React.Component {
   }
 
   componentDidMount() {
-    const { service, owner, repo } = this.props.params;
-    const url = `https://${service}.com/${owner}/${repo}.git`;
+    const { source, owner, name } = this.props.params;
 
-    fetch(`/api/v1/coverage/${encodeURIComponent(url).replace(/\./g, '%2E')}`)
+    fetch(`/api/v1/coverage/${source}/${owner}/${name}`)
      .then((response) => {
        return response.json();
      }).then((project) => {
@@ -35,10 +34,7 @@ class Coverage extends React.Component {
 
   render() {
       const { project, error, loading } = this.state;
-      const { service, owner, repo } = this.props.params;
-      const file = this.props.params.file.replace('$2E', '.');
-
-      const url = `https://${service}.com/${owner}/${repo}.git`;
+      const { source, owner, name } = this.props.params;
 
       if(loading) {
         return (<div className="text-center" style={{width:"100%",position: "absolute",top: "50%",transform: "translateY(-50%)"}}>
@@ -55,13 +51,15 @@ class Coverage extends React.Component {
           </div>);
       } else if(project) {
           const lineMap = {};
+          const file = this.props.params.file.replace('$2E', '.');
           const history = project.history[project.history.length - 1];
-          const source = history.source_files.filter((f) => {
+          const url = history._id;
+          const fileSource = history.source_files.filter((f) => {
               return f.title === file;
           })[0];
           const data = [[],[],[]];
           project.history.forEach((h) => {
-            h.source_files.forEach(function(f) {
+            h.source_files.forEach((f) => {
               if(f.title === file) {
                 const { lines, branches, functions } = f;
                 const linePercentage = parseInt((lines.hit / lines.found) * 100);
@@ -74,14 +72,14 @@ class Coverage extends React.Component {
             });
           });
 
-          const { lines, branches, functions } = source;
-          lines.details.forEach(function(l) {
+          const { lines, branches, functions } = fileSource;
+          lines.details.forEach((l) => {
               lineMap[l.line - 1] = l.hit;
           });
           const linePercentage = parseInt((lines.hit / lines.found) * 100);
           const branchPercentage = parseInt((branches.hit / branches.found) * 100);
           const functionPercentage = parseInt((functions.hit / functions.found) * 100);
-          const percentage = (linePercentage + branchPercentage + functionPercentage) / 3;
+          const percentage = parseInt((linePercentage + branchPercentage + functionPercentage) / 3);
           const { message, commit, branch, author_name, author_date } = history.git;
           const color = linePercentage >= 90 ? '#008a44' : linePercentage <= 89 && linePercentage >= 80 ? '#cfaf2a' : '#c75151';
           const commitUrl = url.replace('.git', `/commit/${commit}`);
@@ -90,7 +88,7 @@ class Coverage extends React.Component {
               <div className="coverage_header">
                  <div style={{display: 'inline-block', width: '100%'}}>
                    <div style={{float: 'left', textAlign: 'left'}}>
-                       <h3> <a href={`/coverage/${service}/${owner}/`}>{owner}</a> / <a href={`/coverage/${service}/${owner}/${repo}`}>{repo}</a> / <a href={`/coverage/${service}/${owner}/${repo}/${encodeURIComponent(file).replace(/\./g, '$2E')}`}>{file}</a> </h3>
+                       <h3> <a href={`/coverage/${source.replace(/\./g, '%2E')}/${owner}/`}>{owner}</a> / <a href={`/coverage/${source.replace(/\./g, '%2E')}/${owner}/${name}`}>{name}</a> / <a href={`/coverage/${source.replace(/\./g, '%2E')}/${owner}/${name}/${encodeURIComponent(file).replace(/\./g, '$2E')}`}>{file}</a> </h3>
                        <p>
                          <a className="coverage_commit_message" href={commitUrl} target="_blank"> {message} </a>
                          on branch
@@ -128,7 +126,7 @@ class Coverage extends React.Component {
               <hr/>
               <br/>
               <ul className="list" style={{width:'75%', margin:'0 auto'}}>
-                  {source.source.replace(/ /g, '\u00a0').split('\n').map(function(l, i){
+                  {fileSource.source.replace(/ /g, '\u00a0').split('\n').map((l, i) => {
                       const hit = lineMap[i];
                       if(l.length > 0) {
                           return (<li className="list-item">

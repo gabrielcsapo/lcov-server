@@ -47,6 +47,7 @@ process.stdin.on('end', () => {
             git.parse()
                 .then(function(_git) {
                     output['git'] = _git;
+
                     const options = {
                         hostname: parsedUrl.hostname,
                         port: parsedUrl.port || 80,
@@ -58,7 +59,7 @@ process.stdin.on('end', () => {
                     };
                     let req;
                     if(parsedUrl.protocol == 'https') {
-                      req = https.request(options)
+                      req = https.request(options);
                     } else {
                       req = http.request(options);
                     }

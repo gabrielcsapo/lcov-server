@@ -13,9 +13,9 @@ export default (
     <Route component={Layout}>
       <Route path="/" component={Main} />
       <Route path="/coverage" component={Coverages} />
-      <Route path="/coverage/:service/:owner/" component={Coverages} />
-      <Route path="/coverage/:service/:owner/:repo" component={Coverage} />
-      <Route path="/coverage/:service/:owner/:repo/:file" component={CoverageFile} />
+      <Route path="/coverage/:source/:owner/" component={Coverages} />
+      <Route path="/coverage/:source/:owner/:name" component={Coverage} />
+      <Route path="/coverage/:source/:owner/:name/:file" component={CoverageFile} />
       <Route path="*" component={Error} />
     </Route>
   </Router>

@@ -3,6 +3,7 @@ import 'whatwg-fetch';
 import React from 'react';
 import CoverageChart from './coverageChart';
 import moment from 'moment';
+import parse from 'git-url-parse';
 
 import './style.css';
 
@@ -18,13 +19,13 @@ class Coverages extends React.Component {
   }
 
   componentDidMount() {
-    const { service, owner } = this.props.params;
+    const { source, owner } = this.props.params;
     let url = '/api/v1/coverage'; // Fetches all the coverage saved on the server
-    // filters the coverages to only show the ones that are based on this service and owner
-    if(service && owner) {
-      url = `/api/v1/coverage/${service}/${owner}`
+    // filters the coverages to only show the ones that are based on this source and owner
+    if(source && owner) {
+      url = `/api/v1/coverage/${source}/${owner}`
       this.setState({
-        title: `showing coverage reports for ${owner} on ${service}`
+        title: `showing coverage reports for ${owner} on ${source}`
       });
     }
     fetch(url)
@@ -69,7 +70,7 @@ class Coverages extends React.Component {
         : null}
         {coverages.map((coverage) => {
             const url = coverage._id;
-            const urlParts = url.split('/');
+
             const data = [[], [], []];
             coverage.history.forEach(function(history) {
               const { lines, branches, functions } = history.source_files[0];
@@ -84,26 +85,18 @@ class Coverages extends React.Component {
                 data[1].push(data[1][0]);
                 data[2].push(data[2][0]);
             };
-            let service, owner, repo = '';
             const percentage = parseInt(data[0][data[0].length - 1]);
-            if(urlParts.length == 2) {
-              service = urlParts[0].substring(urlParts[0].indexOf('@') + 1, urlParts[0].indexOf(':')).replace('.org', '').replace('.com', '');
-              owner = urlParts[0].substring(urlParts[0].indexOf(':') + 1, urlParts[0].length)
-              repo = urlParts[1].replace('.git', '');
-            } else {
-              service = urlParts[urlParts.length - 3].replace('.org', '').replace('.com', '');
-              owner = urlParts[urlParts.length - 2];
-              repo = urlParts[urlParts.length - 1].replace('.git', '');
-            }
             const { message, commit, branch, author_name, author_date } = coverage.history[coverage.history.length - 1].git;
+            const { resource, owner, name } = parse(url);
+            const protocol = resource.substring(resource.lastIndexOf('.') + 1, resource.length);
             const color = percentage >= 90 ? '#008a44' : percentage <= 89 && percentage >= 80 ? '#cfaf2a' : '#c75151';
-            const commitUrl = url.replace('.git', `/commit/${commit}`);
+            const commitUrl = `${url}/commit/${commit}`;
 
             return (<div className="coverage">
               <div className="coverage_header">
                  <div style={{display: 'inline-block', width: '100%'}}>
                    <div style={{float: 'left', textAlign: 'left'}}>
-                       <h3> <a href={`/coverage/${service}/${owner}/`}>{owner}</a> / <a href={`/coverage/${service}/${owner}/${repo}`}>{repo}</a> </h3>
+                       <h3> <a href={`/coverage/${resource.replace(/\./g, '%2E').replace(`.${protocol}`, '')}/${owner}/`}>{owner}</a> / <a href={`/coverage/${resource.replace(/\./g, '%2E').replace(`.${protocol}`, '')}/${owner}/${name}`}>{name}</a> </h3>
                        <p>
                          <a className="coverage_commit_message" href={commitUrl} target="_blank"> {message} </a>
                          on branch
