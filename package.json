@@ -50,6 +50,7 @@
     "mongodb": "^2.2.21",
     "path-to-regexp": "^1.7.0",
     "commander": "^2.9.0",
+    "git-url-parse": "^6.2.0",
     "openbadge": "^1.0.4"
   },
   "repository": {

@@ -16,10 +16,9 @@ class Coverage extends React.Component {
   }
 
   componentDidMount() {
-   const { service, owner, repo } = this.props.params;
-   const url = `https://${service}.com/${owner}/${repo}.git`;
+   const { source, owner, name } = this.props.params;
 
-   fetch(`/api/v1/coverage/${encodeURIComponent(url).replace(/\./g, '%2E')}`)
+   fetch(`/api/v1/coverage/${source}/${owner}/${name}`)
      .then((response) => {
        return response.json();
      }).then((project) => {
@@ -37,7 +36,6 @@ class Coverage extends React.Component {
 
   render() {
     const { project, error, loading } = this.state;
-
     if(loading) {
       return (<div className="text-center" style={{width:"100%",position: "absolute",top: "50%",transform: "translateY(-50%)"}}>
         Loading 🌪
@@ -52,10 +50,10 @@ class Coverage extends React.Component {
           </pre>
         </div>);
     } else if(project) {
-        const { service, owner, repo } = this.props.params;
-        const url = `https://${service}.com/${owner}/${repo}.git`;
+        const { source, owner, name } = this.props.params;
 
         const history = project.history;
+        const url = history[0]._id;
         const data = [[], [], []];
         history.forEach(function(history) {
           const { lines, branches, functions } = history.source_files[0];
@@ -80,7 +78,7 @@ class Coverage extends React.Component {
            <div className="coverage_header">
             <div style={{display: 'inline-block', width: '100%'}}>
               <div style={{float: 'left', textAlign: 'left'}}>
-                  <h3> <a href={`/coverage/${service}/${owner}/`}>{owner}</a> / <a href={`/coverage/${service}/${owner}/${repo}`}>{repo}</a> </h3>
+                  <h3> <a href={`/coverage/${source.replace(/\./g, '%2E')}/${owner}/`}>{owner}</a> / <a href={`/coverage/${source.replace(/\./g, '%2E')}/${owner}/${name}`}>{name}</a> </h3>
                   <p>
                     <a className="coverage_commit_message" href={commitUrl} target="_blank"> {message} </a>
                     on branch
@@ -117,7 +115,7 @@ class Coverage extends React.Component {
                <li style={{display: 'inline-block', margin: '5px', padding: '15px', backgroundColor: 'rgba(53, 74, 87, 0.05)'}}>
                    <div style={{marginBottom: '5px'}}> Badge </div>
                    <div>
-                       <img src={`/badge/${service}/${owner}/${repo}.svg`} />
+                       <img src={`/badge/${source.replace(/\./g, '%2E')}/${owner}/${name}.svg`} />
                    </div>
                </li>
             </ul>
@@ -143,7 +141,7 @@ class Coverage extends React.Component {
                   return (<tr>
                       <td> { totalCoverage }% </td>
                       <td>
-                          <a href={`/coverage/${service}/${owner}/${repo}/${fileName}`}>
+                          <a href={`/coverage/${source.replace(/\./g, '%2E')}/${owner}/${name}/${fileName}`}>
                               { f.title }
                           </a>
                       </td>

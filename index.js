@@ -35,5 +35,7 @@ startup()
     });
   })
   .catch(function(err) {
-    console.error(err);
+    if (err) {
+        throw new Error(err);
+    }
   });
