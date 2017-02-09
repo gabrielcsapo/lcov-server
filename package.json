@@ -1,7 +1,7 @@
 {
   "name": "node-coverage-server",
   "version": "0.1.0",
-  "description": "a server that recieves lcov data and generates a dashboard to view that data",
+  "description": "A simple lcov server / cli parser",
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
