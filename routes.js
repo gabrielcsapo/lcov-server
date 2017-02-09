@@ -81,8 +81,8 @@ module.exports = {
   },
   '/api/v1/coverage/:service/:owner': (req, res) => {
       const { service, owner } = req.params;
-      
-      Coverage.get(new RegExp(`${service}.*/${owner}/`))
+
+      Coverage.get(new RegExp(`${service.replace(/%2E/g, '.')}.*/${owner}/`))
         .then((coverages) => {
           res.writeHead(200, { 'Content-Type': 'application/json; charset=utf-8'} );
           res.end(JSON.stringify(coverages));
@@ -94,7 +94,7 @@ module.exports = {
   '/api/v1/coverage/:service/:owner/:repo': (req, res) => {
       const { service, owner, repo } = req.params;
 
-      Coverage.get(new RegExp(`${service}.*/${owner}/${repo}`))
+      Coverage.get(new RegExp(`${service.replace(/%2E/g, '.')}.*/${owner}/${repo}`))
         .then((coverages) => {
           res.writeHead(200, { 'Content-Type': 'application/json; charset=utf-8'} );
           res.end(JSON.stringify(coverages));
@@ -105,9 +105,8 @@ module.exports = {
   },
   '/badge/:service/:owner/:repo.svg': (req, res) => {
     const { service, owner, repo } = req.params;
-    const url = `https://${service}.com/${owner}/${repo}.git`;
 
-    Coverage.get(url)
+    Coverage.get(new RegExp(`${service.replace(/%2E/g, '.')}.*/${owner}/${repo}`))
       .then((coverages) => {
         const coverage = coverages[0];
         const { history } = coverage;
