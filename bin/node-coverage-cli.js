@@ -30,7 +30,13 @@ process.stdin.on('end', () => {
         service_pull_request: env.service_pull_request,
         service_name: env.service_name,
         source_files: [],
-        git: {},
+        git: {
+          git_commit: env.git_commit,
+          git_branch: env.git_branch,
+          git_committer_name: env.git_committer_name,
+          git_committer_email: env.git_committer_email,
+          git_message: env.git_message
+        },
         run_at: new Date(),
         repo_token: ''
     };
