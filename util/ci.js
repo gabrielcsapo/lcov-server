@@ -1,3 +1,5 @@
+'use strict';
+
 module.exports = function() {
   const options = {
     service_job_id: '',
