@@ -25,7 +25,6 @@ process.stdin.on('data', (chunk) => {
 });
 process.stdin.on('end', () => {
     const env = ci();
-    console.log(env);
     const output = {
         service_job_id: env.service_job_id,
         service_pull_request: env.service_pull_request,
