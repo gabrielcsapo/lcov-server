@@ -1,3 +1,12 @@
+# 0.1.1 (03/13/2017)
+
+- fixes the routes for getting coverage data
+  - https://github.com/gabrielcsapo/node-coverage-server/commit/300576ffe221006e1b97bfcd1c80912f33ebad5f
+- updates main page to show current server version
+- gets data from the environment variables to check for any services running
+- be able to use node 4 for the node-coverage-cli
+  - https://github.com/gabrielcsapo/node-coverage-server/commit/93f35fb78736ed9abdb9da736fb91be721cb435b
+
 # 0.1.0 (03/09/2017)
 
 - adds loading interstitial view for all coverage pages
