@@ -1,12 +1,12 @@
 import React from 'react';
 import { Router, Route, browserHistory } from 'react-router';
 
-import Layout from './layout/layout';
-import Main from './main/main';
+import Layout from './layout';
+import Main from './main';
 import Coverages from './coverage/coverages';
 import Coverage from './coverage/coverage';
 import CoverageFile from './coverage/coverageFile';
-import Error from './error/error';
+import Error from './error';
 
 export default (
   <Router history={browserHistory}>
