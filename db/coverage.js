@@ -1,5 +1,4 @@
-const MongoClient = require('mongodb').MongoClient;
-const MONGO_URL = process.env.MONGO_URL;
+const mongoose = require('mongoose');
 
 /**
  * @class Coverage
@@ -97,6 +96,10 @@ const MONGO_URL = process.env.MONGO_URL;
  *   "repo_token": "testing"
  *}
  **/
+
+const CoverageModel = new mongoose.Schema({}, { _id: false, strict: false });
+const Coverage = mongoose.model('coverages', CoverageModel);
+
 module.exports = {
     /**
      * saves a coverage model the collection
@@ -107,13 +110,15 @@ module.exports = {
      */
     save: (model) => {
       return new Promise((resolve, reject) => {
-          MongoClient.connect(MONGO_URL, (err, db) => {
-              if (err) return reject(err);
-              const collection = db.collection('coverages');
-              collection.insertOne(model, (err, result) => {
-                if(err) { return reject(err); }
-                resolve(result);
-              });
+          const { git } = model;
+          const _id = `${git.commit}#${git.branch}`;
+
+          model['_id'] = _id;
+          Coverage.findOneAndUpdate({
+              _id
+          }, model, { upsert: true }, (err, result) => {
+              if(err) { return reject(err); }
+              return resolve(result);
           });
       });
     },
@@ -126,31 +131,21 @@ module.exports = {
      */
     get: (repo) => {
         return new Promise((resolve, reject) => {
-            MongoClient.connect(MONGO_URL, (err, db) => {
-                if (err) return reject(err);
-
-                const docs = [];
-                const collection = db.collection('coverages');
-                const options = [{
-                    $group: {
-                        _id: "$git.remotes.url",
-                        history: {
-                            $push: "$$ROOT"
-                        }
+            const options = [{
+                $group: {
+                    _id: "$git.remotes.url",
+                    history: {
+                        $push: "$$ROOT"
                     }
-                }];
+                }
+            }];
 
-                if(repo)
-                    options.unshift({ $match: { "git.remotes.url": repo} });
+            if(repo)
+                options.unshift({ $match: { "git.remotes.url": repo} });
 
-                collection.aggregate(options)
-                    .on('data', (doc) => {
-                        docs.push(doc);
-                    })
-                    .once('end', () => {
-                        resolve(docs);
-                        db.close();
-                    });
+            Coverage.aggregate(options, (err, docs) => {
+                if(err) { return reject(err); }
+                return resolve(docs);
             });
         });
     }

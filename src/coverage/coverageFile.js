@@ -129,12 +129,13 @@ class Coverage extends React.Component {
                   {fileSource.source.replace(/ /g, '\u00a0').split('\n').map((l, i) => {
                       const hit = lineMap[i];
                       if(l.length > 0) {
-                          return (<li className="list-item">
+                          return (<li className="list-item" style={{ position: 'relative', overflow: 'visible', border: 'none', borderBottom: '1px solid #dedede'}}>
+                            <div className="badge badge-white" style={{ position: 'absolute', left: '-15px', padding: '5px'}}>{ i } </div>
                             { l }
                             {hit > 0 ?
                               <div className="badge badge-success">{ lineMap[i] }</div>
                               :
-                              <div className="badge badge-danger">0</div>
+                              <div className="badge badge-danger" style={{ padding: '5px' }}>0</div>
                             }
                           </li>)
                       }
