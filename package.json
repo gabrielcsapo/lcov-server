@@ -4,7 +4,7 @@
   "description": "A simple lcov server / cli parser",
   "main": "index.js",
   "scripts": {
-    "start": "node index.js",
+    "start": "./bin/node-coverage-server.js",
     "test": "tape test/**/*.js",
     "build": "webpack --progress",
     "coverage": "tap test/**/*.js --coverage",
