@@ -3,6 +3,7 @@ const fs = require('fs');
 const querystring = require('querystring');
 const Coverage = require('./db/coverage');
 const Badge = require('openbadge');
+const parse = require('git-url-parse');
 
 const html = fs.readFileSync(path.resolve(__dirname, 'dist', 'index.html'));
 const js = fs.readFileSync(path.resolve(__dirname, 'dist', 'build.js'));
@@ -36,7 +37,7 @@ module.exports = {
     switch(req.method) {
       case 'POST':
         parseBody(req, res, (json) => {
-          const {
+          let {
             git,
             run_at,
             repo_token,
@@ -45,6 +46,9 @@ module.exports = {
             service_pull_request,
             service_name
           } = json;
+
+          // Make sure the remote url is set correctly
+          git.remotes.url = parse(parse(git.remotes.url).toString("ssh")).toString("https")
 
           Coverage.save({
               source_files,

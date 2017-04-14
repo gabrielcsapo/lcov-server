@@ -62,9 +62,9 @@ class Coverage extends React.Component {
             h.source_files.forEach((f) => {
               if(f.title === file) {
                 const { lines, branches, functions } = f;
-                const linePercentage = parseInt((lines.hit / lines.found) * 100);
-                const branchPercentage = parseInt((branches.hit / branches.found) * 100);
-                const functionPercentage = parseInt((functions.hit / functions.found) * 100);
+                const linePercentage = parseInt(((lines.hit / lines.found) || 1) * 100);
+                const branchPercentage = parseInt(((branches.hit / branches.found) || 1) * 100);
+                const functionPercentage = parseInt(((functions.hit / functions.found) || 1) * 100);
                 data[0].push(linePercentage);
                 data[1].push(branchPercentage);
                 data[2].push(functionPercentage);
@@ -76,9 +76,9 @@ class Coverage extends React.Component {
           lines.details.forEach((l) => {
               lineMap[l.line - 1] = l.hit;
           });
-          const linePercentage = parseInt((lines.hit / lines.found) * 100);
-          const branchPercentage = parseInt((branches.hit / branches.found) * 100);
-          const functionPercentage = parseInt((functions.hit / functions.found) * 100);
+          const linePercentage = parseInt(((lines.hit / lines.found) || 1) * 100);
+          const branchPercentage = parseInt(((branches.hit / branches.found) || 1) * 100);
+          const functionPercentage = parseInt(((functions.hit / functions.found) || 1) * 100);
           const percentage = parseInt((linePercentage + branchPercentage + functionPercentage) / 3);
           const { message, commit, branch, author_name, author_date } = history.git;
           const color = linePercentage >= 90 ? '#008a44' : linePercentage <= 89 && linePercentage >= 80 ? '#cfaf2a' : '#c75151';
