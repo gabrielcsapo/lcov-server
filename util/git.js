@@ -71,10 +71,11 @@ const git = {
                   remote = remote.split(/\s+/);
                   git.remotes.name = remote[0];
                   git.remotes.url = remote[1];
-                  if(!remote[1] || !remote[0]) {
-                    return reject('no remote found'); 
-                  }
               });
+
+              if(!git.remotes.url || !git.remotes.name) {
+                return reject('no remote found');
+              }
 
               return resolve(git);
           });
