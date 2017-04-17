@@ -38,8 +38,7 @@ process.stdin.on('end', () => {
           git_committer_email: env.git_committer_email,
           git_message: env.git_message
         },
-        run_at: new Date(),
-        repo_token: ''
+        run_at: new Date()
     };
 
     lcov.parse(input)

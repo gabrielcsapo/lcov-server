@@ -74,9 +74,9 @@ class Coverages extends React.Component {
             const data = [[], [], []];
             coverage.history.forEach(function(history) {
               const { lines, branches, functions } = history.source_files[0];
-              data[0].push(parseInt((lines.hit / lines.found) * 100))
-              data[1].push(parseInt((branches.hit / branches.found) * 100))
-              data[2].push(parseInt((functions.hit / functions.found) * 100))
+              data[0].push(parseInt(((lines.hit / lines.found) || 1) * 100))
+              data[1].push(parseInt(((branches.hit / branches.found) || 1) * 100))
+              data[2].push(parseInt(((functions.hit / functions.found) || 1) * 100))
             }, []);
             // If there is only one data point
             // add another that is the same value to make a line

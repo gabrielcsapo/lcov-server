@@ -7,7 +7,6 @@
 const exec = require('child_process').exec;
 const fs = require('fs');
 const path = require('path');
-const parse = require('git-url-parse');
 
 const REGEX_BRANCH = /^ref: refs\/heads\/([^?*\[\\~^:]+)$/;
 
@@ -71,8 +70,12 @@ const git = {
                   }
                   remote = remote.split(/\s+/);
                   git.remotes.name = remote[0];
-                  git.remotes.url = parse(remote[1]).toString('https'); // make sure the url is https
+                  git.remotes.url = remote[1];
               });
+
+              if(!git.remotes.url || !git.remotes.name) {
+                return reject('no remote found');
+              }
 
               return resolve(git);
           });
