@@ -38,7 +38,6 @@ app.post('/api/v1/upload', (req, res) => {
     let {
       git,
       run_at,
-      repo_token,
       source_files,
       service_job_id,
       service_pull_request,
@@ -52,7 +51,6 @@ app.post('/api/v1/upload', (req, res) => {
         source_files,
         git,
         run_at,
-        repo_token,
         service_job_id,
         service_pull_request,
         service_name

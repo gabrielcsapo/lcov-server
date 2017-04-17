@@ -3,7 +3,6 @@ const mongoose = require('mongoose');
 /**
  * @class Coverage
  * @property {string} run_at - the iso date when the coverage was send to the server
- * @property {string} repo_token - the token that references the project on the server
  * @property {Object[]} source_files - a list of all the source files related to the coverage report
  * @property {string} source_files[].name - the name of the file parsed
  * @property {string} source_files[].source - the content of the file parsed into a string
@@ -92,8 +91,7 @@ const mongoose = require('mongoose');
  *           "url": "https://github.com/gabrielcsapo/node-coverage-server.git"
  *       }]
  *   },
- *   "run_at": "2017-01-17T23:18:16.248Z",
- *   "repo_token": "testing"
+ *   "run_at": "2017-01-17T23:18:16.248Z"
  *}
  **/
 
