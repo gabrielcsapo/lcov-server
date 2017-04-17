@@ -1,4 +1,7 @@
 language: node_js
+before_script:
+  - git config --global user.email "john@doe.com"
+  - git config --global user.name "John Doe"
 script:
   - npm test
   - npm run send-coverage
