@@ -3,7 +3,7 @@
         "allowUnknownTags": false
     },
     "source": {
-        "include": ["./util", "./db", "index.js", "routes.js"],
+        "include": ["./util", "./db", "index.js", "routes.js", "README.md"],
         "includePattern": ".js$",
         "excludePattern": "(node_modules/|docs)"
     },
@@ -18,7 +18,7 @@
         "verbose": true
     },
     "templates": {
-        "cleverLinks": false,
+        "cleverLinks": true,
         "monospaceLinks": false
     }
 }

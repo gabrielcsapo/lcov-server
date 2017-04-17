@@ -8,7 +8,7 @@ const path = require('path');
 const fs = require('fs');
 const querystring = require('querystring');
 const app = express();
-const Coverage = require('./db/coverage');
+const Coverage = require('./util/coverage');
 const parseBody = (req, res, next) => {
   let body = '';
   req.on('data', (data) => {
