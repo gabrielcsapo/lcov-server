@@ -43,6 +43,7 @@ test('git', (t) => {
         const root = process.cwd();
         process.chdir(path.resolve(__dirname, '..', 'fixtures', 'sample-module'));
 
+        shell.exec('git init');
         shell.exec('git add -A');
         shell.exec('git commit -m "testtest"');
         git.parse()
