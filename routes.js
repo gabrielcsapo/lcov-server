@@ -48,7 +48,7 @@ module.exports = {
           } = json;
 
           // Make sure the remote url is set correctly
-          git.remotes.url = parse(parse(git.remotes.url).toString("ssh")).toString("https")
+          git.remotes.url = parse(parse(git.remotes.url).toString("ssh")).toString("https");
 
           Coverage.save({
               source_files,

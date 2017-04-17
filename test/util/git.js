@@ -47,12 +47,14 @@ test('git', (t) => {
         shell.exec('git add -A');
         shell.exec('git commit -m "testtest"');
         git.parse()
-          .then((data) => {
+          .then(() => {
             t.fail('should fail, but doesn\'t');
+            process.chdir(root);
           })
           .catch((err) => {
             t.equal(err, 'no remote found');
             t.end();
+            process.chdir(root);
           });
       }, 3000);
   });
