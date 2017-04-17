@@ -1,6 +1,6 @@
 {
   "name": "node-coverage-server",
-  "version": "0.1.1",
+  "version": "0.2.0",
   "description": "A simple lcov server / cli parser",
   "main": "index.js",
   "scripts": {

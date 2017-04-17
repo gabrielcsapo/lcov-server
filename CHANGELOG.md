@@ -1,3 +1,12 @@
+# 0.2.0 (04/17/2017)
+
+- moves mongo operations to mongoose
+- uses express, simplifies server logic
+- fixes issue where 0/0 is NaN
+- make sure the git remotes are set correctly
+- does not allow analytics to be pushed without having a git remote setup
+- adds tests for node-coverage-cli
+
 # 0.1.1 (03/13/2017)
 
 - fixes the routes for getting coverage data
