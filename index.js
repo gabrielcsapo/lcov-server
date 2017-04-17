@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 mongoose.connect(process.env.MONGO_URL);
+
 const express = require('express');
 const Badge = require('openbadge');
 const parse = require('git-url-parse');
@@ -8,7 +9,7 @@ const fs = require('fs');
 const querystring = require('querystring');
 const app = express();
 const Coverage = require('./db/coverage');
-const parseBody = (req, res, callback) => {
+const parseBody = (req, res, next) => {
   let body = '';
   req.on('data', (data) => {
       body += data;
@@ -16,50 +17,46 @@ const parseBody = (req, res, callback) => {
   req.on('end', () => {
       switch(req.headers['content-type']) {
         case 'application/x-www-form-urlencoded':
-          callback(querystring.parse(decodeURI(body)));
+          req.body = querystring.parse(decodeURI(body));
           break;
         case 'application/json':
-          callback(JSON.parse(body));
+          req.body = JSON.parse(body);
           break;
         default:
-          callback(body);
+          req.body = body;
           break;
       }
+      next();
   });
 };
 
 const port = process.env.PORT || 8080;
 
-const html = fs.readFileSync(path.resolve(__dirname, 'dist', 'index.html'));
-const js = fs.readFileSync(path.resolve(__dirname, 'dist', 'build.js'));
+app.post('/api/v1/upload', parseBody, (req, res) => {
+  let {
+    git,
+    run_at,
+    source_files,
+    service_job_id,
+    service_pull_request,
+    service_name
+  } = req.body;
 
-app.post('/api/v1/upload', (req, res) => {
-  parseBody(req, res, (json) => {
-    let {
+  // Make sure the remote url is set correctly
+  git.remotes.url = parse(parse(git.remotes.url).toString("ssh")).toString("https");
+
+  Coverage.save({
+      source_files,
       git,
       run_at,
-      source_files,
       service_job_id,
       service_pull_request,
       service_name
-    } = json;
-
-    // Make sure the remote url is set correctly
-    git.remotes.url = parse(parse(git.remotes.url).toString("ssh")).toString("https");
-
-    Coverage.save({
-        source_files,
-        git,
-        run_at,
-        service_job_id,
-        service_pull_request,
-        service_name
-    }).then((result) => {
-      res.send(result);
-    }).catch((err) => {
-      res.status(500);
-      res.send({error: err});
-    });
+  }).then((result) => {
+    res.send(result);
+  }).catch((err) => {
+    res.status(500);
+    res.send({error: err});
   });
 });
 
@@ -123,13 +120,13 @@ app.get('/badge/:service/:owner/:repo.svg', (req, res) => {
 
 app.get('/build.js', (req, res) => {
   res.set('Content-Type', 'text/js; charset=utf-8');
-  res.send(js);
+  res.send(fs.readFileSync(path.resolve(__dirname, 'dist', 'build.js')));
 });
 
 
 app.get('*', (req, res) => {
   res.set('Content-Type', 'text/html; charset=utf-8');
-  res.send(html);
+  res.send(fs.readFileSync(path.resolve(__dirname, 'dist', 'index.html')));
 });
 
 app.listen(port, function () {
