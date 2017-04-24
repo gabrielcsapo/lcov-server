@@ -1,3 +1,7 @@
+# 0.2.1 (04/24/2017)
+
+- fixes issue with git parsing all of the commit logs instead of the most recent
+
 # 0.2.0 (04/17/2017)
 
 - moves mongo operations to mongoose
