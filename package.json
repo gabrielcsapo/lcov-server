@@ -3,12 +3,22 @@
   "version": "0.2.1",
   "description": "A simple lcov server / cli parser",
   "main": "index.js",
+  "homepage": "https://github.com/gabrielcsapo/node-coverage-server#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/gabrielcsapo/node-coverage-server.git"
+  },
+  "engines": {
+    "node": ">= 6"
+  },
+  "bugs": {
+    "url": "https://github.com/gabrielcsapo/node-coverage-server/issues"
+  },
   "scripts": {
-    "start": "node index.js",
+    "start": "./bin/node-coverage-server.js",
     "test": "tape test/**/*.js",
     "build": "webpack --progress",
-    "coverage": "tap test/**/*.js --coverage",
-    "send-coverage": "tap test/**/*.js --coverage-report=text-lcov | ./bin/node-coverage-cli.js --url https://node-coverage-server.herokuapp.com",
+    "coverage": "tap test/**/*.js --coverage --coverage-report=lcov",
     "generate-docs": "jsdoc -c jsdoc.json",
     "lint": "eslint .",
     "dev": "webpack-dev-server --hot --port 5000",
@@ -52,16 +62,5 @@
     "git-url-parse": "^6.2.2",
     "mongoose": "^4.9.4",
     "openbadge": "^1.0.4"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/gabrielcsapo/node-coverage-server.git"
-  },
-  "engines": {
-    "node": ">= 6"
-  },
-  "bugs": {
-    "url": "https://github.com/gabrielcsapo/node-coverage-server/issues"
-  },
-  "homepage": "https://github.com/gabrielcsapo/node-coverage-server#readme"
+  }
 }

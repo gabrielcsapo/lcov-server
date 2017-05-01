@@ -3,8 +3,10 @@ before_script:
   - git config --global user.email "john@doe.com"
   - git config --global user.name "John Doe"
 script:
+  - npm install node-coverage-server -g
   - npm test
-  - npm run send-coverage
+  - npm run coverage
+  - cat coverage/lcov.info | node-coverage-cli --url https://node-coverage-server.herokuapp.com
 node_js:
   - "6"
   - "7"
