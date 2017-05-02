@@ -12,4 +12,5 @@ node_js:
   - "7"
 os:
   - linux
+  - osx
 sudo: false
