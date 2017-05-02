@@ -8,6 +8,7 @@ script:
   - npm run coverage
   - cat coverage/lcov.info | node-coverage-cli --url https://node-coverage-server.herokuapp.com
 node_js:
+  - "4"
   - "6"
   - "7"
 os:
