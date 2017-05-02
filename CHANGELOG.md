@@ -1,3 +1,8 @@
+# 0.2.3 (05/02/2017)
+
+- fixes cli issues (not setting MONGO_URL correctly)
+- fixes issues with directoryHash functionality
+
 # 0.2.2 (05/02/2017)
 
 - check for the version on the server and alert the user to upgrade if the versions are different
