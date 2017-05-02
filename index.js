@@ -29,7 +29,6 @@ const parseBody = (req, res, next) => {
       next();
   });
 };
-
 const port = process.env.PORT || 8080;
 
 app.post('/api/v1/upload', parseBody, (req, res) => {
@@ -39,8 +38,14 @@ app.post('/api/v1/upload', parseBody, (req, res) => {
     source_files,
     service_job_id,
     service_pull_request,
-    service_name
+    service_name,
+    hash
   } = req.body;
+
+  if(process.env.HASH !== hash) {
+    res.status(500);
+    return res.send({error: `\nversion mismatch, please install the latest version of the cli tool or server.\nnpm install node-coverage-server@latest -g\n`});
+  }
 
   // Make sure the remote url is set correctly
   git.remotes.url = parse(parse(git.remotes.url).toString("ssh")).toString("https");
@@ -53,10 +58,10 @@ app.post('/api/v1/upload', parseBody, (req, res) => {
       service_pull_request,
       service_name
   }).then((result) => {
-    res.send(result);
+    res.send({ result });
   }).catch((err) => {
     res.status(500);
-    res.send({error: err});
+    res.send({ error: err });
   });
 });
 
@@ -122,7 +127,6 @@ app.get('/build.js', (req, res) => {
   res.set('Content-Type', 'text/js; charset=utf-8');
   res.send(fs.readFileSync(path.resolve(__dirname, 'dist', 'build.js')));
 });
-
 
 app.get('*', (req, res) => {
   res.set('Content-Type', 'text/html; charset=utf-8');
