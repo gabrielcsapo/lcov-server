@@ -1,3 +1,7 @@
+# 0.2.2 (05/02/2017)
+
+- check for the version on the server and alert the user to upgrade if the versions are different
+
 # 0.2.1 (04/24/2017)
 
 - fixes issue with git parsing all of the commit logs instead of the most recent
