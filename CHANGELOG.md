@@ -1,3 +1,7 @@
+# 0.2.4 (05/02/2017)
+
+- updates the directoryHash function to work with different versions of node
+
 # 0.2.3 (05/02/2017)
 
 - fixes cli issues (not setting MONGO_URL correctly)
