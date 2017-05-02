@@ -10,9 +10,9 @@ function _summarize(method, hashes, callback) {
   var hash = crypto.createHash(method);
   for (var i = 0; i < keys.length; i++) {
     if (typeof(hashes[keys[i]]) === 'string') {
-      hash.update(hashes[keys[i]]);
+      hash.update(hashes[keys[i]], 'utf8');
     } else if (typeof(hashes[keys[i]]) === 'object') {
-      hash.update(hashes[keys[i]].hash);
+      hash.update(hashes[keys[i]].hash, 'utf8');
     } else {
       callback('Unknown type found in hash: ' + typeof(hashes[keys[i]]), undefined);
     }
@@ -87,7 +87,7 @@ module.exports = function hashDirectory(root, method, callback) {
             if (err) return callback(err);
 
             var hash = crypto.createHash(method);
-            hash.update(data);
+            hash.update(data, 'uf8');
             hashes[f] = hash.digest('hex');
 
             if (++hashed >= files.length) {

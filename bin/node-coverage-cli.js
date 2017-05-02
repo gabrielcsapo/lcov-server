@@ -78,11 +78,15 @@ process.stdin.on('end', () => {
                           data += chunk;
                         });
                         res.on('end', () => {
-                          const response = JSON.parse(data);
-                          if(response.error) {
-                            console.error(response.error); // eslint-disable-line
-                          } else {
-                            console.log(`\n coverage sent successfully 💚 \n`)
+                          try {
+                            const response = JSON.parse(data);
+                            if(response.error) {
+                              console.error(response.error); // eslint-disable-line
+                            } else {
+                              console.log(`\n coverage sent successfully 💚 \n`); // eslint-disable-line
+                            }
+                          } catch(ex) {
+                            console.log(`\n uhoh something went wrong, ${ex.toString()}`); // eslint-disable-line
                           }
                         });
                       });
