@@ -1,3 +1,7 @@
+# 0.2.5 (06/29/2017)
+
+- fixes error when data has exceeded 16mbs, uses streams to compensate
+
 # 0.2.4 (05/02/2017)
 
 - updates the directoryHash function to work with different versions of node
