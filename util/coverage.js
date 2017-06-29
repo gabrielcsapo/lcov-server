@@ -141,9 +141,19 @@ module.exports = {
             if(repo)
                 options.unshift({ $match: { "git.remotes.url": repo} });
 
-            Coverage.aggregate(options, (err, docs) => {
-                if(err) { return reject(err); }
-                return resolve(docs);
+            const docs = [];
+            const cursor = Coverage.aggregate(options).cursor().exec().stream();
+
+            cursor.on('data', (doc) => {
+              docs.push(doc);
+            });
+
+            cursor.on('end', () => {
+              return resolve(docs);
+            });
+
+            cursor.on('error', (error) => {
+              return reject(error);
             });
         });
     }
