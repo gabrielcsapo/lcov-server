@@ -1,5 +1,7 @@
 # node-coverage-server
 
+[![Greenkeeper badge](https://badges.greenkeeper.io/gabrielcsapo/node-coverage-server.svg)](https://greenkeeper.io/)
+
 [![Npm Version](https://img.shields.io/npm/v/node-coverage-server.svg)](https://www.npmjs.com/package/node-coverage-server)
 [![Build Status](https://travis-ci.org/gabrielcsapo/node-coverage-server.svg?branch=master)](https://travis-ci.org/gabrielcsapo/node-coverage-server)
 [![Coverage Status](https://node-coverage-server.herokuapp.com/badge/github/gabrielcsapo/node-coverage-server.svg)](https://node-coverage-server.herokuapp.com/coverage/github/gabrielcsapo/node-coverage-server)
