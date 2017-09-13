@@ -19,6 +19,7 @@
     "test": "tape test/util/**/*.js test/index.js",
     "coverage": "tap test/**/*.js --coverage --coverage-report=lcov",
     "build": "webpack --progress",
+    "start": "./bin/lcov-server.js",
     "dev": "NODE_ENV=development webpack-dev-server --hot --port 5000",
     "generate-docs": "jsdoc -c jsdoc.json",
     "storybook": "start-storybook -p 6006",
