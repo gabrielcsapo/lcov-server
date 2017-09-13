@@ -1,22 +1,7 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
-const Tooltip = React.createClass({
-  propTypes: {
-    value: React.PropTypes.number,
-    label: React.PropTypes.string,
-    x: React.PropTypes.number,
-    y: React.PropTypes.number,
-    color: React.PropTypes.string
-  },
-
-  defaultProps: {
-    value: 0,
-    label: '',
-    x: 0,
-    y: 0,
-    color: ''
-  },
-
+class Tooltip extends React.Component {
   render() {
 		const { value, label, x, y, color } = this.props;
     const style = {
@@ -31,7 +16,23 @@ const Tooltip = React.createClass({
 			</span>
 		);
 	}
-});
+}
+
+Tooltip.propTypes = {
+  value: PropTypes.number,
+  label: PropTypes.string,
+  x: PropTypes.number,
+  y: PropTypes.number,
+  color: PropTypes.string
+};
+
+Tooltip.defaultProps = {
+  value: 0,
+  label: '',
+  x: 0,
+  y: 0,
+  color: ''
+};
 
 module.exports = {
   Tooltip

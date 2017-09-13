@@ -1,19 +1,8 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
-const Curve = React.createClass({
-	propTypes: {
-    points: React.PropTypes.object,
-    width: React.PropTypes.number,
-    height: React.PropTypes.number,
-    padding: React.PropTypes.number,
-    lines: React.PropTypes.array,
-    area: React.PropTypes.boolean,
-    color: React.PropTypes.string,
-    stroke: React.PropTypes.number,
-    updating: React.PropTypes.updating
-	},
-
-	render: function () {
+class Curve extends React.Component {
+	render() {
 		let { points, width, height, padding, lines, area, color, stroke, updating } = this.props;
 		let path = [];
 		let areaPath = [];
@@ -47,7 +36,19 @@ const Curve = React.createClass({
 			</g>
 		);
 	}
-});
+}
+
+Curve.propTypes = {
+	points: PropTypes.object,
+	width: PropTypes.number,
+	height: PropTypes.number,
+	padding: PropTypes.number,
+	lines: PropTypes.array,
+	area: PropTypes.boolean,
+	color: PropTypes.string,
+	stroke: PropTypes.number,
+	updating: PropTypes.updating
+};
 
 module.exports = {
   Curve

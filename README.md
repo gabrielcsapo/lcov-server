@@ -1,23 +1,28 @@
-# node-coverage-server
+# lcov-server
 
-[![Npm Version](https://img.shields.io/npm/v/node-coverage-server.svg)](https://www.npmjs.com/package/node-coverage-server)
-[![Build Status](https://travis-ci.org/gabrielcsapo/node-coverage-server.svg?branch=master)](https://travis-ci.org/gabrielcsapo/node-coverage-server)
-[![Coverage Status](https://node-coverage-server.herokuapp.com/badge/github/gabrielcsapo/node-coverage-server.svg)](https://node-coverage-server.herokuapp.com/coverage/github/gabrielcsapo/node-coverage-server)
-[![Dependency Status](https://david-dm.org/gabrielcsapo/node-coverage-server.svg)](https://david-dm.org/gabrielcsapo/node-coverage-server)
-[![devDependency Status](https://david-dm.org/gabrielcsapo/node-coverage-server/dev-status.svg)](https://david-dm.org/gabrielcsapo/node-coverage-server#info=devDependencies)
-[![npm](https://img.shields.io/npm/dt/node-coverage-server.svg)]()
-[![npm](https://img.shields.io/npm/dm/node-coverage-server.svg)]()
+> 🎯 A simple lcov server & cli parser
+
+[![Npm Version](https://img.shields.io/npm/v/lcov-server.svg)](https://www.npmjs.com/package/lcov-server)
+[![Build Status](https://travis-ci.org/gabrielcsapo/lcov-server.svg?branch=master)](https://travis-ci.org/gabrielcsapo/lcov-server)
+[![Coverage Status](https://lcov-server.herokuapp.com/badge/github/gabrielcsapo/lcov-server.svg)](https://lcov-server.herokuapp.com/coverage/github/gabrielcsapo/lcov-server)
+[![Dependency Status](https://david-dm.org/gabrielcsapo/lcov-server.svg)](https://david-dm.org/gabrielcsapo/lcov-server)
+[![devDependency Status](https://david-dm.org/gabrielcsapo/lcov-server/dev-status.svg)](https://david-dm.org/gabrielcsapo/lcov-server#info=devDependencies)
+[![npm](https://img.shields.io/npm/dt/lcov-server.svg)]()
+[![npm](https://img.shields.io/npm/dm/lcov-server.svg)]()
 
 # What is this?
 
 It is a lcov server! It stores lcov reports and categorizes them based on their origin repo.
 
-![main screenshot](./screenshots/main.png)
+# Prerequisites
+
+- `mongodb` installed
+- `nodejs` installed
 
 # Install
 
 ```
-npm install node-coverage-server -g
+npm install lcov-server -g
 ```
 
 # Usage
@@ -25,13 +30,13 @@ npm install node-coverage-server -g
 > cli
 
 ```
-tap test --coverage-report=text-lcov | node-coverage-cli
+tap test --coverage-report=text-lcov | lcov-server-cli
 ```
 
 > cli:help
 
 ```
-Usage: node-coverage-cli [options]
+Usage: lcov-server-cli [options]
 
 Options:
 
@@ -43,7 +48,13 @@ Options:
 > server
 
 ```
-Usage: node-coverage-server [options]
+lcov-server
+```
+
+> server:help
+
+```
+Usage: lcov-server [options]
 
 Options:
 
@@ -51,8 +62,3 @@ Options:
   -V, --version  output the version number
   -d, --db       Set the db connection
 ```
-
-# Prerequisites
-
-- mongodb installed
-- nodejs installed

@@ -14,7 +14,7 @@ class Coverage extends React.Component {
   }
 
   componentDidMount() {
-    const { source, owner, name } = this.props.params;
+    const { source, owner, name } = this.props.match.params;
 
     fetch(`/api/v1/coverage/${source}/${owner}/${name}`)
      .then((response) => {
@@ -34,7 +34,7 @@ class Coverage extends React.Component {
 
   render() {
       const { project, error, loading } = this.state;
-      const { source, owner, name } = this.props.params;
+      const { source, owner, name } = this.props.match.params;
 
       if(loading) {
         return (<div className="text-center" style={{width:"100%",position: "absolute",top: "50%",transform: "translateY(-50%)"}}>
@@ -51,7 +51,7 @@ class Coverage extends React.Component {
           </div>);
       } else if(project) {
           const lineMap = {};
-          const file = this.props.params.file.replace('$2E', '.');
+          const file = this.props.match.params.file.replace('$2E', '.');
           const history = project.history[project.history.length - 1];
           const url = history._id;
           const fileSource = history.source_files.filter((f) => {

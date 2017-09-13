@@ -1,31 +1,9 @@
 import React from 'react';
+import PropTypes from 'prop-types';
+
 import Point from './point';
 
-const Points = React.createClass({
-  propTypes: {
-    points:  React.PropTypes.object,
-    dataSetIndex: React.PropTypes.number,
-    showTooltip: React.PropTypes.func,
-    hideTooltip: React.PropTypes.func,
-    radius: React.PropTypes.number,
-    stroke: React.PropTypes.string,
-    label: React.PropTypes.string,
-    dots: React.PropTypes.boolean,
-    hideLabels: React.PropTypes.boolean
-  },
-
-  defaultProps: {
-    points: {},
-    dataSetIndex: 0,
-    showTooltip: () => {},
-    hideTooltip: () => {},
-    radius: 0,
-    stroke: '#fff',
-    label: '',
-    dots: true,
-    hideLabels: false
-  },
-
+class Points extends React.Component {
 	render() {
 		let { points, dataSetIndex, showTooltip, hideTooltip, radius, stroke, label, dots, hideLabels } = this.props;
 
@@ -56,7 +34,31 @@ const Points = React.createClass({
 			</g>
 		);
 	}
-});
+}
+
+Points.propTypes = {
+  points:  PropTypes.object,
+  dataSetIndex: PropTypes.number,
+  showTooltip: PropTypes.func,
+  hideTooltip: PropTypes.func,
+  radius: PropTypes.number,
+  stroke: PropTypes.string,
+  label: PropTypes.string,
+  dots: PropTypes.boolean,
+  hideLabels: PropTypes.boolean
+};
+
+Points.defaultProps = {
+  points: {},
+  dataSetIndex: 0,
+  showTooltip: () => {},
+  hideTooltip: () => {},
+  radius: 0,
+  stroke: '#fff',
+  label: '',
+  dots: true,
+  hideLabels: false
+};
 
 module.exports = {
   Points

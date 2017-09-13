@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 import { Curve } from './curve';
 import { XAxis, YAxis } from './axis';
@@ -7,28 +8,10 @@ import { Tooltip } from './tooltip';
 
 import './line.css';
 
-const LineChart = React.createClass({
-	propTypes: {
-		data: React.PropTypes.array,
-    axis: React.PropTypes.array,
-		colors: React.PropTypes.array,
-		labels: React.PropTypes.array,
-		lines: React.PropTypes.booean,
-		area: React.PropTypes.boolean,
-		dots: React.PropTypes.boolean,
-		stroke: React.PropTypes.number,
-		radius: React.PropTypes.number,
-		height: React.PropTypes.number,
-		width: React.PropTypes.number,
-		grid: React.PropTypes.boolean,
-		padding: React.PropTypes.number,
-		heightRatio: React.PropTypes.number,
-		maxValue: React.PropTypes.number,
-		hideLabels: React.PropTypes.boolean
-	},
-
-	getInitialState() {
-		return {
+class LineChart extends React.Component {
+	constructor(props) {
+		super(props);
+		this.state = {
 			tooltip: false,
 			value: '',
 			dataSet: 0,
@@ -38,18 +21,15 @@ const LineChart = React.createClass({
 			color: '',
       updating: false
 		};
-	},
-
+	}
 	componentWillReceiveProps() {
     this.setState({ updating: true }, this.endUpdate);
-	},
-
+	}
 	endUpdate() {
 		setTimeout(() => {
       this.setState({ updating: false });
 		}, 300);
-	},
-
+	}
 	showTooltip(point, dataSetIndex, index) {
 		this.setState({
 			updating: false,
@@ -61,12 +41,10 @@ const LineChart = React.createClass({
 			y: point[1],
 			color: point[3]
 		});
-	},
-
+	}
 	hideTooltip() {
 		this.setState(this.getInitialState());
-	},
-
+	}
 	render() {
 		const { updating, tooltip, value, x, y, color } = this.state;
 		let {
@@ -109,11 +87,11 @@ const LineChart = React.createClass({
 		// Calculate the coordinates
     dataSet = data.map((pts, di) =>
       pts.map((pt, pi) => [
-      ~~((width / size) * pi + padding) + .5, // x
-      ~~((heightRatio) * (maxValue - pt) + padding) + .5, // y
-      pt, // value
-      colors[di % colors.length] // color
-    ]
+	      ~~((width / size) * pi + padding) + .5, // x
+	      ~~((heightRatio) * (maxValue - pt) + padding) + .5, // y
+	      pt, // value
+	      colors[di % colors.length] // color
+	    ]
     ));
 
 		const svgOpts = {
@@ -161,7 +139,26 @@ const LineChart = React.createClass({
 			: null }
 		</span>);
 	}
-});
+}
+
+LineChart.propTypes = {
+	data: PropTypes.array,
+	axis: PropTypes.array,
+	colors: PropTypes.array,
+	labels: PropTypes.array,
+	lines: PropTypes.booean,
+	area: PropTypes.boolean,
+	dots: PropTypes.boolean,
+	stroke: PropTypes.number,
+	radius: PropTypes.number,
+	height: PropTypes.number,
+	width: PropTypes.number,
+	grid: PropTypes.boolean,
+	padding: PropTypes.number,
+	heightRatio: PropTypes.number,
+	maxValue: PropTypes.number,
+	hideLabels: PropTypes.boolean
+};
 
 LineChart.defaultProps = {
   data: [],

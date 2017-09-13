@@ -19,7 +19,7 @@ class Coverages extends React.Component {
   }
 
   componentDidMount() {
-    const { source, owner } = this.props.params;
+    const { source, owner } = this.props.match.params;
     let url = '/api/v1/coverage'; // Fetches all the coverage saved on the server
     // filters the coverages to only show the ones that are based on this source and owner
     if(source && owner) {
@@ -32,6 +32,7 @@ class Coverages extends React.Component {
       .then((response) => {
         return response.json();
       }).then((coverages) => {
+        console.log(coverages);
         this.setState({
           coverages: coverages,
           loading: false

@@ -36,10 +36,10 @@ module.exports = {
     plugins: [
       new webpack.DefinePlugin({
         'process.env': {
-          'NODE_ENV': JSON.stringify('production')
+          'NODE_ENV': JSON.stringify(process.env.NODE_ENV || 'production')
         }
       }),
-      new webpack.ContextReplacementPlugin(/moment[\\\/]locale$/, /^\.\/(en)$/),
+      new webpack.ContextReplacementPlugin(/moment[\\\/]locale$/, /^\.\/(en)$/), // eslint-disable-line
       new webpack.optimize.UglifyJsPlugin({
         comments: false,
         compress: {

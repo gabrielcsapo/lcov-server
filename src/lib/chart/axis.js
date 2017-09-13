@@ -1,20 +1,7 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
-const XAxis = React.createClass({
-  propTypes: {
-    padding: React.PropTypes.number,
-    height: React.PropTypes.number,
-    width: React.PropTypes.number,
-    maxValue: React.PropTypes.number,
-  },
-
-  defaultProps: {
-    padding: 0,
-    height: 0,
-    width: 0,
-    maxValue: 0
-  },
-
+class XAxis extends React.Component {
 	render() {
 		let { padding, height, width, maxValue } = this.props;
 		let segment = height / 4;
@@ -25,7 +12,7 @@ const XAxis = React.createClass({
 		return (<g>
 			{lines.map((l, li) => {
 				const y = ~~(l * segment + padding) + .5;
-				return (<g>
+				return (<g key={li}>
 						<line
 							x1={ padding }
 							y1={ y }
@@ -47,23 +34,23 @@ const XAxis = React.createClass({
 			})}
 		</g>);
 	}
-});
+}
 
-const YAxis = React.createClass({
-  propTypes: {
-    padding: React.PropTypes.number,
-    height: React.PropTypes.number,
-    width: React.PropTypes.number,
-    axis: React.PropTypes.array
-  },
+XAxis.propTypes = {
+  padding: PropTypes.number,
+  height: PropTypes.number,
+  width: PropTypes.number,
+  maxValue: PropTypes.number
+};
 
-  defaultProps: {
-    padding: 0,
-    height: 0,
-    width: 0,
-    axis: []
-  },
+XAxis.defaultProps = {
+  padding: 0,
+  height: 0,
+  width: 0,
+  maxValue: 0
+};
 
+class YAxis extends React.Component {
 	render() {
     let { axis, padding, height, width } = this.props;
     let lines = [0, 1, 2, 3, 4];
@@ -73,7 +60,7 @@ const YAxis = React.createClass({
 		return (<g>
 			{lines.map((l, li) => {
 				var x = ~~(li * segment + padding) + .5;
-				return (<g>
+				return (<g key={li}>
 					<line
 						x1={ x } y1={ padding }
 						x2={ x } y2={ height }
@@ -87,7 +74,21 @@ const YAxis = React.createClass({
 			})}
 		</g>);
 	}
-});
+}
+
+YAxis.propTypes = {
+	padding: PropTypes.number,
+	height: PropTypes.number,
+	width: PropTypes.number,
+	axis: PropTypes.array
+};
+
+YAxis.defaultProps = {
+	padding: 0,
+	height: 0,
+	width: 0,
+	axis: []
+};
 
 module.exports = {
   YAxis,

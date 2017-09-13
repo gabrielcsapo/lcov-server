@@ -1,47 +1,15 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
-var Slice = React.createClass({
-  propTypes: {
-    fill: React.PropTypes.string,
-    stroke: React.PropTypes.number,
-    strokeWidth: React.PropTypes.number,
-    showLabel: React.PropTypes.boolean,
-    percent: React.PropTypes.boolean,
-    percentValue: React.PropTypes.number,
-    value: React.PropTypes.number,
-    radius: React.PropTypes.number,
-    hole: React.PropTypes.number,
-    angle: React.PropTypes.angle,
-    startAngle: React.PropTypes.number,
-    trueHole: React.PropTypes.boolean,
-    showTooltip: React.PropTypes.func,
-    hideTooltip: React.PropTypes.func
-  },
-
-  defaultProps: {
-    fill: '#fff',
-    stroke: 3,
-    strokeWidth: 3,
-    showLabel: true,
-    percent: true,
-    percentValue: 0,
-    value: 0,
-    radius: 0,
-    hole: 0,
-    angle: 0,
-    startAngle: 0,
-    trueHole: true,
-    showTooltip: () => {},
-    hideTooltip: () => {}
-  },
-
-	getInitialState: function () {
-		return {
+class Slice extends React.Component {
+	constructor(props) {
+		super(props);
+		this.state = {
 			path: '',
 			x: 0,
 			y: 0
 		};
-	},
+	}
 	getAnglePoint(startAngle, endAngle, radius, x, y) {
 		var x1, y1, x2, y2;
 
@@ -51,14 +19,14 @@ var Slice = React.createClass({
 		y2 = y + radius * Math.sin(Math.PI * endAngle / 180);
 
 		return { x1, y1, x2, y2 };
-	},
-	componentWillReceiveProps: function () {
+	}
+	componentWillReceiveProps() {
 		this.setState({ path: '' });
 		this.draw();
-	},
-	componentDidMount: function () {
+	}
+	componentDidMount() {
 		this.draw();
-	},
+	}
 	draw() {
 		const { radius, hole, angle, showLabel, startAngle, trueHole } = this.props;
 
@@ -87,17 +55,17 @@ var Slice = React.createClass({
 				y: top.y2
 			});
 		}
-	},
+	}
   mouseEnter() {
 		const { x, y } = this.state;
 		const { value, percent, percentValue, fill } = this.props;
 
 		this.props.showTooltip([x, y, value, percent ? percentValue + '%' : value, fill]);
-	},
+	}
 	mouseLeave() {
 		this.props.hideTooltip();
-	},
-	render: function () {
+	}
+	render() {
 		const { path, x, y } = this.state;
 		const { fill, stroke, strokeWidth, showLabel, percent, percentValue, value } = this.props;
 		return (
@@ -118,7 +86,41 @@ var Slice = React.createClass({
 			</g>
 		);
 	}
-});
+}
+
+Slice.propTypes = {
+  fill: PropTypes.string,
+  stroke: PropTypes.number,
+  strokeWidth: PropTypes.number,
+  showLabel: PropTypes.boolean,
+  percent: PropTypes.boolean,
+  percentValue: PropTypes.number,
+  value: PropTypes.number,
+  radius: PropTypes.number,
+  hole: PropTypes.number,
+  angle: PropTypes.angle,
+  startAngle: PropTypes.number,
+  trueHole: PropTypes.boolean,
+  showTooltip: PropTypes.func,
+  hideTooltip: PropTypes.func
+};
+
+Slice.defaultProps = {
+  fill: '#fff',
+  stroke: 3,
+  strokeWidth: 3,
+  showLabel: true,
+  percent: true,
+  percentValue: 0,
+  value: 0,
+  radius: 0,
+  hole: 0,
+  angle: 0,
+  startAngle: 0,
+  trueHole: true,
+  showTooltip: () => {},
+  hideTooltip: () => {}
+};
 
 module.exports = {
     Slice

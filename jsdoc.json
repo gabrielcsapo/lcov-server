@@ -3,7 +3,7 @@
         "allowUnknownTags": false
     },
     "source": {
-        "include": ["./util", "./db", "index.js", "routes.js", "README.md"],
+        "include": ["./lib", "index.js", "README.md"],
         "includePattern": ".js$",
         "excludePattern": "(node_modules/|docs)"
     },
@@ -13,7 +13,7 @@
     "opts": {
         "template": "node_modules/docdash",
         "encoding": "utf8",
-        "destination": "docs/",
+        "destination": "docs/code",
         "recurse": true,
         "verbose": true
     },

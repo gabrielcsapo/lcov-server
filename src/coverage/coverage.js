@@ -16,7 +16,7 @@ class Coverage extends React.Component {
   }
 
   componentDidMount() {
-   const { source, owner, name } = this.props.params;
+   const { source, owner, name } = this.props.match.params;
 
    fetch(`/api/v1/coverage/${source}/${owner}/${name}`)
      .then((response) => {
@@ -50,7 +50,7 @@ class Coverage extends React.Component {
           </pre>
         </div>);
     } else if(project) {
-        const { source, owner, name } = this.props.params;
+        const { source, owner, name } = this.props.match.params;
 
         const history = project.history;
         const url = history[0]._id;

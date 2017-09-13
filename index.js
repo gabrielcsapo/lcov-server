@@ -1,34 +1,16 @@
 const mongoose = require('mongoose');
-mongoose.connect(process.env.MONGO_URL);
+mongoose.connect(process.env.MONGO_URL, { useMongoClient: true });
 
 const express = require('express');
 const Badge = require('openbadge');
 const parse = require('git-url-parse');
 const path = require('path');
-const fs = require('fs');
-const querystring = require('querystring');
+const serveStatic = require('serve-static');
+
 const app = express();
-const Coverage = require('./util/coverage');
-const parseBody = (req, res, next) => {
-  let body = '';
-  req.on('data', (data) => {
-      body += data;
-  });
-  req.on('end', () => {
-      switch(req.headers['content-type']) {
-        case 'application/x-www-form-urlencoded':
-          req.body = querystring.parse(decodeURI(body));
-          break;
-        case 'application/json':
-          req.body = JSON.parse(body);
-          break;
-        default:
-          req.body = body;
-          break;
-      }
-      next();
-  });
-};
+
+const Coverage = require('./lib/coverage');
+const { parseBody } = require('./lib/util');
 const port = process.env.PORT || 8080;
 
 app.post('/api/v1/upload', parseBody, (req, res) => {
@@ -38,14 +20,8 @@ app.post('/api/v1/upload', parseBody, (req, res) => {
     source_files,
     service_job_id,
     service_pull_request,
-    service_name,
-    hash
+    service_name
   } = req.body;
-
-  if(process.env.HASH !== hash) {
-    res.status(500);
-    return res.send({error: `\nversion mismatch, please install the latest version of the cli tool or server.\nnpm install node-coverage-server@latest -g\n`});
-  }
 
   // Make sure the remote url is set correctly
   git.remotes.url = parse(parse(git.remotes.url).toString("ssh")).toString("https");
@@ -123,14 +99,10 @@ app.get('/badge/:service/:owner/:repo.svg', (req, res) => {
     });
 });
 
-app.get('/build.js', (req, res) => {
-  res.set('Content-Type', 'text/js; charset=utf-8');
-  res.send(fs.readFileSync(path.resolve(__dirname, 'dist', 'build.js')));
-});
+app.use(serveStatic(path.resolve(__dirname, 'dist')));
 
 app.get('*', (req, res) => {
-  res.set('Content-Type', 'text/html; charset=utf-8');
-  res.send(fs.readFileSync(path.resolve(__dirname, 'dist', 'index.html')));
+  res.sendFile(path.resolve(__dirname, 'dist', 'index.html'));
 });
 
 app.listen(port, function () {

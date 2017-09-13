@@ -1,6 +1,6 @@
 import React from 'react';
-import { storiesOf } from '@kadira/storybook';
-import { withKnobs, color, boolean, number, array } from '@kadira/storybook-addon-knobs';
+import { storiesOf } from '@storybook/react';
+import { withKnobs, color, boolean, number, array } from '@storybook/addon-knobs';
 
 import { LineChart, PieChart } from '../src/lib/chart';
 
@@ -27,19 +27,19 @@ lineChart
     <LineChart {...opt} width={ 600 } height={ 50 } stroke={ 2 } radius={ 6 } dots={ true } grid={ false } hideLabels={ true } />
   ))
   .add('with custom options', () => {
-    const axis = array('axis', opt.axis);
-    const width = number('width', 400);
-    const height = number('height', 400);
-    const dots = boolean('dots', true);
-    const colors = array('colors', ['#7B43A1', '#F2317A', '#FF9824', '#58CF6C']);
-    const labels = array('label', ['Cats', 'Dogs', 'Ducks', 'Cows']);
-    const hideLabels = boolean('hideLabels', false);
-    const maxValue = number('maxValue', 0);
-    const heightRatio = number('heightRatio', 1);
-    const padding = number('padding', 0);
-    const grid = boolean('grid', true);
-    const stroke = number('stroke', 1);
-    const radius = number('radius', 3);
+    let axis = array('axis', opt.axis);
+    let width = number('width', 400);
+    let height = number('height', 400);
+    let dots = boolean('dots', true);
+    let colors = array('colors', ['#7B43A1', '#F2317A', '#FF9824', '#58CF6C']);
+    let labels = array('label', ['Cats', 'Dogs', 'Ducks', 'Cows']);
+    let hideLabels = boolean('hideLabels', false);
+    let maxValue = number('maxValue', 0);
+    let heightRatio = number('heightRatio', 1);
+    let padding = number('padding', 0);
+    let grid = boolean('grid', true);
+    let stroke = number('stroke', 1);
+    let radius = number('radius', 3);
 
     return (<LineChart
         data={opt.data}
@@ -76,13 +76,13 @@ pieChart
   })
   .add('with custom options', () => {
       let data = array('data', [5, 12, 8, 3, 10]);
-      const radius = number('radius', 150);
-      const hole = number('hole', 50);
-      const colors = array('colors', ['#43A19E', '#7B43A1', '#F2317A', '#FF9824', '#58CF6C']);
-      const labels = boolean('labels', true);
-      const percent = boolean('percent', true);
-      const strokeWidth = number('strokeWidth', 3);
-      const stroke = color('stroke', '#fff');
+      let radius = number('radius', 150);
+      let hole = number('hole', 50);
+      let colors = array('colors', ['#43A19E', '#7B43A1', '#F2317A', '#FF9824', '#58CF6C']);
+      let labels = boolean('labels', true);
+      let percent = boolean('percent', true);
+      let strokeWidth = number('strokeWidth', 3);
+      let stroke = color('stroke', '#fff');
 
       data = data.map((d) => {
           return parseInt(d);

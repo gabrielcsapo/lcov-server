@@ -44,7 +44,7 @@ test('node-coverage-cli', (t) => {
             shell.exec('git commit -m "Initial Commit"');
             shell.exec('git remote add origin http://github.com/gabrielcsapo/sample-module');
 
-            shell.exec(`./node_modules/.bin/tap test/**.js --coverage --coverage-report=text-lcov | ../../../bin/node-coverage-cli.js --url http://localhost:${port}`, {
+            shell.exec(`./node_modules/.bin/tap test/**.js --coverage --coverage-report=text-lcov | ../../../bin/lcov-server-cli.js --url http://localhost:${port}`, {
                 async: true
             });
         });

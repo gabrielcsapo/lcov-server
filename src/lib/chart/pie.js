@@ -1,34 +1,15 @@
 import React from 'react';
+import PropTypes from 'prop-types';
+
 import { Tooltip } from './tooltip';
 import { Slice } from './slice';
 
 import './pie.css';
 
-const Pie = React.createClass({
-  propTypes: {
-    colors: React.PropTypes.array,
-    data: React.PropTypes.array,
-    percent: React.PropTypes.boolean,
-    labels: React.PropTypes.boolean,
-    hole: React.PropTypes.number,
-    radius: React.PropTypes.number,
-    stroke: React.PropTypes.string,
-    strokeWidth: React.PropTypes.number
-  },
-
-  defaultProps: {
-    colors: [],
-    data: [],
-    percent: true,
-    labels: true,
-    hole: 0,
-    radius: 0,
-    stroke: '#fff',
-    strokeWidth: 0
-  },
-
-  getInitialState() {
-		return {
+class Pie extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
 			tooltip: false,
 			value: '',
 			label: 0,
@@ -36,7 +17,7 @@ const Pie = React.createClass({
 			y: 0,
 			color: ''
 		};
-	},
+  }
   showTooltip(point) {
 		this.setState({
 			tooltip: true,
@@ -46,11 +27,11 @@ const Pie = React.createClass({
 			y: point[1],
 			color: point[4]
 		});
-	},
+	}
 	hideTooltip() {
 		this.setState(this.getInitialState());
-	},
-	render: function () {
+	}
+	render() {
 		const { colors, percent, labels, hole, radius, data, stroke, strokeWidth } = this.props;
 
 		const colorsLength = colors.length;
@@ -107,6 +88,28 @@ const Pie = React.createClass({
       </span>
 		);
 	}
-});
+}
+
+Pie.propTypes = {
+  colors: PropTypes.array,
+  data: PropTypes.array,
+  percent: PropTypes.boolean,
+  labels: PropTypes.boolean,
+  hole: PropTypes.number,
+  radius: PropTypes.number,
+  stroke: PropTypes.string,
+  strokeWidth: PropTypes.number
+};
+
+Pie.defaultProps = {
+  colors: [],
+  data: [],
+  percent: true,
+  labels: true,
+  hole: 0,
+  radius: 0,
+  stroke: '#fff',
+  strokeWidth: 0
+};
 
 module.exports = Pie;
