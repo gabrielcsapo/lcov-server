@@ -87,11 +87,11 @@ class LineChart extends React.Component {
 		// Calculate the coordinates
     dataSet = data.map((pts, di) =>
       pts.map((pt, pi) => [
-	      ~~((width / size) * pi + padding) + .5, // x
-	      ~~((heightRatio) * (maxValue - pt) + padding) + .5, // y
-	      pt, // value
-	      colors[di % colors.length] // color
-	    ]
+				~~((width / size) * pi + padding) + .5, // x
+				~~((heightRatio) * (maxValue - pt) + padding) + .5, // y
+				pt, // value
+				colors[di % colors.length] // color
+			]
     ));
 
 		const svgOpts = {
