@@ -16,38 +16,40 @@ test('lcov', function(t) {
         t.ok(data !== undefined);
         t.fail('should not return error');
         t.end();
-      }).catch(function(err) {
+      })
+      .catch(function(err) {
         t.ok(typeof err !== 'undefined', 'error is not undefined');
         t.end();
       });
   });
 
   t.test('should be able to parse string', function(t) {
-    var data = 'TN:TestName\nSF:foobar.js\nend_of_record\n';
-    var expected = [{
-        lines: {
-            found: 0,
-            hit: 0,
-            details: []
-        },
-        functions: {
-            hit: 0,
-            found: 0,
-            details: []
-        },
-        branches: {
-            hit: 0,
-            found: 0,
-            details: []
-        },
-        title: 'TestName',
-        file: 'foobar.js'
+    const data = 'TN:TestName\nSF:foobar.js\nend_of_record\n';
+    const expected = [{
+      lines: {
+        found: 0,
+        hit: 0,
+        details: []
+      },
+      functions: {
+        hit: 0,
+        found: 0,
+        details: []
+      },
+      branches: {
+        hit: 0,
+        found: 0,
+        details: []
+      },
+      title: 'TestName',
+      file: 'foobar.js'
     }];
     lcov.parse(data)
       .then(function(data) {
         t.deepEqual(data, expected, 'data is correctly formed');
         t.end();
-      }).catch(function(err) {
+      })
+      .catch(function(err) {
         t.ok(typeof err !== 'undefined', 'error is not undefined');
         t.fail('should not return error');
         t.end();
@@ -61,7 +63,8 @@ test('lcov', function(t) {
       .then(function(data) {
         t.deepEqual(data, expected, 'data is correctly formed');
         t.end();
-      }).catch(function(err) {
+      })
+      .catch(function(err) {
         t.ok(typeof err !== 'undefined', 'error is not undefined');
         t.fail('should not return error');
         t.end();

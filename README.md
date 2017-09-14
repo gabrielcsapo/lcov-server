@@ -36,13 +36,14 @@ tap test --coverage-report=text-lcov | lcov-server-cli
 > cli:help
 
 ```
-Usage: lcov-server-cli [options]
+  Usage: lcov-server-cli [options]
 
-Options:
 
-  -h, --help      output usage information
-  -V, --version   output the version number
-  -u, --url [db]  Set the url to upload lcov data too
+  Options:
+
+    -V, --version       output the version number
+    -u, --url [server]  Set the url to upload lcov data too
+    -h, --help          output usage information
 ```
 
 > server
@@ -54,11 +55,12 @@ lcov-server
 > server:help
 
 ```
-Usage: lcov-server [options]
+  Usage: lcov-server [options]
 
-Options:
 
-  -h, --help     output usage information
-  -V, --version  output the version number
-  -d, --db       Set the db connection
+  Options:
+
+    -V, --version  output the version number
+    -d, --db [db]  Set the db connection
+    -h, --help     output usage information
 ```

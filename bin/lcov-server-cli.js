@@ -18,7 +18,7 @@ updateNotifier({pkg}).notify();
 
 program
   .version(pkg.version)
-  .option('-u, --url [db]', 'Set the url to upload lcov data too', 'http://localhost:8080')
+  .option('-u, --url [server]', 'Set the url to upload lcov data too', 'http://localhost:8080')
   .parse(process.argv);
 
 const parsedUrl = url.parse(program.url);
@@ -96,7 +96,11 @@ process.stdin.on('end', () => {
               })
               .catch((err) => {
                   console.log(err); // eslint-disable-line
+                  process.exit(1);
               });
       })
-      .catch((err) => { throw err; } );
+      .catch((err) => {
+        console.log(`could not parse lcov report correctly: ${err}`); // eslint-disable-line
+        process.exit(1);
+      });
 });

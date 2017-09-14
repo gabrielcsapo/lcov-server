@@ -17,7 +17,7 @@
   "scripts": {
     "lint": "eslint .",
     "test": "tape test/util/**/*.js test/index.js",
-    "coverage": "tap test/**/*.js --coverage --coverage-report=lcov",
+    "coverage": "tap test/util/**.js test/index.js --coverage --coverage-report=lcov",
     "build": "webpack --progress",
     "start": "./bin/lcov-server.js",
     "dev": "NODE_ENV=development webpack-dev-server --hot --port 5000",
@@ -52,7 +52,6 @@
     "react-router": "^4.2.0",
     "react-router-dom": "^4.2.2",
     "shelljs": "^0.7.8",
-    "storybook": "0.0.1",
     "style-loader": "^0.18.2",
     "tap": "^10.7.2",
     "tape": "^4.8.0",

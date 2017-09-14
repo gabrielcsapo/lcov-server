@@ -38,26 +38,22 @@ test('git', (t) => {
   });
 
   t.test('should fail when no remote is present', (t) => {
-      // make sure the tests are finished before this one is run
-      setTimeout(() => {
-        const root = process.cwd();
-        process.chdir(path.resolve(__dirname, '..', 'fixtures', 'sample-module'));
+    const root = process.cwd();
+    process.chdir(path.resolve(__dirname, '..', 'fixtures', 'sample-module'));
 
-        shell.exec('git init');
-        shell.exec('git add -A');
-        shell.exec('git commit -m "testtest"');
-        git.parse()
-          .then(() => {
-            t.fail('should fail, but doesn\'t');
-            process.chdir(root);
-          })
-          .catch((err) => {
-            t.equal(err, 'no remote found');
-            t.end();
-            process.chdir(root);
-          });
-      }, 3000);
+    shell.exec('git init');
+    shell.exec('git add -A');
+    shell.exec('git commit -m "testtest"');
+    git.parse()
+      .then(() => {
+        t.fail('should fail, but doesn\'t');
+        process.chdir(root);
+      })
+      .catch((err) => {
+        t.equal(err, 'no remote found');
+        t.end();
+        process.chdir(root);
+      });
   });
 
-  t.end();
 });

@@ -18,8 +18,7 @@
   },
   "homepage": "https://github.com/gabrielcsapo/sample-module#readme",
   "devDependencies": {
-    "shelljs": "^0.7.7",
-    "tap": "^10.3.2",
-    "tape": "^4.6.3"
+    "tap": "^10.7.2",
+    "tape": "^4.8.0"
   }
 }
