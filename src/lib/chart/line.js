@@ -43,7 +43,16 @@ class LineChart extends React.Component {
 		});
 	}
 	hideTooltip() {
-		this.setState(this.getInitialState());
+		this.setState({
+			tooltip: false,
+			value: '',
+			dataSet: 0,
+			index: 0,
+			x: 0,
+			y: 0,
+			color: '',
+      updating: false
+		});
 	}
 	render() {
 		const { updating, tooltip, value, x, y, color } = this.state;
@@ -124,7 +133,7 @@ class LineChart extends React.Component {
 							stroke={ stroke }
 						/>
 
-						<Points hideLabels={ hideLabels } dots={ dots } label={ labels[pi] } points={ p } dataSetIndex={ pi } showTooltip={ this.showTooltip } hideTooltip={ this.hideTooltip } stroke={ stroke } radius={ radius } />
+						<Points hideLabels={ hideLabels } dots={ dots } label={ labels[pi] } points={ p } dataSetIndex={ pi } showTooltip={ this.showTooltip.bind(this) } hideTooltip={ this.hideTooltip.bind(this) } stroke={ stroke } radius={ radius } />
 					</g>
 				)}
 			</svg>

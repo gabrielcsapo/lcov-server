@@ -2,8 +2,13 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 class Point extends React.Component {
+	constructor(props) {
+		super(props);
+	}
 	mouseEnter() {
-		this.props.showTooltip(this.props.point, this.props.dataSetIndex, this.props.index);
+		const { radius, point, dataSetIndex, index } = this.props;
+
+		this.props.showTooltip([point[0] + radius * 3, point[1] + radius * 3], dataSetIndex, index);
 	}
 	mouseLeave() {
 		this.props.hideTooltip();
@@ -21,8 +26,8 @@ class Point extends React.Component {
       fill={ color }
 			strokeWidth={ stroke }
       stroke={ '#ffffff' }
-			onMouseEnter={ this.mouseEnter }
-      onMouseLeave={ this.mouseLeave }
+			onMouseEnter={ this.mouseEnter.bind(this) }
+      onMouseLeave={ this.mouseLeave.bind(this) }
     />);
 	}
 }

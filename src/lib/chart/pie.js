@@ -29,7 +29,14 @@ class Pie extends React.Component {
 		});
 	}
 	hideTooltip() {
-		this.setState(this.getInitialState());
+		this.setState({
+			tooltip: false,
+			value: '',
+			label: 0,
+			x: 0,
+			y: 0,
+			color: ''
+		});
 	}
 	render() {
 		const { colors, percent, labels, hole, radius, data, stroke, strokeWidth } = this.props;
@@ -71,8 +78,8 @@ class Pie extends React.Component {
                 fill={ colors[sliceIndex % colorsLength] }
                 stroke={ stroke }
                 strokeWidth={ strokeWidth }
-                showTooltip={ this.showTooltip }
-                hideTooltip={ this.hideTooltip }
+                showTooltip={ this.showTooltip.bind(this) }
+                hideTooltip={ this.hideTooltip.bind(this) }
             />);
           })}
         </svg>

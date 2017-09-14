@@ -1,3 +1,7 @@
+# 0.0.2
+
+- renders tooltips in the correct place
+
 # 0.0.1
 
 - removes the need for directoryHash

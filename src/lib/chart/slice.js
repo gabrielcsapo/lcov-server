@@ -75,8 +75,8 @@ class Slice extends React.Component {
 					fill={ fill }
 					stroke={ stroke }
 					strokeWidth={ strokeWidth }
-          onMouseEnter={ this.mouseEnter }
-          onMouseLeave={ this.mouseLeave }
+          onMouseEnter={ this.mouseEnter.bind(this) }
+          onMouseLeave={ this.mouseLeave.bind(this) }
         />
         { showLabel && percentValue > 5 ?
           <text x={ x } y={ y } fill="#fff" textAnchor="middle">
