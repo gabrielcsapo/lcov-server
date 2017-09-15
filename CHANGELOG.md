@@ -1,3 +1,7 @@
+# 0.0.3
+
+- fixes tooltip displaying the correct value for coverage
+
 # 0.0.2
 
 - renders tooltips in the correct place

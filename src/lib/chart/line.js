@@ -31,10 +31,12 @@ class LineChart extends React.Component {
 		}, 300);
 	}
 	showTooltip(point, dataSetIndex, index) {
+		const { data } = this.props;
+		console.log(point, dataSetIndex, index, data[dataSetIndex][index]);
 		this.setState({
 			updating: false,
 			tooltip: true,
-			value: point[2],
+			value: data[dataSetIndex][index],
 			dataSet: dataSetIndex,
 			index: index,
 			x: point[0],
