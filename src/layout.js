@@ -15,8 +15,8 @@ class Layout extends React.Component {
               </a>
             </div>
             <div className="nav">
-              <a className="text-black" href="/coverage" rel="noopener noreferrer">
-                Coverage
+              <a className="text-black" href="/coverage">
+                Reports
               </a>
             </div>
           </div>

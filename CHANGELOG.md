@@ -1,3 +1,10 @@
+# 0.1.0 (09/17/2017)
+
+- removes the versioning from the api endpoints
+- abstracts fileView from coverageFile view
+- cleans the input lcov before trying to parse it
+- actually tests cli code with a pipe from tap
+
 # 0.0.3
 
 - fixes tooltip displaying the correct value for coverage

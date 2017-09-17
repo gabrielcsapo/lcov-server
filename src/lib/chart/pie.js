@@ -1,8 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import { Tooltip } from './tooltip';
-import { Slice } from './slice';
+import Tooltip from './tooltip';
+import Slice from './slice';
 
 import './pie.css';
 
@@ -39,15 +39,15 @@ class Pie extends React.Component {
 		});
 	}
 	render() {
-		const { colors, percent, labels, hole, radius, data, stroke, strokeWidth } = this.props;
+		let { colors, percent, labels, hole, radius, data, stroke, strokeWidth } = this.props;
 
-		const colorsLength = colors.length;
-		const diameter = radius * 2;
+		let colorsLength = colors.length;
+		let diameter = radius * 2;
 
     let sum = data.reduce(function (carry, current) { return carry + current; }, 0);
     let _startAngle = 0;
 
-    const opts = {
+    let opts = {
         width: diameter,
         height: diameter,
         viewBox: '0 0 ' + diameter + ' ' + diameter,
@@ -59,9 +59,9 @@ class Pie extends React.Component {
       <span>
         <svg {...opts}>
           {data.map((slice, sliceIndex) => {
-            const _nextAngle = _startAngle;
-            const _angle = (slice / sum) * 360;
-            const _percent = (slice / sum) * 100;
+            let _nextAngle = _startAngle;
+            let _angle = (slice / sum) * 360;
+            let _percent = (slice / sum) * 100;
             _startAngle += _angle;
 
             return (<Slice
@@ -119,4 +119,4 @@ Pie.defaultProps = {
   strokeWidth: 0
 };
 
-module.exports = Pie;
+export default Pie;

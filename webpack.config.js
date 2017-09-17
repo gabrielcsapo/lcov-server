@@ -1,7 +1,7 @@
 const webpack = require('webpack');
 const path = require('path');
 
-module.exports = {
+let config = {
     entry: './src/app.js',
     output: {
         path: path.resolve(__dirname, 'dist'),
@@ -19,17 +19,17 @@ module.exports = {
         historyApiFallback: true
     },
     module: {
-        loaders: [{
-                test: /\.css$/,
-                loaders: ['style-loader', 'css-loader']
+        rules: [{
+              test: /\.css$/,
+              use: ['style-loader', 'css-loader'],
             },
             {
-                test: /.jsx?$/,
+              test: /\.js$/,
+              exclude: [/node_modules/],
+              use: [{
                 loader: 'babel-loader',
-                exclude: /node_modules/,
-                query: {
-                    presets: ['es2015', 'react']
-                }
+                options: { presets: ['es2015', 'react'] },
+              }]
             }
         ]
     },
@@ -40,19 +40,24 @@ module.exports = {
         }
       }),
       new webpack.ContextReplacementPlugin(/moment[\\\/]locale$/, /^\.\/(en)$/), // eslint-disable-line
-      new webpack.optimize.UglifyJsPlugin({
-        comments: false,
-        compress: {
-          unused: true,
-          dead_code: true,
-          warnings: false,
-          drop_debugger: true,
-          conditionals: true,
-          evaluate: true,
-          sequences: true,
-          booleans: true,
-        }
-      }),
-      new webpack.optimize.AggressiveMergingPlugin(),
+      new webpack.optimize.AggressiveMergingPlugin()
     ]
 };
+
+if(process.env.NODE_ENV === 'production') {
+  config.plugins.push(new webpack.optimize.UglifyJsPlugin({
+    comments: false,
+    compress: {
+      unused: true,
+      dead_code: true,
+      warnings: false,
+      drop_debugger: true,
+      conditionals: true,
+      evaluate: true,
+      sequences: true,
+      booleans: true,
+    }
+  }));
+}
+
+module.exports = config;

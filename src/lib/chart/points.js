@@ -60,6 +60,4 @@ Points.defaultProps = {
   hideLabels: false
 };
 
-module.exports = {
-  Points
-};
+export default Points;

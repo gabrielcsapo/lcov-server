@@ -22,7 +22,7 @@
 <label for="nav-trigger" class="overlay"></label>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Coverage.html">Coverage</a><ul class='methods'><li data-type='method'><a href="Coverage.html#.get">get</a></li><li data-type='method'><a href="Coverage.html#.save">save</a></li></ul></li></ul><h3>Modules</h3><ul><li><a href="module-util_git.html">util/git</a><ul class='methods'><li data-type='method'><a href="module-util_git.html#~parse">parse</a></li></ul></li><li><a href="module-util_lcov.html">util/lcov</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Coverage.html">Coverage</a><ul class='methods'><li data-type='method'><a href="Coverage.html#.get">get</a></li><li data-type='method'><a href="Coverage.html#.save">save</a></li></ul></li></ul><h3>Modules</h3><ul><li><a href="module-lib_git.html">lib/git</a><ul class='methods'><li data-type='method'><a href="module-lib_git.html#~parse">parse</a></li></ul></li><li><a href="module-lib_lcov.html">lib/lcov</a><ul class='methods'><li data-type='method'><a href="module-lib_lcov.html#~clean">clean</a></li></ul></li></ul>
 </nav>
 
 <div id="main">
@@ -37,136 +37,147 @@
     
     <section>
         <article>
-            <pre class="prettyprint source linenums"><code>'use strict';
-
-/**
- * @module util/lcov
+            <pre class="prettyprint source linenums"><code>/**
+ * @module lib/lcov
  */
 
 const fs = require('fs');
 
-const lcov = {
-  walkFile: function(str, cb) {
-      let data = [];
-      let item;
+function walkFile(str, cb) {
+  let data = [];
+  let item;
 
-      ['end_of_record'].concat(str.split('\n')).forEach((line) => {
-          const allparts = line.trim().split(':');
-          const parts = [allparts.shift(), allparts.join(':')];
-          let lines, fn;
+  ['end_of_record'].concat(str.split('\n')).forEach((line) => {
+    const allparts = line.trim().split(':');
+    const parts = [allparts.shift(), allparts.join(':')];
+    let lines, fn;
 
-          switch (parts[0].toUpperCase()) {
-              case 'TN':
-                  item.title = parts[1].trim();
-                  break;
-              case 'SF':
-                  item.file = parts.slice(1).join(':').trim();
-                  break;
-              case 'FNF':
-                  item.functions.found = Number(parts[1].trim());
-                  break;
-              case 'FNH':
-                  item.functions.hit = Number(parts[1].trim());
-                  break;
-              case 'LF':
-                  item.lines.found = Number(parts[1].trim());
-                  break;
-              case 'LH':
-                  item.lines.hit = Number(parts[1].trim());
-                  break;
-              case 'DA':
-                  lines = parts[1].split(',');
-                  item.lines.details.push({
-                      line: Number(lines[0]),
-                      hit: Number(lines[1])
-                  });
-                  break;
-              case 'FN':
-                  fn = parts[1].split(',');
-                  item.functions.details.push({
-                      name: fn[1],
-                      line: Number(fn[0])
-                  });
-                  break;
-              case 'FNDA':
-                  fn = parts[1].split(',');
-                  item.functions.details.some((i, k) => {
-                      if (i.name === fn[1] &amp;&amp; i.hit === undefined) {
-                          item.functions.details[k].hit = Number(fn[0]);
-                          return true;
-                      }
-                  });
-                  break;
-              case 'BRDA':
-                  fn = parts[1].split(',');
-                  item.branches.details.push({
-                      line: Number(fn[0]),
-                      block: Number(fn[1]),
-                      branch: Number(fn[2]),
-                      taken: ((fn[3] === '-') ? 0 : Number(fn[3]))
-                  });
-                  break;
-              case 'BRF':
-                  item.branches.found = Number(parts[1]);
-                  break;
-              case 'BRH':
-                  item.branches.hit = Number(parts[1]);
-                  break;
+    switch (parts[0].toUpperCase()) {
+      case 'TN':
+        item.title = parts[1].trim();
+        break;
+      case 'SF':
+        item.file = parts.slice(1).join(':').trim();
+        break;
+      case 'FNF':
+        item.functions.found = Number(parts[1].trim());
+        break;
+      case 'FNH':
+        item.functions.hit = Number(parts[1].trim());
+        break;
+      case 'LF':
+        item.lines.found = Number(parts[1].trim());
+        break;
+      case 'LH':
+        item.lines.hit = Number(parts[1].trim());
+        break;
+      case 'DA':
+        lines = parts[1].split(',');
+        item.lines.details.push({
+          line: Number(lines[0]),
+          hit: Number(lines[1])
+        });
+        break;
+      case 'FN':
+        fn = parts[1].split(',');
+        item.functions.details.push({
+          name: fn[1],
+          line: Number(fn[0])
+        });
+        break;
+      case 'FNDA':
+        fn = parts[1].split(',');
+        item.functions.details.some((i, k) => {
+          if (i.name === fn[1] &amp;&amp; i.hit === undefined) {
+            item.functions.details[k].hit = Number(fn[0]);
+            return true;
           }
+        });
+        break;
+      case 'BRDA':
+        fn = parts[1].split(',');
+        item.branches.details.push({
+          line: Number(fn[0]),
+          block: Number(fn[1]),
+          branch: Number(fn[2]),
+          taken: ((fn[3] === '-') ? 0 : Number(fn[3]))
+        });
+        break;
+      case 'BRF':
+        item.branches.found = Number(parts[1]);
+        break;
+      case 'BRH':
+        item.branches.hit = Number(parts[1]);
+        break;
+    }
 
-          if (line.indexOf('end_of_record') > -1) {
-              data.push(item);
-              item = {
-                  lines: {
-                      found: 0,
-                      hit: 0,
-                      details: []
-                  },
-                  functions: {
-                      hit: 0,
-                      found: 0,
-                      details: []
-                  },
-                  branches: {
-                      hit: 0,
-                      found: 0,
-                      details: []
-                  }
-              };
-          }
-      });
+    if (line.indexOf('end_of_record') > -1) {
+      data.push(item);
+      item = {
+        lines: {
+          found: 0,
+          hit: 0,
+          details: []
+        },
+        functions: {
+          hit: 0,
+          found: 0,
+          details: []
+        },
+        branches: {
+          hit: 0,
+          found: 0,
+          details: []
+        }
+      };
+    }
+  });
 
-      data.shift();
+  data.shift();
 
-      if (data.length) {
-          cb(undefined, data);
-      } else {
-          cb('Failed to parse string');
-      }
-  },
-  parse: (file) => {
-      return new Promise(function(resolve, reject) {
-          if(fs.existsSync(file)) {
-            fs.readFile(file, 'utf8', (err, str) => {
-                if(err) {
-                  reject(err);
-                }
-                return lcov.walkFile(str, function(err, result) {
-                  if(err) return reject(err);
-                  resolve(result);
-                });
-            });
-          } else {
-            return lcov.walkFile(file, function(err, result) {
-              if(err) return reject(err);
-              resolve(result);
-            });
-          }
-    });
+  if (data.length) {
+    cb(undefined, data);
+  } else {
+    cb('Failed to parse string');
   }
-};
+}
 
-module.exports = lcov;
+/**
+ * will clean a lcov string to strip out any unnecessary content
+ * @method clean
+ * @param  {String} coverage - the coverage string to clean
+ * @return {String} - the cleaned version of the coverage string
+ */
+function clean(coverage) {
+  return coverage.substr(coverage.indexOf('TN:'), coverage.lastIndexOf('end_of_record') + 'end_of_record'.length);
+}
+
+function parse(file) {
+  return new Promise(function(resolve, reject) {
+    if (fs.existsSync(file)) {
+      fs.readFile(file, 'utf8', (err, str) => {
+        if (err) {
+          reject(err);
+        }
+        return walkFile(clean(str), function(err, result) {
+          if (err) return reject(err);
+          resolve(result);
+        });
+      });
+    } else {
+      return walkFile(clean(file), function(err, result) {
+        if (err) return reject(err);
+        resolve(result);
+      });
+    }
+  });
+}
+
+module.exports = {
+  walkFile,
+  parse,
+  clean
+};
 </code></pre>
         </article>
     </section>
@@ -179,7 +190,7 @@ module.exports = lcov;
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.4</a> on Wed Sep 13 2017 18:27:42 GMT-0700 (PDT) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Sun Sep 17 2017 16:54:02 GMT-0700 (PDT) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
 </footer>
 
 <script>prettyPrint();</script>

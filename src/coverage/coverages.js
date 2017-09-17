@@ -1,11 +1,10 @@
-import 'whatwg-fetch';
-
 import React from 'react';
-import CoverageChart from './coverageChart';
 import moment from 'moment';
 import parse from 'git-url-parse';
 
-import './style.css';
+import CoverageChart from './chart';
+import Error from '../components/error';
+import Loading from '../components/loading';
 
 class Coverages extends React.Component {
   constructor(props) {
@@ -20,10 +19,10 @@ class Coverages extends React.Component {
 
   componentDidMount() {
     const { source, owner } = this.props.match.params;
-    let url = '/api/v1/coverage'; // Fetches all the coverage saved on the server
+    let url = '/api/coverage'; // Fetches all the coverage saved on the server
     // filters the coverages to only show the ones that are based on this source and owner
     if(source && owner) {
-      url = `/api/v1/coverage/${source}/${owner}`
+      url = `/api/coverage/${source}/${owner}`
       this.setState({
         title: `showing coverage reports for ${owner} on ${source}`
       });
@@ -32,7 +31,6 @@ class Coverages extends React.Component {
       .then((response) => {
         return response.json();
       }).then((coverages) => {
-        console.log(coverages);
         this.setState({
           coverages: coverages,
           loading: false
@@ -49,18 +47,9 @@ class Coverages extends React.Component {
     const { coverages, title, loading, error } = this.state;
 
     if(loading) {
-      return (<div className="text-center" style={{width:"100%",position: "absolute",top: "50%",transform: "translateY(-50%)"}}>
-        Loading 🌪
-      </div>);
+      return (<Loading />);
     } else if(error) {
-        return (<div className="text-center" style={{width:"100%",position: "absolute",top: "50%",transform: "translateY(-50%)"}}>
-          Oh no 🙈 something happened...
-          <br/>
-          <br/>
-          <pre style={{width: '50%', margin: '0 auto'}}>
-            {error}
-          </pre>
-        </div>);
+      return (<Error error={error}/>)
     } else if(coverages.length > 0) {
       return (<div>
         { title ?
@@ -68,7 +57,7 @@ class Coverages extends React.Component {
             <br/>
             <i> { title } </i>
           </div>
-        : null}
+        : '' }
         {coverages.map((coverage) => {
             const url = coverage._id;
 
@@ -86,6 +75,7 @@ class Coverages extends React.Component {
                 data[1].push(data[1][0]);
                 data[2].push(data[2][0]);
             };
+
             const percentage = parseInt(data[0][data[0].length - 1]);
             const { message, commit, branch, author_name, author_date } = coverage.history[coverage.history.length - 1].git;
             const { resource, owner, name } = parse(url);
@@ -94,12 +84,12 @@ class Coverages extends React.Component {
             const commitUrl = `${url}/commit/${commit}`;
 
             return (<div className="coverage">
-              <div className="coverage_header">
+              <div className="coverage-header">
                  <div style={{display: 'inline-block', width: '100%'}}>
                    <div style={{float: 'left', textAlign: 'left'}}>
                        <h3> <a href={`/coverage/${resource.replace(/\./g, '%2E').replace(`.${protocol}`, '')}/${owner}/`}>{owner}</a> / <a href={`/coverage/${resource.replace(/\./g, '%2E').replace(`.${protocol}`, '')}/${owner}/${name}`}>{name}</a> </h3>
                        <p>
-                         <a className="coverage_commit_message" href={commitUrl} target="_blank"> {message} </a>
+                         <a className="coverage-commit-message" href={commitUrl} target="_blank"> {message} </a>
                          on branch
                          <b> {branch} </b>
                          {moment(author_date * 1000).fromNow()}
@@ -110,7 +100,7 @@ class Coverages extends React.Component {
 
                    <h3 style={{float: 'right', color: color}}>{percentage}%</h3>
                  </div>
-                 <CoverageChart width={window.innerWidth - 200} data={data} height={100} />
+                 <CoverageChart width={window.innerWidth - 200} height={100} data={data} />
               </div>
             </div>);
         })}

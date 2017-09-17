@@ -13,13 +13,13 @@ test('lcov-server-cli', (t) => {
     const wdir = process.cwd();
     const app = express();
 
-    app.post('/api/v1/upload', parseBody, (req, res) => {
+    app.post('/api/upload', parseBody, (req, res) => {
       t.deepEqual(Object.keys(req.body), ['service_job_id', 'service_pull_request', 'service_name', 'source_files', 'git', 'run_at']);
       t.equal(Array.isArray(req.body['source_files']), true);
       t.equal(typeof req.body['git'], 'object');
       t.deepEqual(Object.keys(req.body['git']), ['commit', 'author_name', 'author_email', 'author_date', 'committer_name', 'committer_email', 'committer_date', 'message', 'branch', 'remotes']);
 
-      res.status(200).end();
+      res.status(200).end(JSON.stringify({ success: 'sent successfully' }));
     });
 
 
@@ -39,7 +39,11 @@ test('lcov-server-cli', (t) => {
       shell.exec('git commit -m "Initial Commit"');
       shell.exec('git remote add origin http://github.com/gabrielcsapo/sample-module');
 
-      shell.exec(`./node_modules/.bin/tap test/**.js --coverage --coverage-report=text-lcov | ../../../bin/lcov-server-cli.js --url http://localhost:${port}`, () => { 
+      shell.exec(`./node_modules/.bin/tap test/index.js --coverage --coverage-report=text-lcov | ../../../bin/lcov-server-cli.js --url http://localhost:${port}`, (code, stdout, stderr) => {
+        t.equal(code, 0);
+        t.equal(stdout, '\n coverage sent successfully 💚 \n\n');
+        t.equal(stderr, '');
+
         shell.exec('rm -rf .git');
         server.close();
         process.chdir(wdir);

@@ -13,7 +13,7 @@ const Coverage = require('./lib/coverage');
 const { parseBody } = require('./lib/util');
 const port = process.env.PORT || 8080;
 
-app.post('/api/v1/upload', parseBody, (req, res) => {
+app.post('/api/upload', parseBody, (req, res) => {
   let {
     git,
     run_at,
@@ -41,7 +41,7 @@ app.post('/api/v1/upload', parseBody, (req, res) => {
   });
 });
 
-app.get('/api/v1/coverage', (req, res) => {
+app.get('/api/coverage', (req, res) => {
   Coverage.get()
     .then((coverages) => {
       res.send(coverages);
@@ -51,7 +51,7 @@ app.get('/api/v1/coverage', (req, res) => {
     });
 });
 
-app.get('/api/v1/coverage/:service/:owner', (req, res) => {
+app.get('/api/coverage/:service/:owner', (req, res) => {
   const { service, owner } = req.params;
 
   Coverage.get(new RegExp(`${service.replace(/%2E/g, '.')}.*/${owner}/`))
@@ -63,7 +63,7 @@ app.get('/api/v1/coverage/:service/:owner', (req, res) => {
     });
 });
 
-app.get('/api/v1/coverage/:service/:owner/:repo', (req, res) => {
+app.get('/api/coverage/:service/:owner/:repo', (req, res) => {
   const { service, owner, repo } = req.params;
 
   Coverage.get(new RegExp(`${service.replace(/%2E/g, '.')}.*/${owner}/${repo}`))
@@ -106,5 +106,5 @@ app.get('*', (req, res) => {
 });
 
 app.listen(port, function () {
-  console.log(`node-coverage-server is listening on http://localhost:${port}`); // eslint-disable-line
+  console.log(`lcov-server is listening on http://localhost:${port}`); // eslint-disable-line
 });

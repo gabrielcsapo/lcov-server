@@ -1,10 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import { Curve } from './curve';
+import Curve from './curve';
 import { XAxis, YAxis } from './axis';
-import { Points } from './points';
-import { Tooltip } from './tooltip';
+import Points from './points';
+import Tooltip from './tooltip';
 
 import './line.css';
 
@@ -31,8 +31,8 @@ class LineChart extends React.Component {
 		}, 300);
 	}
 	showTooltip(point, dataSetIndex, index) {
-		const { data } = this.props;
-		console.log(point, dataSetIndex, index, data[dataSetIndex][index]);
+		let { data } = this.props;
+
 		this.setState({
 			updating: false,
 			tooltip: true,
@@ -57,7 +57,7 @@ class LineChart extends React.Component {
 		});
 	}
 	render() {
-		const { updating, tooltip, value, x, y, color } = this.state;
+		let { updating, tooltip, value, x, y, color } = this.state;
 		let {
 			data,
 			lines,
@@ -78,7 +78,7 @@ class LineChart extends React.Component {
 		} = this.props;
 
 		let dataSet = [];
-		const size = data[0].length - 1;
+		let size = data[0].length - 1;
 
 		height = height || width * (9 / 16);
 
@@ -105,7 +105,7 @@ class LineChart extends React.Component {
 			]
     ));
 
-		const svgOpts = {
+		let svgOpts = {
 			xmlns: 'http://www.w3.org/2000/svg',
 			width: (width + padding * 2) + 'px',
 			height: (height + 2 * padding) + 'px',
@@ -189,4 +189,4 @@ LineChart.defaultProps = {
   width: 400
 };
 
-module.exports = LineChart;
+export default LineChart;

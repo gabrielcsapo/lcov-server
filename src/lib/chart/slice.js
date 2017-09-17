@@ -28,7 +28,7 @@ class Slice extends React.Component {
 		this.draw();
 	}
 	draw() {
-		const { radius, hole, angle, showLabel, startAngle, trueHole } = this.props;
+		let { radius, hole, angle, showLabel, startAngle, trueHole } = this.props;
 
 		let path = [];
 		let left, right, top = {};
@@ -57,8 +57,8 @@ class Slice extends React.Component {
 		}
 	}
   mouseEnter() {
-		const { x, y } = this.state;
-		const { value, percent, percentValue, fill } = this.props;
+		let { x, y } = this.state;
+		let { value, percent, percentValue, fill } = this.props;
 
 		this.props.showTooltip([x, y, value, percent ? percentValue + '%' : value, fill]);
 	}
@@ -66,8 +66,8 @@ class Slice extends React.Component {
 		this.props.hideTooltip();
 	}
 	render() {
-		const { path, x, y } = this.state;
-		const { fill, stroke, strokeWidth, showLabel, percent, percentValue, value } = this.props;
+		let { path, x, y } = this.state;
+		let { fill, stroke, strokeWidth, showLabel, percent, percentValue, value } = this.props;
 		return (
 			<g overflow="hidden">
 				<path
@@ -122,6 +122,4 @@ Slice.defaultProps = {
   hideTooltip: () => {}
 };
 
-module.exports = {
-    Slice
-};
+export default Slice;

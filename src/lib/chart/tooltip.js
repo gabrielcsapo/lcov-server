@@ -3,8 +3,8 @@ import PropTypes from 'prop-types';
 
 class Tooltip extends React.Component {
   render() {
-		const { value, label, x, y, color } = this.props;
-    const style = {
+		let { value, label, x, y, color } = this.props;
+    let style = {
 			left: ~~x,
 			top: ~~y
 		};
@@ -34,6 +34,4 @@ Tooltip.defaultProps = {
   color: ''
 };
 
-module.exports = {
-  Tooltip
-};
+export default Tooltip;

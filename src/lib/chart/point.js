@@ -6,7 +6,7 @@ class Point extends React.Component {
 		super(props);
 	}
 	mouseEnter() {
-		const { radius, point, dataSetIndex, index } = this.props;
+		let { radius, point, dataSetIndex, index } = this.props;
 
 		this.props.showTooltip([point[0] + radius * 3, point[1] + radius * 3], dataSetIndex, index);
 	}
@@ -14,10 +14,10 @@ class Point extends React.Component {
 		this.props.hideTooltip();
 	}
 	render() {
-    const { point, stroke, radius } = this.props;
-    const x = point[0];
-    const y = point[1];
-    const color = point[3];
+    let { point, stroke, radius } = this.props;
+    let x = point[0];
+    let y = point[1];
+    let color = point[3];
 
 		return (<circle
 			cx={ x }
@@ -52,4 +52,4 @@ Point.defaultProps = {
   hideTooltip: () => {}
 };
 
-module.exports = Point;
+export default Point;

@@ -11,7 +11,7 @@ class XAxis extends React.Component {
 
 		return (<g>
 			{lines.map((l, li) => {
-				const y = ~~(l * segment + padding) + .5;
+				let y = ~~(l * segment + padding) + .5;
 				return (<g key={li}>
 						<line
 							x1={ padding }
@@ -90,7 +90,7 @@ YAxis.defaultProps = {
 	axis: []
 };
 
-module.exports = {
+export {
   YAxis,
   XAxis
 };

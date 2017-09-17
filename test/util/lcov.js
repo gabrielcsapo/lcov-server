@@ -1,17 +1,18 @@
 const path = require('path');
-const lcov = require('../../lib/lcov');
+const fs = require('fs');
+const { parse, clean } = require('../../lib/lcov');
 const test = require('tape');
 
 test('lcov', function(t) {
-  t.plan(4);
+  t.plan(5);
 
   t.test('parse should be a function', function(t) {
-    t.ok(typeof lcov.parse === 'function');
+    t.ok(typeof parse === 'function');
     t.end();
   });
 
   t.test('should return error on bad file parsing', function(t) {
-    lcov.parse('foobar')
+    parse('foobar')
       .then(function(data) {
         t.ok(data !== undefined);
         t.fail('should not return error');
@@ -44,7 +45,7 @@ test('lcov', function(t) {
       title: 'TestName',
       file: 'foobar.js'
     }];
-    lcov.parse(data)
+    parse(data)
       .then(function(data) {
         t.deepEqual(data, expected, 'data is correctly formed');
         t.end();
@@ -59,7 +60,7 @@ test('lcov', function(t) {
   t.test('should be able to parse file', function(t) {
     const file = path.join(__dirname, '..', 'fixtures', 'lcov.info');
     const expected = require('../fixtures/lcov.json');
-    lcov.parse(file)
+    parse(file)
       .then(function(data) {
         t.deepEqual(data, expected, 'data is correctly formed');
         t.end();
@@ -69,6 +70,13 @@ test('lcov', function(t) {
         t.fail('should not return error');
         t.end();
       });
+  });
+
+  t.test('should be able to clean a malformed input', (t) => {
+    const expected = fs.readFileSync(path.join(__dirname, '..', 'fixtures', 'cleaned-lcov.txt')).toString('utf8');
+    const file = fs.readFileSync(path.join(__dirname, '..', 'fixtures', 'uncleaned-lcov.txt')).toString('utf8');
+    t.equal(clean(file), expected);
+    t.end();
   });
 
 });

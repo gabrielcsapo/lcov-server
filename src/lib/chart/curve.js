@@ -50,9 +50,7 @@ Curve.propTypes = {
 	updating: PropTypes.updating
 };
 
-module.exports = {
-  Curve
-};
+export default Curve;
 
 // Catmull-Rom to Bezier found here: http://jsdo.it/ynakajima/catmullrom2bezier
 // Whoever wrote this is AWESOME! Thank you!

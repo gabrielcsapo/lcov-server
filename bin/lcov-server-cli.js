@@ -62,7 +62,7 @@ process.stdin.on('end', () => {
                   const options = {
                       hostname: parsedUrl.hostname,
                       port: parsedUrl.port || 80,
-                      path: '/api/v1/upload',
+                      path: '/api/upload',
                       method: 'POST',
                       headers: {
                           'Content-Type': 'application/json',
