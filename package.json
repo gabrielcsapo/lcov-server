@@ -23,7 +23,7 @@
     "dev": "NODE_ENV=development webpack-dev-server --hot --port 5000",
     "generate-docs": "jsdoc -c jsdoc.json",
     "storybook": "start-storybook -p 6006",
-    "build-storybook": "build-storybook"
+    "build-storybook": "build-storybook --output-dir ./docs/storybook"
   },
   "author": "Gabriel J. Csapo <gabecsapo@gmail.com>",
   "bin": {
