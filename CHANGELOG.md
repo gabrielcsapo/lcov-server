@@ -1,3 +1,8 @@
+# 0.1.1 (09/28/2017)
+
+- updates react@16 and reduces bundle size from 343 KB to 313 KB
+- updates; express, mongoose, serve-static, @storybook/addon-knobs, @storybook/react, eslint, eslint-plugin-react, getstorybook, prop-types, react, react-dom
+
 # 0.1.0 (09/17/2017)
 
 - removes the versioning from the api endpoints
