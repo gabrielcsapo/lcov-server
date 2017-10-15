@@ -10,9 +10,21 @@
 [![npm](https://img.shields.io/npm/dt/lcov-server.svg)]()
 [![npm](https://img.shields.io/npm/dm/lcov-server.svg)]()
 
+<!-- TOC depthFrom:1 depthTo:6 withLinks:1 updateOnSave:1 orderedList:0 -->
+
+- [lcov-server](#lcov-server)
+- [What is this?](#what-is-this)
+- [Prerequisites](#prerequisites)
+- [Install](#install)
+- [Usage](#usage)
+	- [Upload](#upload)
+	- [Server](#server)
+
+<!-- /TOC -->
+
 # What is this?
 
-It is a lcov server! It stores lcov reports and categorizes them based on their origin repo.
+It's a lcov server! It stores lcov reports and categorizes them based on their origin repo.
 
 # Prerequisites
 
@@ -27,40 +39,27 @@ npm install lcov-server -g
 
 # Usage
 
-> cli
-
 ```
-tap test --coverage-report=text-lcov | lcov-server-cli
-```
-
-> cli:help
-
-```
-  Usage: lcov-server-cli [options]
+Usage: lcov-server [options]
 
 
-  Options:
+Options:
 
-    -V, --version       output the version number
-    -u, --url [server]  Set the url to upload lcov data too
-    -h, --help          output usage information
+  -V, --version          output the version number
+  -u, --upload [server]  Set the url to upload lcov data too
+  -s, --serve            Pass this option to startup a lcov-server instance
+  -d, --db [db]          Set the db connection
+  -h, --help             output usage information
 ```
 
-> server
+## Upload
 
 ```
-lcov-server
+tap test --coverage-report=text-lcov | lcov-server --upload http://...
 ```
 
-> server:help
+## Server
 
 ```
-  Usage: lcov-server [options]
-
-
-  Options:
-
-    -V, --version  output the version number
-    -d, --db [db]  Set the db connection
-    -h, --help     output usage information
+lcov-server --serve --db mongodb://localhost:32768/lcov-server
 ```

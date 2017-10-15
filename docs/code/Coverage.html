@@ -22,7 +22,7 @@
 <label for="nav-trigger" class="overlay"></label>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Coverage.html">Coverage</a><ul class='methods'><li data-type='method'><a href="Coverage.html#.get">get</a></li><li data-type='method'><a href="Coverage.html#.save">save</a></li></ul></li></ul><h3>Modules</h3><ul><li><a href="module-lib_git.html">lib/git</a><ul class='methods'><li data-type='method'><a href="module-lib_git.html#~parse">parse</a></li></ul></li><li><a href="module-lib_lcov.html">lib/lcov</a><ul class='methods'><li data-type='method'><a href="module-lib_lcov.html#~clean">clean</a></li></ul></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Coverage.html">Coverage</a><ul class='methods'><li data-type='method'><a href="Coverage.html#.get">get</a></li><li data-type='method'><a href="Coverage.html#.repos">repos</a></li><li data-type='method'><a href="Coverage.html#.save">save</a></li></ul></li></ul><h3>Modules</h3><ul><li><a href="module-lib_git.html">lib/git</a><ul class='methods'><li data-type='method'><a href="module-lib_git.html#~parse">parse</a></li></ul></li><li><a href="module-lib_lcov.html">lib/lcov</a><ul class='methods'><li data-type='method'><a href="module-lib_lcov.html#~clean">clean</a></li></ul></li></ul>
 </nav>
 
 <div id="main">
@@ -1151,7 +1151,7 @@
     <pre class="prettyprint"><code>{
   "source_files": [{
       "name": "util/lcov.js",
-      "source": "var fs = require('fs'),\n    path = require('path');\n\nvar exists = fs.exists || path.exists;\n\nvar walkFile = function(str, cb) {\n    var data = [], item;\n\n    [ 'end_of_record' ].concat(str.split('\\n')).forEach(function(line) {\n        line = line.trim();\n        var allparts = line.split(':'),\n            parts = [allparts.shift(), allparts.join(':')],\n            lines, fn;\n\n        switch (parts[0].toUpperCase()) {\n            case 'TN':\n                item.title = parts[1].trim();\n                break;\n            case 'SF':\n                item.file = parts.slice(1).join(':').trim();\n                break;\n            case 'FNF':\n                item.functions.found = Number(parts[1].trim());\n                break;\n            case 'FNH':\n                item.functions.hit = Number(parts[1].trim());\n                break;\n            case 'LF':\n                item.lines.found = Number(parts[1].trim());\n                break;\n            case 'LH':\n                item.lines.hit = Number(parts[1].trim());\n                break;\n            case 'DA':\n                lines = parts[1].split(',');\n                item.lines.details.push({\n                    line: Number(lines[0]),\n                    hit: Number(lines[1])\n                });\n                break;\n            case 'FN':\n                fn = parts[1].split(',');\n                item.functions.details.push({\n                    name: fn[1],\n                    line: Number(fn[0])\n                });\n                break;\n            case 'FNDA':\n                fn = parts[1].split(',');\n                item.functions.details.some(function(i, k) {\n                    if (i.name === fn[1] &amp;&amp; i.hit === undefined) {\n                        item.functions.details[k].hit = Number(fn[0]);\n                        return true;\n                    }\n                });\n                break;\n            case 'BRDA':\n                fn = parts[1].split(',');\n                item.branches.details.push({\n                    line: Number(fn[0]),\n                    block: Number(fn[1]),\n                    branch: Number(fn[2]),\n                    taken: ((fn[3] === '-') ? 0 : Number(fn[3]))\n                });\n                break;\n            case 'BRF':\n                item.branches.found = Number(parts[1]);\n                break;\n            case 'BRH':\n                item.branches.hit = Number(parts[1]);\n                break;\n        }\n\n        if (line.indexOf('end_of_record') > -1) {\n            data.push(item);\n            item = {\n              lines: {\n                  found: 0,\n                  hit: 0,\n                  details: []\n              },\n              functions: {\n                  hit: 0,\n                  found: 0,\n                  details: []\n              },\n              branches: {\n                hit: 0,\n                found: 0,\n                details: []\n              }\n            };\n        }\n    });\n\n    data.shift();\n\n    if (data.length) {\n        cb(undefined, data);\n    } else {\n        cb('Failed to parse string');\n    }\n};\n\nmodule.exports.parse = function(file, cb) {\n    exists(file, function(x) {\n        if (!x) {\n            return walkFile(file, cb);\n        }\n        fs.readFile(file, 'utf8', function(err, str) {\n            walkFile(str, cb);\n        });\n    });\n\n};\n",
+      "source": "function d() {\n  return \'hello\';\n}",
       "coverage": [{
           "lines": {
               "found": 53,
@@ -1243,7 +1243,7 @@
 
     
 
-    <h4 class="name" id=".get"><span class="type-signature">(static) </span>get<span class="signature">(repo<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {Array.&lt;<a href="Coverage.html">Coverage</a>>}</span></h4>
+    <h4 class="name" id=".get"><span class="type-signature">(static) </span>get<span class="signature">(repo)</span><span class="type-signature"> &rarr; {Array.&lt;<a href="Coverage.html">Coverage</a>>}</span></h4>
 
     
 
@@ -1255,7 +1255,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="coverage.js.html">coverage.js</a>, <a href="coverage.js.html#line124">line 124</a>
+        <a href="coverage.js.html">coverage.js</a>, <a href="coverage.js.html#line151">line 151</a>
     </li></ul></dd>
     
 
@@ -1321,8 +1321,6 @@
         <th>Type</th>
 
         
-        <th>Attributes</th>
-        
 
         
 
@@ -1347,16 +1345,6 @@
             
             </td>
 
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-
-                
-
-                
-                </td>
             
 
             
@@ -1412,6 +1400,163 @@
 
     
 
+    <h4 class="name" id=".repos"><span class="type-signature">(static) </span>repos<span class="signature">(repo)</span><span class="type-signature"> &rarr; {Promise}</span></h4>
+
+    
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="coverage.js.html">coverage.js</a>, <a href="coverage.js.html#line123">line 123</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description">
+    <p>gets a list of repos</p>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>repo</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>the url of the repo</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    <ul>
+<li>a promise that resolves with the model after it was inserted</li>
+</ul>
+</div>
+
+
+
+<dl class="param-type">
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Promise</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+        
+            
+
+    
+
     <h4 class="name" id=".save"><span class="type-signature">(static) </span>save<span class="signature">(model)</span><span class="type-signature"> &rarr; {Promise}</span></h4>
 
     
@@ -1424,7 +1569,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="coverage.js.html">coverage.js</a>, <a href="coverage.js.html#line102">line 102</a>
+        <a href="coverage.js.html">coverage.js</a>, <a href="coverage.js.html#line101">line 101</a>
     </li></ul></dd>
     
 

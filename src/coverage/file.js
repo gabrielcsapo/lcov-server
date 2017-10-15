@@ -105,7 +105,7 @@ class File extends React.Component {
                  <CoverageChart width={window.innerWidth - 200} data={data} height={100} />
               </div>
               <br/>
-              <FileView source={fileSource.source} lineMap={lineMap} />
+              <FileView source={fileSource.source} lineMap={lineMap} extension={file.substr(file.lastIndexOf('.') + 1, file.length)}/>
             </div>);
       } else {
         return (<div className="text-center" style={{width:"100%", position: "absolute", top: "50%", transform: "translateY(-50%)"}}>

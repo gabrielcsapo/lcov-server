@@ -3,7 +3,7 @@ const path = require('path');
 const express = require('express');
 const shell = require('shelljs');
 
-const { parseBody } = require('../lib/util');
+const bodyParser = require('body-parser');
 
 test('lcov-server-cli', (t) => {
   t.plan(1);
@@ -12,12 +12,31 @@ test('lcov-server-cli', (t) => {
     const port = 8080;
     const wdir = process.cwd();
     const app = express();
+    app.use(bodyParser.json());
 
-    app.post('/api/upload', parseBody, (req, res) => {
-      t.deepEqual(Object.keys(req.body), ['service_job_id', 'service_pull_request', 'service_name', 'source_files', 'git', 'run_at']);
+    app.post('/api/upload', (req, res) => {
+      t.deepEqual(Object.keys(req.body).sort(), [
+        'git',
+        'run_at',
+        'service_job_id',
+        'service_name',
+        'service_pull_request',
+        'source_files'
+      ]);
       t.equal(Array.isArray(req.body['source_files']), true);
       t.equal(typeof req.body['git'], 'object');
-      t.deepEqual(Object.keys(req.body['git']), ['commit', 'author_name', 'author_email', 'author_date', 'committer_name', 'committer_email', 'committer_date', 'message', 'branch', 'remotes']);
+      t.deepEqual(Object.keys(req.body['git']).sort(), [
+        'author_date',
+        'author_email',
+        'author_name',
+        'branch',
+        'commit',
+        'committer_date',
+        'committer_email',
+        'committer_name',
+        'message',
+        'remotes'
+      ]);
 
       res.status(200).end(JSON.stringify({ success: 'sent successfully' }));
     });
@@ -28,8 +47,6 @@ test('lcov-server-cli', (t) => {
         t.fail(err);
         return;
       }
-      console.log(`node-coverage-server is listening on http://localhost:${port}`); // eslint-disable-line
-
       process.chdir(path.resolve(__dirname, 'fixtures', 'sample-module'));
 
       shell.exec('npm install');
@@ -39,7 +56,7 @@ test('lcov-server-cli', (t) => {
       shell.exec('git commit -m "Initial Commit"');
       shell.exec('git remote add origin http://github.com/gabrielcsapo/sample-module');
 
-      shell.exec(`./node_modules/.bin/tap test/index.js --coverage --coverage-report=text-lcov | ../../../bin/lcov-server-cli.js --url http://localhost:${port}`, (code, stdout, stderr) => {
+      shell.exec(`./node_modules/.bin/tap test/index.js --coverage --coverage-report=text-lcov | ../../../bin/lcov-server.js --upload http://localhost:${port}`, { silent: true }, (code, stdout, stderr) => {
         t.equal(code, 0);
         t.equal(stdout, '\n coverage sent successfully 💚 \n\n');
         t.equal(stderr, '');

@@ -143,7 +143,7 @@ class LineChart extends React.Component {
 				<Tooltip
 					value={ value }
 					label={ labels[this.state.dataSet] }
-					x={ x }
+					x={ x - 8 }
 					y={ y - 15 }
 					color={ color }
 				/>

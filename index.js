@@ -1,4 +1,6 @@
 const mongoose = require('mongoose');
+
+mongoose.Promise = global.Promise;
 mongoose.connect(process.env.MONGO_URL, { useMongoClient: true });
 
 const express = require('express');
@@ -6,14 +8,26 @@ const Badge = require('openbadge');
 const parse = require('git-url-parse');
 const path = require('path');
 const serveStatic = require('serve-static');
+const compression = require('compression');
+const bodyParser = require('body-parser');
+const zlib = require('zlib');
+
+zlib.level = zlib.Z_BEST_COMPRESSION;
+
+const Coverage = require('./lib/coverage');
+
+const port = process.env.PORT || 8080;
 
 const app = express();
 
-const Coverage = require('./lib/coverage');
-const { parseBody } = require('./lib/util');
-const port = process.env.PORT || 8080;
+app.use(bodyParser.json());
+app.use(compression());
+app.use(serveStatic(path.resolve(__dirname, 'dist'), {
+  maxAge: '1d',
+  etag: false
+}));
 
-app.post('/api/upload', parseBody, (req, res) => {
+app.post('/api/upload', (req, res) => {
   let {
     git,
     run_at,
@@ -41,20 +55,20 @@ app.post('/api/upload', parseBody, (req, res) => {
   });
 });
 
-app.get('/api/coverage', (req, res) => {
-  Coverage.get()
-    .then((coverages) => {
-      res.send(coverages);
+app.get('/api/repos', (req, res) => {
+  Coverage.repos()
+    .then((repos) => {
+      res.send(repos);
     }).catch(function(err) {
       res.status(500);
       res.send({error: err});
     });
 });
 
-app.get('/api/coverage/:service/:owner', (req, res) => {
+app.get('/api/repos/:service/:owner', (req, res) => {
   const { service, owner } = req.params;
 
-  Coverage.get(new RegExp(`${service.replace(/%2E/g, '.')}.*/${owner}/`))
+  Coverage.repos(new RegExp(`${service.replace(/%2E/g, '.')}.*/${owner}/`))
     .then((coverages) => {
       res.send(coverages);
     }).catch(function(err) {
@@ -85,7 +99,9 @@ app.get('/badge/:service/:owner/:repo.svg', (req, res) => {
       const lastRun = history[history.length - 1];
       const { lines } = lastRun.source_files[0];
       const percentage = parseInt((lines.hit / lines.found) * 100);
-      Badge({text: ['coverage', `${percentage}%`] }, function(err, badge) {
+      const color = percentage >= 90 ? '#00c661' : percentage <= 89 && percentage >= 80 ? '#cfaf2a' : '#c75151';
+
+      Badge({ color: { right: color }, text: ['coverage', `${percentage}%`] }, function(err, badge) {
           if(err) { throw new Error(err); }
           res.set('Content-Type', 'image/svg+xml; charset=utf-8');
           res.send(badge);
@@ -98,8 +114,6 @@ app.get('/badge/:service/:owner/:repo.svg', (req, res) => {
         });
     });
 });
-
-app.use(serveStatic(path.resolve(__dirname, 'dist')));
 
 app.get('*', (req, res) => {
   res.sendFile(path.resolve(__dirname, 'dist', 'index.html'));

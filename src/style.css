@@ -63,3 +63,7 @@ ul {
 	overflow: hidden;
   display: inline-block;
 }
+
+ul.dropdown-menu.rbt-menu.dropdown-menu-justify {
+  position: absolute;
+}

@@ -1,7 +1,10 @@
 import React from 'react';
 import moment from 'moment';
+import Select from 'react-select';
 
 import CoverageChart from './chart';
+
+import Table from '../components/table';
 import Error from '../components/error';
 import Loading from '../components/loading';
 
@@ -10,6 +13,7 @@ class Coverage extends React.Component {
     super(props);
     this.state = {
       error: '',
+      selectedBranch: '',
       loading: true
     };
   }
@@ -33,8 +37,15 @@ class Coverage extends React.Component {
      });
   }
 
+  onChangeBranch(branch) {
+    this.setState({
+      selectedBranch: branch ? branch.value : ''
+    });
+  }
+
   render() {
-    const { project, error, loading } = this.state;
+    const { selectedBranch, project, error, loading } = this.state;
+
     if(loading) {
       return (<Loading/>);
     } else if(error) {
@@ -42,15 +53,27 @@ class Coverage extends React.Component {
     } else if(project) {
       const { source, owner, name } = this.props.match.params;
 
-      const history = project.history;
-      const url = history[0]._id;
+      const { _id, history } = project;
+      const allBranches = [];
       const data = [[], [], []];
       history.forEach(function(history) {
+        const { git } = history;
         const { lines, branches, functions } = history.source_files[0];
-        data[0].push(parseInt(((lines.hit / lines.found) || 1) * 100))
-        data[1].push(parseInt(((branches.hit / branches.found) || 1) * 100))
-        data[2].push(parseInt(((functions.hit / functions.found) || 1) * 100))
+        allBranches.push(git.branch || git.git_branch);
+
+        if(selectedBranch && selectedBranch === (git.branch || git.git_branch)) {
+          data[0].push(parseInt(((lines.hit / lines.found) || 1) * 100))
+          data[1].push(parseInt(((branches.hit / branches.found) || 1) * 100))
+          data[2].push(parseInt(((functions.hit / functions.found) || 1) * 100))
+        } else if(!selectedBranch) {
+          data[0].push(parseInt(((lines.hit / lines.found) || 1) * 100))
+          data[1].push(parseInt(((branches.hit / branches.found) || 1) * 100))
+          data[2].push(parseInt(((functions.hit / functions.found) || 1) * 100))
+        } else {
+          // noop
+        }
       }, []);
+
       // If there is only one data point
       // add another that is the same value to make a line
       if(data[0].length == 1) {
@@ -59,116 +82,79 @@ class Coverage extends React.Component {
           data[2].push(data[2][0]);
       };
 
-      const percentage = parseInt(data[0][data[0].length - 1]);
-      const { message, commit, branch, author_name, author_date } = history[history.length - 1].git;
-      const color = percentage >= 90 ? '#008a44' : percentage <= 89 && percentage >= 80 ? '#cfaf2a' : '#c75151';
-      const commitUrl = url.replace('.git', `/commit/${commit}`);
+      const { message, commit, branch, git_branch, author_name, author_date } = history[history.length - 1].git;
+      const commitUrl = `${_id}/commit/${commit}`;
+
+      function reduceBuilds(build) {
+        let totalCoverage = build.source_files.map((f) => {
+          const totalFound = f.lines.found + f.branches.found + f.functions.found;
+          const totalHit = f.lines.hit + f.branches.hit + f.functions.hit;
+          const totalCoverage = parseInt((totalHit / totalFound) * 100);
+          return totalCoverage;
+        }, []).reduce((p, c, _ ,a) => p + c / a.length, 0);
+        return {
+          "Branch": build.git.git_branch || build.git.branch || <span style={{ color: "#9a9a9a" }}> unknown </span>, // backwards compatible
+          "Coverage": `${totalCoverage}%`,
+          "Commit": build.git.message,
+          "Committer": build.git.committer_name,
+          "Commit Time": moment(build.git.committer_date * 1000).fromNow(),
+          "Recieved": moment(build.run_at).fromNow()
+        }
+      }
+
+      const options = allBranches.filter((a, i) => allBranches.indexOf(a) == i && !!a).sort().map((b) => {
+        return { value: b, label: b }
+      });
+
+      function reduceSourceFiles(file) {
+        const totalFound = file.lines.found + file.branches.found + file.functions.found;
+        const totalHit = file.lines.hit + file.branches.hit + file.functions.hit;
+        const totalCoverage = parseInt((totalHit / totalFound) * 100);
+        const fileName = encodeURIComponent(file.title).replace(/\./g, '$2E');
+
+        return {
+          "Coverage": `${totalCoverage}%`,
+          "File": <a href={`/coverage/${source.replace(/\./g, '%2E')}/${owner}/${name}/${fileName}`}>
+              { file.title }
+          </a>,
+          "Lines": `${file.lines.hit} / ${file.lines.found}`,
+          "Branches": `${file.branches.hit} / ${file.branches.found}`,
+          "Functions": `${file.functions.hit} / ${file.functions.found}`
+        }
+      }
 
       return (<div className="coverage">
          <div className="coverage-header">
           <div style={{display: 'inline-block', width: '100%'}}>
             <div style={{float: 'left', textAlign: 'left'}}>
-                <h3> <a href={`/coverage/${source.replace(/\./g, '%2E')}/${owner}/`}>{owner}</a> / <a href={`/coverage/${source.replace(/\./g, '%2E')}/${owner}/${name}`}>{name}</a> </h3>
+                <h3>
+                  <a href={`/coverage/${source.replace(/\./g, '%2E')}/${owner}/`}>{owner}</a> / <a href={`/coverage/${source.replace(/\./g, '%2E')}/${owner}/${name}`}>{name}</a>
+                </h3>
                 <p>
                   <a className="coverage-commit-message" href={commitUrl} target="_blank"> {message} </a>
                   on branch
-                  <b> {branch} </b>
+                  <b> {branch || git_branch} </b>
                   {moment(author_date * 1000).fromNow()}
                   &nbsp;by
                   <b> {author_name} </b>
                 </p>
             </div>
-
-            <h3 style={{float: 'right', color: color}}>{percentage}%</h3>
+            <h3 style={{float: 'right'}}> <img src={`/badge/${source.replace(/\./g, '%2E')}/${owner}/${name}.svg`} /> </h3>
+          </div>
+          <div>
+            <Select
+              matchPos="any"
+              value={selectedBranch}
+              options={options}
+              onChange={this.onChangeBranch.bind(this)}
+            />
           </div>
           <CoverageChart width={window.innerWidth - 200} data={data} height={100} />
           <hr/>
-          <ul style={{listStyle: 'none', textAlign: 'center'}}>
-             <li style={{lineHeight: '1.4', display: 'inline-block', margin: '5px', padding: '15px', backgroundColor: 'rgba(53, 74, 87, 0.05)'}}>
-                 <div style={{marginBottom: '5px'}}> Last Build </div>
-                 <div>
-                     <b> { moment(history[history.length - 1].run_at).fromNow() } </b>
-                 </div>
-             </li>
-             <li style={{lineHeight: '1.4', display: 'inline-block', margin: '5px', padding: '15px', backgroundColor: 'rgba(53, 74, 87, 0.05)'}}>
-                 <div style={{marginBottom: '5px'}}> Total Files </div>
-                 <div>
-                     <b> { history[history.length - 1].source_files.length } </b>
-                 </div>
-             </li>
-             <li style={{lineHeight: '1.4', display: 'inline-block', margin: '5px', padding: '15px', backgroundColor: 'rgba(53, 74, 87, 0.05)'}}>
-                 <div style={{marginBottom: '5px'}}> Total Builds </div>
-                 <div>
-                     <b> { history.length } </b>
-                 </div>
-             </li>
-             <li style={{display: 'inline-block', margin: '5px', padding: '15px', backgroundColor: 'rgba(53, 74, 87, 0.05)'}}>
-                 <div style={{marginBottom: '5px'}}> Badge </div>
-                 <div>
-                     <img src={`/badge/${source.replace(/\./g, '%2E')}/${owner}/${name}.svg`} />
-                 </div>
-             </li>
-          </ul>
-          <hr/>
-          <h4> Source Files </h4>
-          <table className="table responsive">
-            <thead>
-              <tr>
-                  <th>Coverage</th>
-                  <th>File</th>
-                  <th>Lines</th>
-                  <th>Branches</th>
-                  <th>Functions</th>
-              </tr>
-            </thead>
-            <tbody>
-            {history[0].source_files.map((f) => {
-                const totalFound = f.lines.found + f.branches.found + f.functions.found;
-                const totalHit = f.lines.hit + f.branches.hit + f.functions.hit;
-                const totalCoverage = parseInt((totalHit / totalFound) * 100);
-                const fileName = encodeURIComponent(f.title).replace(/\./g, '$2E');
-
-                return (<tr>
-                    <td> { totalCoverage }% </td>
-                    <td>
-                        <a href={`/coverage/${source.replace(/\./g, '%2E')}/${owner}/${name}/${fileName}`}>
-                            { f.title }
-                        </a>
-                    </td>
-                    <td> { `${f.lines.hit} / ${f.lines.found}` }</td>
-                    <td> { `${f.branches.hit} / ${f.branches.found}` }</td>
-                    <td> { `${f.functions.hit} / ${f.functions.found}` }</td>
-                </tr>)
-            })}
-            </tbody>
-          </table>
-          <h4> Recent Builds </h4>
-          <table className="table responsive">
-            <tr>
-                <th>Branch</th>
-                <th>Coverage</th>
-                <th>Commit</th>
-                <th>Committer</th>
-                <th>Commit Time</th>
-                <th>Recieved</th>
-            </tr>
-            {history.map((h) => {
-                let totalCoverage = h.source_files.map((f) => {
-                  const totalFound = f.lines.found + f.branches.found + f.functions.found;
-                  const totalHit = f.lines.hit + f.branches.hit + f.functions.hit;
-                  const totalCoverage = parseInt((totalHit / totalFound) * 100);
-                  return totalCoverage;
-                }, []).reduce((p, c, _ ,a) => p + c / a.length, 0);
-                return (<tr>
-                    <td> { h.git.branch } </td>
-                    <td> { totalCoverage }% </td>
-                    <td><div className="coverage-commit-message"> { h.git.message } </div></td>
-                    <td> { h.git.committer_name } </td>
-                    <td> { moment(h.git.committer_date * 1000).fromNow() } </td>
-                    <td> { moment(h.run_at).fromNow() } </td>
-                </tr>)
-            })}
-          </table>
+          <h4> Source Files ({ history[history.length - 1].source_files.length })</h4>
+          <Table data={history[0].source_files.map(reduceSourceFiles)} chunk={5}/>
+          <h4> Recent Builds ({ history.length })</h4>
+          <Table data={history.map(reduceBuilds)} chunk={9}/>
          </div>
       </div>);
     } else {

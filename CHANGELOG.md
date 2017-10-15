@@ -1,3 +1,18 @@
+# 1.0.0 (10/14/2017)
+
+- does not load all content from a single endpoint
+  - adds a repo endpoints that gives a list of all unique repo urls
+  - coverage list component now allows for pagination and search
+- adds syntax highlighting to file view
+- adds pagination to builds
+- fixes bug with badges that only shows one color
+- fixes data integrity gathering the CLI
+- creates a single point of entry rather than having lcov-server and lcov-server-cli it is now just lcov-server
+  - to upload simply use `lcov-server --upload {url}`
+  - to start a server simply use `lcov-server --serve`
+- coverage chart can now be filtered by branch name
+- fixes commitUrl being incorrectly formed on the coverage page
+
 # 0.1.1 (09/28/2017)
 
 - updates react@16 and reduces bundle size from 343 KB to 313 KB

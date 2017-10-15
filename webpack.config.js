@@ -1,11 +1,16 @@
 const webpack = require('webpack');
 const path = require('path');
 
+const MinifyPlugin = require('babel-minify-webpack-plugin');
+
 let config = {
-    entry: './src/app.js',
+    entry: {
+      app: './src/app.js',
+      vendor: ['react', 'react-dom', 'react-router-dom', 'prop-types', 'highlight.js'],
+    },
     output: {
         path: path.resolve(__dirname, 'dist'),
-        filename: 'build.js'
+        filename: 'bundle.js'
     },
     devServer: {
         proxy: {
@@ -28,7 +33,7 @@ let config = {
               exclude: [/node_modules/],
               use: [{
                 loader: 'babel-loader',
-                options: { presets: ['es2015', 'react'] },
+                options: { presets: ['env', 'react'] }
               }]
             }
         ]
@@ -45,19 +50,9 @@ let config = {
 };
 
 if(process.env.NODE_ENV === 'production') {
-  config.plugins.push(new webpack.optimize.UglifyJsPlugin({
-    comments: false,
-    compress: {
-      unused: true,
-      dead_code: true,
-      warnings: false,
-      drop_debugger: true,
-      conditionals: true,
-      evaluate: true,
-      sequences: true,
-      booleans: true,
-    }
-  }));
+  config.plugins.push(new MinifyPlugin());
 }
+
+config.plugins.push(new webpack.optimize.CommonsChunkPlugin({ name: 'vendor', filename: 'vendor.bundle.js' }));
 
 module.exports = config;

@@ -31,5 +31,18 @@ storiesOf('FileView', module)
 
       export default Error;
     `;
-    return <FileView source={file} lineMap={[1, 6, 0, 7, 3, 6, 7, 8, 9]} />;
+    return <FileView source={file} lineMap={[21,74,91,1,86,61,50,64,92,10,84,80,27,73,63,60,59,74,55,91,14,72,10,62,33]} extension={'js'} />;
+  })
+  .add('basic java file', () => {
+    const file = `
+      public class HelloWorld {
+
+        public static void main(String[] args) {
+            // Prints "Hello, World" to the terminal window.
+            System.out.println("Hello, World");
+        }
+
+      }
+    `;
+    return <FileView source={file} lineMap={[1, 6, 0, 7, 3, 6, 9, 3, 9]} extension={'java'} />;
   });
