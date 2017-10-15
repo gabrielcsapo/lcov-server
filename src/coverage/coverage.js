@@ -83,7 +83,7 @@ class Coverage extends React.Component {
       };
 
       const { message, commit, branch, git_branch, author_name, author_date } = history[history.length - 1].git;
-      const commitUrl = `${_id}/commit/${commit}`;
+      const commitUrl = `${_id.replace('.git', '')}/commit/${commit}`;
 
       function reduceBuilds(build) {
         let totalCoverage = build.source_files.map((f) => {

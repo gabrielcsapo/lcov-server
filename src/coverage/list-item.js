@@ -66,7 +66,7 @@ class Coverages extends React.Component {
         const { message, commit, branch, git_branch, author_name, author_date } = coverage.history[coverage.history.length - 1].git;
         const { resource, owner, name } = parse(_id);
         const protocol = resource.substring(resource.lastIndexOf('.') + 1, resource.length);
-        const commitUrl = `${_id}/commit/${commit}`;
+        const commitUrl = `${_id.replace('.git', '')}/commit/${commit}`;
 
         return (
           <div className="coverage">

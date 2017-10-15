@@ -1,3 +1,7 @@
+# 1.0.2 (10/14/2017)
+
+- ensures the commitUrl is formed correctly
+
 # 1.0.1 (10/14/2017)
 
 - returns a unique set of repos correctly from `/api/repos`
