@@ -1,3 +1,7 @@
+# 1.0.1 (10/14/2017)
+
+- returns a unique set of repos correctly from `/api/repos`
+
 # 1.0.0 (10/14/2017)
 
 - does not load all content from a single endpoint
