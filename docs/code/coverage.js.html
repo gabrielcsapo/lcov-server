@@ -181,8 +181,8 @@ module.exports.repos = function repos(repo) {
         } else {
           return u;
         }
-      }).filter((x, i) => docs.indexOf(x) === i);
-      return resolve(docs);
+      });
+      return resolve([...new Set(docs)]);
     });
   });
 };
