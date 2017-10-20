@@ -1,3 +1,7 @@
+# 1.0.4 (10/19/2017)
+
+- ensures the commitUrl is properly formed on the file view page
+
 # 1.0.3 (10/19/2017)
 
 - fixes colors not being industry standard

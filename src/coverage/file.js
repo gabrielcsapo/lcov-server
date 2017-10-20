@@ -45,8 +45,9 @@ class File extends React.Component {
       } else if(project) {
           const lineMap = {};
           const file = this.props.match.params.file.replace('$2E', '.');
-          const history = project.history[project.history.length - 1];
-          const url = history._id;
+          let { _id, history } = project;
+          history = history[project.history.length - 1];
+
           const fileSource = history.source_files.filter((f) => {
               return f.title === file;
           })[0];
@@ -83,8 +84,8 @@ class File extends React.Component {
           const color = linePercentage >= 90 ? '#008a44' : linePercentage <= 89 && linePercentage >= 80 ? '#cfaf2a' : '#c75151';
 
           const { message, commit, branch, author_name, author_date } = history.git;
-          const commitUrl = url.replace('.git', `/commit/${commit}`);
-
+          const commitUrl = `${_id.replace('.git', '')}/commit/${commit}`;
+          console.log(commitUrl);
           return (<div className="coverage">
               <div className="coverage-header">
                  <div style={{display: 'inline-block', width: '100%'}}>
