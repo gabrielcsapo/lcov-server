@@ -4,9 +4,9 @@
 
 [![Npm Version](https://img.shields.io/npm/v/lcov-server.svg)](https://www.npmjs.com/package/lcov-server)
 [![Build Status](https://travis-ci.org/gabrielcsapo/lcov-server.svg?branch=master)](https://travis-ci.org/gabrielcsapo/lcov-server)
-[![Coverage Status](https://lcov-server.herokuapp.com/badge/github/gabrielcsapo/lcov-server.svg)](https://lcov-server.herokuapp.com/coverage/github/gabrielcsapo/lcov-server)
-[![Dependency Status](https://david-dm.org/gabrielcsapo/lcov-server.svg)](https://david-dm.org/gabrielcsapo/lcov-server)
-[![devDependency Status](https://david-dm.org/gabrielcsapo/lcov-server/dev-status.svg)](https://david-dm.org/gabrielcsapo/lcov-server#info=devDependencies)
+[![Coverage Status](https://lcov-server.gabrielcsapo.com/badge/github/gabrielcsapo/lcov-server.svg)](https://lcov-server.gabrielcsapo.com/coverage/github/gabrielcsapo/lcov-server)
+[![Dependency Status](https://starbuck.gabrielcsapo.com/badge/github/gabrielcsapo/lcov-server/status.svg)](https://starbuck.gabrielcsapo.com/github/gabrielcsapo/lcov-server)
+[![devDependency Status](https://starbuck.gabrielcsapo.com/badge/github/gabrielcsapo/lcov-server/dev-status.svg)](https://starbuck.gabrielcsapo.com/github/gabrielcsapo/lcov-server#info=devDependencies)
 [![npm](https://img.shields.io/npm/dt/lcov-server.svg)]()
 [![npm](https://img.shields.io/npm/dm/lcov-server.svg)]()
 
