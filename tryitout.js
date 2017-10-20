@@ -22,6 +22,8 @@ module.exports = {
       }
       pre {
         display: inline-block;
+        background: black;
+        color: white !important;
       }
       code {
         display: inline-block;
@@ -36,12 +38,12 @@ module.exports = {
         <small>v${version}</small>
         <br/>
         <br/>
-        <small class="text-black">
+        <small>
           <pre>npm install -g lcov-server</pre>
           <br/>
           <pre style="width:80%;text-align:left;white-space: pre-wrap;">
   $ lcov-server <code> this will startup the lcov-server </code>
-  $ tap test/**/*.js --coverage-report=text-lcov | lcov-server-cli --url https://localhost:8080</pre>
+  $ tap test/**/*.js --coverage-report=text-lcov | lcov-server --upload https://localhost:8080</pre>
         </small>
         <div style="display: block; margin: 0px auto;">
           <span class="LineChart" style="width: 450px;">
