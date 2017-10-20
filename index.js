@@ -99,7 +99,7 @@ app.get('/badge/:service/:owner/:repo.svg', (req, res) => {
       const lastRun = history[history.length - 1];
       const { lines } = lastRun.source_files[0];
       const percentage = parseInt((lines.hit / lines.found) * 100);
-      const color = percentage >= 90 ? '#00c661' : percentage <= 89 && percentage >= 80 ? '#cfaf2a' : '#c75151';
+      const color = percentage >= 90 ? '#3DB712' : percentage <= 89 && percentage >= 80 ? '#caa300' : '#cc5338';
 
       Badge({ color: { right: color }, text: ['coverage', `${percentage}%`] }, function(err, badge) {
           if(err) { throw new Error(err); }

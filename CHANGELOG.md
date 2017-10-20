@@ -1,3 +1,7 @@
+# 1.0.3 (10/19/2017)
+
+- fixes colors not being industry standard
+
 # 1.0.2 (10/14/2017)
 
 - ensures the commitUrl is formed correctly
