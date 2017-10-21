@@ -76,12 +76,15 @@ if(serve) {
                             'Content-Type': 'application/json',
                         }
                     };
+
                     let req, operation, data = '';
-                    if(parsedUrl.protocol == 'https') {
+                    if(parsedUrl.protocol == 'https:') {
+                      options.port = 443;
                       operation = https;
                     } else {
                       operation = http;
                     }
+
                     req = operation.request(options, (res) => {
                       res.on('data', (chunk) => {
                         data += chunk;

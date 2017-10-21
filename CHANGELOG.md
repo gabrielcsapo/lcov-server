@@ -1,3 +1,7 @@
+# 1.0.5 (10/21/2017)
+
+- fixes a bug that occurs when trying to send data to https server
+
 # 1.0.4 (10/19/2017)
 
 - ensures the commitUrl is properly formed on the file view page
