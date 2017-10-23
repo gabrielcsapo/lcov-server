@@ -1,4 +1,5 @@
 import 'highlight.js/styles/default.css';
+import './monospace.css';
 
 import React from 'react';
 import PropTypes from 'prop-types';
@@ -8,7 +9,7 @@ class FileView extends React.Component {
   render() {
     const { source, lineMap, extension } = this.props;
 
-    return (<div style={{ paddingTop: '25px', paddingBottom: '25px', backgroundColor: 'rgba(246, 244, 244, 0.5)', width: window.innerWidth - 200, margin:'0 auto', fontSize: "16px" }}>
+    return (<div style={{ paddingTop: '25px', paddingBottom: '25px', backgroundColor: 'rgba(246, 244, 244, 0.5)', width: window.innerWidth - 200, margin: '0 auto', fontSize: "16px" }}>
       <table className="table responsive">
         <tbody>
           {Highlight.highlight(extension, source).value.split('\n').map((l, i) => {
@@ -16,13 +17,13 @@ class FileView extends React.Component {
             const line = l.split('').reverse();
             const color = lineMap[i] > 0 ? '#00c661' : '#c75151';
             let space = '';
-            while(line.pop() == ' ') {
+            while (line.pop() == ' ') {
               space += '\u00a0';
             }
             return (<tr key={i}>
-              <td style={{ padding: "2px", paddingRight: "5px", borderBottom: 0, textAlign: "center" }}>{ i }</td>
-              <td style={{ padding: "2px", borderBottom: 0 }} dangerouslySetInnerHTML={{ __html: space + l }}></td>
-              <td style={{ padding: "2px", borderBottom: 0, color: color }}>{ !isNaN(lineMap[i]) ? `${lineMap[i]}x` : '' }</td>
+              <td style={{ fontFamily: "monospace", padding: "2px", paddingRight: "5px", borderBottom: 0, textAlign: "center" }}>{i}</td>
+              <td style={{ fontFamily: "monospace", padding: "2px", borderBottom: 0 }} dangerouslySetInnerHTML={{ __html: space + l }}></td>
+              <td style={{ fontFamily: "monospace", padding: "2px", borderBottom: 0, color: color }}>{!isNaN(lineMap[i]) ? `${lineMap[i]}x` : ''}</td>
             </tr>);
           }, [])}
         </tbody>
