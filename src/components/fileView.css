@@ -1,0 +1,3 @@
+.table-fileView td, .hljs-string, .hljs-keyword, .hljs-comment, .hljs-meta, .hljs-params, .hljs-function, .hljs-attr, .hljs-built_in, .hljs-title, .hljs-literal {
+  font-family: monospace;
+}

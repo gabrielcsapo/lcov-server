@@ -1,3 +1,7 @@
+# 1.0.6 (10/23/2017)
+
+- adds monospace font-family to fileView
+
 # 1.0.5 (10/21/2017)
 
 - fixes a bug that occurs when trying to send data to https server
