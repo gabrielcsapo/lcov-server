@@ -1,3 +1,7 @@
+# 1.1.1 (10/24/2017)
+
+- fixes location of bin
+
 # 1.1.0 (10/24/2017)
 
 - adds the ability to parse `cobertura`, `golang` and `jacoco`
