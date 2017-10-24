@@ -85,7 +85,7 @@ class File extends React.Component {
 
           const { message, commit, branch, author_name, author_date } = history.git;
           const commitUrl = `${_id.replace('.git', '')}/commit/${commit}`;
-          console.log(commitUrl);
+
           return (<div className="coverage">
               <div className="coverage-header">
                  <div style={{display: 'inline-block', width: '100%'}}>

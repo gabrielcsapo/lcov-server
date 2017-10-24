@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>lcov.js - Documentation</title>
+    <title>golang.js - Documentation</title>
 
     <script src="scripts/prettify/prettify.js"></script>
     <script src="scripts/prettify/lang-css.js"></script>
@@ -27,7 +27,7 @@
 
 <div id="main">
     
-    <h1 class="page-title">lcov.js</h1>
+    <h1 class="page-title">golang.js</h1>
     
 
     
@@ -38,118 +38,87 @@
     <section>
         <article>
             <pre class="prettyprint source linenums"><code>/**
- * @module lib/lcov
+ * @module lib/golang
  */
 
-const fs = require('fs');
+var fs = require("fs");
 
-function walkFile(str, cb) {
-  let data = [];
-  let item;
+function walkFile(text, cb) {
+  if(text.indexOf('mode:') == -1) {
+    return cb('Failed to parse string', null);
+  }
 
-  ['end_of_record'].concat(str.split('\n')).forEach((line) => {
-    const allparts = line.trim().split(':');
-    const parts = [allparts.shift(), allparts.join(':')];
-    let lines, fn;
+  var files = [];
+  var modes = text.split("mode:");
 
-    switch (parts[0].toUpperCase()) {
-      case 'TN':
-        item.title = parts[1].trim();
-        break;
-      case 'SF':
-        item.file = parts.slice(1).join(':').trim();
-        break;
-      case 'FNF':
-        item.functions.found = Number(parts[1].trim());
-        break;
-      case 'FNH':
-        item.functions.hit = Number(parts[1].trim());
-        break;
-      case 'LF':
-        item.lines.found = Number(parts[1].trim());
-        break;
-      case 'LH':
-        item.lines.hit = Number(parts[1].trim());
-        break;
-      case 'DA':
-        lines = parts[1].split(',');
-        item.lines.details.push({
-          line: Number(lines[0]),
-          hit: Number(lines[1])
-        });
-        break;
-      case 'FN':
-        fn = parts[1].split(',');
-        item.functions.details.push({
-          name: fn[1],
-          line: Number(fn[0])
-        });
-        break;
-      case 'FNDA':
-        fn = parts[1].split(',');
-        item.functions.details.some((i, k) => {
-          if (i.name === fn[1] &amp;&amp; i.hit === undefined) {
-            item.functions.details[k].hit = Number(fn[0]);
-            return true;
+  modes.forEach(function(mode) {
+    if (!mode.length) {
+      return;
+    }
+
+    var lines = mode.replace("\r\n", "\n").split(/[\n\r]/g);
+    lines = lines.slice(1); // the first line is just the mode type
+
+    lines.forEach(function(line) {
+      var parts = line.split(":");
+      if (!parts.length) {
+        return;
+      }
+
+      var path = parts[0];
+      var values = parts[1];
+
+      if (!path || !values) {
+        return;
+      }
+
+      if (!files[files.length - 1] || files[files.length - 1].file !== path) {
+        var name = path.split("/");
+        name = name[name.length - 1];
+
+        files.push({
+          title: name,
+          file: path,
+          lines: {
+            found: 0,
+            hit: 0,
+            details: []
           }
         });
-        break;
-      case 'BRDA':
-        fn = parts[1].split(',');
-        item.branches.details.push({
-          line: Number(fn[0]),
-          block: Number(fn[1]),
-          branch: Number(fn[2]),
-          taken: ((fn[3] === '-') ? 0 : Number(fn[3]))
-        });
-        break;
-      case 'BRF':
-        item.branches.found = Number(parts[1]);
-        break;
-      case 'BRH':
-        item.branches.hit = Number(parts[1]);
-        break;
-    }
+      }
 
-    if (line.indexOf('end_of_record') > -1) {
-      data.push(item);
-      item = {
-        lines: {
-          found: 0,
-          hit: 0,
-          details: []
-        },
-        functions: {
-          hit: 0,
-          found: 0,
-          details: []
-        },
-        branches: {
-          hit: 0,
-          found: 0,
-          details: []
+      var file = files[files.length - 1];
+
+      var startLine = Number(values.split(",")[0].split(".")[0]);
+      var endLine = Number(values.split(",")[1].split(".")[0]);
+      var hit = Number(values.split(" ")[2]);
+
+      file.lines.found += endLine - startLine + 1;
+      for (var lineNumber = startLine; lineNumber &lt;= endLine; lineNumber++) {
+        var existingLine = file.lines.details.filter(function(ex) {
+          return ex.line === lineNumber;
+        })[0];
+
+        if (existingLine) {
+          existingLine.hit += hit;
+        } else {
+          file.lines.details.push({
+            line: lineNumber,
+            hit: hit
+          });
         }
-      };
-    }
+      }
+    });
   });
 
-  data.shift();
 
-  if (data.length) {
-    cb(undefined, data);
-  } else {
-    cb('Failed to parse lcov');
-  }
-}
+  files.forEach(function(file) {
+    file.lines.hit = file.lines.details.reduce(function(acc, val) {
+      return acc + (val.hit > 0 ? 1 : 0);
+    }, 0);
+  });
 
-/**
- * will clean a lcov string to strip out any unnecessary content
- * @method clean
- * @param  {String} coverage - the coverage string to clean
- * @return {String} - the cleaned version of the coverage string
- */
-function clean(coverage) {
-  return coverage.substr(coverage.indexOf('TN:'), coverage.lastIndexOf('end_of_record') + 'end_of_record'.length);
+  cb(null, files);
 }
 
 /**
@@ -166,13 +135,13 @@ function parse(file) {
         if (err) {
           reject(err);
         }
-        return walkFile(clean(str), function(err, result) {
+        return walkFile(str, function(err, result) {
           if (err) return reject(err);
           resolve(result);
         });
       });
     } else {
-      return walkFile(clean(file), function(err, result) {
+      return walkFile(file, function(err, result) {
         if (err) return reject(err);
         resolve(result);
       });
@@ -182,8 +151,7 @@ function parse(file) {
 
 module.exports = {
   walkFile,
-  parse,
-  clean
+  parse
 };
 </code></pre>
         </article>

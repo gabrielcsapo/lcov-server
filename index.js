@@ -1,7 +1,12 @@
 const mongoose = require('mongoose');
 
 mongoose.Promise = global.Promise;
-mongoose.connect(process.env.MONGO_URL, { useMongoClient: true });
+mongoose.connect(process.env.MONGO_URL, { useMongoClient: true }, function(error) {
+  if(error) {
+    console.error(error.message); // eslint-disable-line
+    process.exit(1);
+  }
+});
 
 const express = require('express');
 const Badge = require('openbadge');
@@ -17,7 +22,11 @@ zlib.level = zlib.Z_BEST_COMPRESSION;
 const Coverage = require('./lib/coverage');
 
 const port = process.env.PORT || 8080;
-
+const asyncMiddleware = (fn) => {
+	return (req, res, next) => {
+		Promise.resolve(fn(req, res, next)).catch(next);
+	};
+};
 const app = express();
 
 app.use(bodyParser.json());
@@ -27,93 +36,88 @@ app.use(serveStatic(path.resolve(__dirname, 'dist'), {
   etag: false
 }));
 
-app.post('/api/upload', (req, res) => {
-  let {
-    git,
-    run_at,
-    source_files,
-    service_job_id,
-    service_pull_request,
-    service_name
-  } = req.body;
+app.post('/api/upload', asyncMiddleware(async (req, res) => {
+  let { git, run_at, source_files, service_job_id, service_pull_request, service_name } = req.body;
 
   // Make sure the remote url is set correctly
   git.remotes.url = parse(parse(git.remotes.url).toString("ssh")).toString("https");
 
-  Coverage.save({
-      source_files,
-      git,
-      run_at,
-      service_job_id,
-      service_pull_request,
-      service_name
-  }).then((result) => {
-    res.send({ result });
-  }).catch((err) => {
-    res.status(500);
-    res.send({ error: err });
-  });
-});
-
-app.get('/api/repos', (req, res) => {
-  Coverage.repos()
-    .then((repos) => {
-      res.send(repos);
-    }).catch(function(err) {
-      res.status(500);
-      res.send({error: err});
+  try {
+    const results = await Coverage.save({
+        source_files,
+        git,
+        run_at,
+        service_job_id,
+        service_pull_request,
+        service_name
     });
-});
+    res.send({ results });
+  } catch(error) {
+    res.status(500);
+    res.send({ error });
+  }
+}));
 
-app.get('/api/repos/:service/:owner', (req, res) => {
+app.get('/api/repos', asyncMiddleware(async (req, res) => {
+  try {
+    const repos = await Coverage.repos();
+    res.send(repos);
+  } catch(error) {
+    res.status(500);
+    res.send({ error });
+  }
+}));
+
+app.get('/api/repos/:service/:owner/', asyncMiddleware(async (req, res) => {
   const { service, owner } = req.params;
 
-  Coverage.repos(new RegExp(`${service.replace(/%2E/g, '.')}.*/${owner}/`))
-    .then((coverages) => {
-      res.send(coverages);
-    }).catch(function(err) {
-      res.status(500);
-      res.send({error: err});
-    });
-});
+  try {
+    const coverages = await Coverage.repos(new RegExp(`${service.replace(/%2E/g, '.')}.*/${owner}/`));
+    res.send(coverages);
+  } catch(error) {
+    res.status(500);
+    res.send({ error });
+  }
+}));
 
-app.get('/api/coverage/:service/:owner/:repo', (req, res) => {
+app.get('/api/coverage/:service/:owner/:repo/', asyncMiddleware(async (req, res) => {
+  const { limit } = req.query;
   const { service, owner, repo } = req.params;
 
-  Coverage.get(new RegExp(`${service.replace(/%2E/g, '.')}.*/${owner}/${repo}`))
-    .then((coverages) => {
-      res.send(coverages);
-    }).catch(function(err) {
-      res.status(500);
-      res.send({error: err});
-    });
-});
+  try {
+    const coverages = await Coverage.get(new RegExp(`${service.replace(/%2E/g, '.')}.*/${owner}/${repo}`), limit);
+    res.send(coverages);
+  } catch(error) {
+    res.status(500);
+    res.send({ error });
+  }
+}));
 
-app.get('/badge/:service/:owner/:repo.svg', (req, res) => {
+app.get('/badge/:service/:owner/:repo.svg', asyncMiddleware(async (req, res) => {
   const { service, owner, repo } = req.params;
 
-  Coverage.get(new RegExp(`${service.replace(/%2E/g, '.')}.*/${owner}/${repo}`))
-    .then((coverages) => {
-      const coverage = coverages[0];
-      const { history } = coverage;
-      const lastRun = history[history.length - 1];
-      const { lines } = lastRun.source_files[0];
-      const percentage = parseInt((lines.hit / lines.found) * 100);
-      const color = percentage >= 90 ? '#3DB712' : percentage <= 89 && percentage >= 80 ? '#caa300' : '#cc5338';
+  try {
+    const coverages = await Coverage.get(new RegExp(`${service.replace(/%2E/g, '.')}.*/${owner}/${repo}`), 1);
+    const coverage = coverages[0];
+    const { history } = coverage;
+    const lastRun = history[history.length - 1];
+    const { lines } = lastRun.source_files[0];
+    const percentage = parseInt((lines.hit / lines.found) * 100);
+    const color = percentage >= 90 ? '#3DB712' : percentage <= 89 && percentage >= 80 ? '#caa300' : '#cc5338';
 
-      Badge({ color: { right: color }, text: ['coverage', `${percentage}%`] }, function(err, badge) {
-          if(err) { throw new Error(err); }
-          res.set('Content-Type', 'image/svg+xml; charset=utf-8');
-          res.send(badge);
-      });
-    }).catch(function() {
-        Badge({ color: { right: "#b63b3b" }, text: ['coverage', 'not found'] }, function(err, badge) {
-            if(err) { throw new Error(err); }
-            res.set('Content-Type', 'image/svg+xml; charset=utf-8');
-            res.send(badge);
-        });
+    Badge({ color: { right: color }, text: ['coverage', `${percentage}%`] }, function(err, badge) {
+        if(err) { throw new Error(err); }
+        res.set('Content-Type', 'image/svg+xml; charset=utf-8');
+        res.send(badge);
     });
-});
+  } catch(error) {
+    Badge({ color: { right: "#b63b3b" }, text: ['coverage', 'not found'] }, function(err, badge) {
+        if(err) { throw new Error(err); }
+        res.set('Content-Type', 'image/svg+xml; charset=utf-8');
+        res.send(badge);
+    });
+  }
+}));
 
 app.get('*', (req, res) => {
   res.sendFile(path.resolve(__dirname, 'dist', 'index.html'));

@@ -22,7 +22,7 @@ class Coverages extends React.Component {
     const { resource, owner, name } = parse(repo);
     const protocol = resource.substring(resource.lastIndexOf('.') + 1, resource.length);
 
-    fetch(`/api/coverage/${resource.replace(/\./g, '%2E').replace(`.${protocol}`, '')}/${owner}/${name}`)
+    fetch(`/api/coverage/${resource.replace(/\./g, '%2E').replace(`.${protocol}`, '')}/${owner}/${name}?limit=5`)
       .then((response) => {
         return response.json();
       }).then((coverage) => {

@@ -3,7 +3,7 @@ const path = require('path');
 
 const MinifyPlugin = require('babel-minify-webpack-plugin');
 
-let config = {
+var config = {
     entry: {
       app: './src/app.js',
       vendor: ['react', 'react-dom', 'react-router-dom', 'prop-types', 'highlight.js'],
@@ -32,8 +32,7 @@ let config = {
               test: /\.js$/,
               exclude: [/node_modules/],
               use: [{
-                loader: 'babel-loader',
-                options: { presets: ['env', 'react'] }
+                loader: 'babel-loader'
               }]
             }
         ]

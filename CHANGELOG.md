@@ -1,3 +1,19 @@
+# 1.1.0 (10/24/2017)
+
+- adds the ability to parse `cobertura`, `golang` and `jacoco`
+- packages entire application as global executable using pkg
+- instantly fails the process if process can't connect to mongo
+- adds a limit option to coverage.get to speed up badge generation
+- utilizes async await in main router
+- utilizes async await in tests
+- moved from `psychic-ui` to `psychic.css`
+- uses the right environment variables for travis-ci
+- compiles module with babel, allowing it to be used over multiple versions of node (previously older versions were not supported)
+- sets a limit to only retrieve 10 builds on the list-item view (reduces data on the wire)
+- adds viewport meta tag to scale on multiple devices
+- adds other meta tags to ensure SEO
+- moves version of release to the footer
+
 # 1.0.6 (10/23/2017)
 
 - adds monospace font-family to fileView

@@ -22,7 +22,7 @@
 <label for="nav-trigger" class="overlay"></label>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Coverage.html">Coverage</a><ul class='methods'><li data-type='method'><a href="Coverage.html#.get">get</a></li><li data-type='method'><a href="Coverage.html#.repos">repos</a></li><li data-type='method'><a href="Coverage.html#.save">save</a></li></ul></li></ul><h3>Modules</h3><ul><li><a href="module-lib_git.html">lib/git</a><ul class='methods'><li data-type='method'><a href="module-lib_git.html#~parse">parse</a></li></ul></li><li><a href="module-lib_lcov.html">lib/lcov</a><ul class='methods'><li data-type='method'><a href="module-lib_lcov.html#~clean">clean</a></li></ul></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Coverage.html">Coverage</a><ul class='methods'><li data-type='method'><a href="Coverage.html#.get">get</a></li><li data-type='method'><a href="Coverage.html#.repos">repos</a></li><li data-type='method'><a href="Coverage.html#.save">save</a></li></ul></li></ul><h3>Modules</h3><ul><li><a href="module-lib_ci.html">lib/ci</a></li><li><a href="module-lib_cobertura.html">lib/cobertura</a><ul class='methods'><li data-type='method'><a href="module-lib_cobertura.html#~parse">parse</a></li></ul></li><li><a href="module-lib_git.html">lib/git</a><ul class='methods'><li data-type='method'><a href="module-lib_git.html#~parse">parse</a></li></ul></li><li><a href="module-lib_golang.html">lib/golang</a><ul class='methods'><li data-type='method'><a href="module-lib_golang.html#~parse">parse</a></li></ul></li><li><a href="module-lib_jacoco.html">lib/jacoco</a><ul class='methods'><li data-type='method'><a href="module-lib_jacoco.html#~parse">parse</a></li></ul></li><li><a href="module-lib_lcov.html">lib/lcov</a><ul class='methods'><li data-type='method'><a href="module-lib_lcov.html#~clean">clean</a></li><li data-type='method'><a href="module-lib_lcov.html#~parse">parse</a></li></ul></li></ul>
 </nav>
 
 <div id="main">
@@ -79,11 +79,13 @@
 
 Options:
 
-  -V, --version          output the version number
-  -u, --upload [server]  Set the url to upload lcov data too
-  -s, --serve            Pass this option to startup a lcov-server instance
-  -d, --db [db]          Set the db connection
-  -h, --help             output usage information</code></pre><h2>Upload</h2><pre class="prettyprint source"><code>tap test --coverage-report=text-lcov | lcov-server --upload http://...</code></pre><h2>Server</h2><pre class="prettyprint source"><code>lcov-server --serve --db mongodb://localhost:32768/lcov-server</code></pre></article>
+    -V, --version           output the version number
+    -u, --upload [server]   Set the url to upload lcov data too
+    -s, --serve             Pass this option to startup a lcov-server instance
+    -d, --db [db]           Set the db connection
+    -p, --parser &lt;parser>   Set the parser value [lcov, cobertura, golang, jacoco], defaults to lcov
+    -bp, --basePath &lt;path>  The path that defines the base directory where the files that were covered will be located
+    -h, --help              output usage information</code></pre><h2>Upload</h2><pre class="prettyprint source"><code>tap test --coverage-report=text-lcov | lcov-server --upload http://...</code></pre><h2>Server</h2><pre class="prettyprint source"><code>lcov-server --serve --db mongodb://localhost:32768/lcov-server</code></pre></article>
     </section>
 
 

@@ -45,11 +45,13 @@ Usage: lcov-server [options]
 
 Options:
 
-  -V, --version          output the version number
-  -u, --upload [server]  Set the url to upload lcov data too
-  -s, --serve            Pass this option to startup a lcov-server instance
-  -d, --db [db]          Set the db connection
-  -h, --help             output usage information
+	-V, --version           output the version number
+	-u, --upload [server]   Set the url to upload lcov data too
+	-s, --serve             Pass this option to startup a lcov-server instance
+	-d, --db [db]           Set the db connection
+	-p, --parser <parser>   Set the parser value [lcov, cobertura, golang, jacoco], defaults to lcov
+	-bp, --basePath <path>  The path that defines the base directory where the files that were covered will be located
+	-h, --help              output usage information
 ```
 
 ## Upload

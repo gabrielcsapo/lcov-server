@@ -22,7 +22,7 @@
 <label for="nav-trigger" class="overlay"></label>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Coverage.html">Coverage</a><ul class='methods'><li data-type='method'><a href="Coverage.html#.get">get</a></li><li data-type='method'><a href="Coverage.html#.repos">repos</a></li><li data-type='method'><a href="Coverage.html#.save">save</a></li></ul></li></ul><h3>Modules</h3><ul><li><a href="module-lib_git.html">lib/git</a><ul class='methods'><li data-type='method'><a href="module-lib_git.html#~parse">parse</a></li></ul></li><li><a href="module-lib_lcov.html">lib/lcov</a><ul class='methods'><li data-type='method'><a href="module-lib_lcov.html#~clean">clean</a></li></ul></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Coverage.html">Coverage</a><ul class='methods'><li data-type='method'><a href="Coverage.html#.get">get</a></li><li data-type='method'><a href="Coverage.html#.repos">repos</a></li><li data-type='method'><a href="Coverage.html#.save">save</a></li></ul></li></ul><h3>Modules</h3><ul><li><a href="module-lib_ci.html">lib/ci</a></li><li><a href="module-lib_cobertura.html">lib/cobertura</a><ul class='methods'><li data-type='method'><a href="module-lib_cobertura.html#~parse">parse</a></li></ul></li><li><a href="module-lib_git.html">lib/git</a><ul class='methods'><li data-type='method'><a href="module-lib_git.html#~parse">parse</a></li></ul></li><li><a href="module-lib_golang.html">lib/golang</a><ul class='methods'><li data-type='method'><a href="module-lib_golang.html#~parse">parse</a></li></ul></li><li><a href="module-lib_jacoco.html">lib/jacoco</a><ul class='methods'><li data-type='method'><a href="module-lib_jacoco.html#~parse">parse</a></li></ul></li><li><a href="module-lib_lcov.html">lib/lcov</a><ul class='methods'><li data-type='method'><a href="module-lib_lcov.html#~clean">clean</a></li><li data-type='method'><a href="module-lib_lcov.html#~parse">parse</a></li></ul></li></ul>
 </nav>
 
 <div id="main">
@@ -192,12 +192,15 @@ module.exports.repos = function repos(repo) {
  * @function get
  * @memberof Coverage
  * @param  {string} repo - the url of the repo
+ * @param  {number=} limit - limit the history of the coverage reports for a specific repo, default is infinite
  * @return {Coverage[]} - a promise that resolves with the model after it was inserted
  */
-module.exports.get = function get(repo) {
+module.exports.get = function get(repo, limit) {
     return new Promise((resolve, reject) => {
-        const options = [
+        let options = [
           { $match: { "git.remotes.url": repo } },
+          { $sort : { "run_at" : -1 } },
+          { $limit: parseInt(limit) },
           {
             $group: {
                 _id: "$git.remotes.url",
@@ -206,6 +209,11 @@ module.exports.get = function get(repo) {
                 }
             }
         }];
+
+        if(!limit) {
+          delete options[2];
+          options = options.filter((n) => n != undefined);
+        }
 
         Coverage.aggregate(options, (err, docs) => {
             if(err) { return reject(err); }

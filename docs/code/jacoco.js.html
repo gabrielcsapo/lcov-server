@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>lcov.js - Documentation</title>
+    <title>jacoco.js - Documentation</title>
 
     <script src="scripts/prettify/prettify.js"></script>
     <script src="scripts/prettify/lang-css.js"></script>
@@ -27,7 +27,7 @@
 
 <div id="main">
     
-    <h1 class="page-title">lcov.js</h1>
+    <h1 class="page-title">jacoco.js</h1>
     
 
     
@@ -38,118 +38,108 @@
     <section>
         <article>
             <pre class="prettyprint source linenums"><code>/**
- * @module lib/lcov
+ * @module lib/jacoco
  */
 
 const fs = require('fs');
+const { parseString } = require('xml2js');
 
-function walkFile(str, cb) {
-  let data = [];
-  let item;
-
-  ['end_of_record'].concat(str.split('\n')).forEach((line) => {
-    const allparts = line.trim().split(':');
-    const parts = [allparts.shift(), allparts.join(':')];
-    let lines, fn;
-
-    switch (parts[0].toUpperCase()) {
-      case 'TN':
-        item.title = parts[1].trim();
-        break;
-      case 'SF':
-        item.file = parts.slice(1).join(':').trim();
-        break;
-      case 'FNF':
-        item.functions.found = Number(parts[1].trim());
-        break;
-      case 'FNH':
-        item.functions.hit = Number(parts[1].trim());
-        break;
-      case 'LF':
-        item.lines.found = Number(parts[1].trim());
-        break;
-      case 'LH':
-        item.lines.hit = Number(parts[1].trim());
-        break;
-      case 'DA':
-        lines = parts[1].split(',');
-        item.lines.details.push({
-          line: Number(lines[0]),
-          hit: Number(lines[1])
-        });
-        break;
-      case 'FN':
-        fn = parts[1].split(',');
-        item.functions.details.push({
-          name: fn[1],
-          line: Number(fn[0])
-        });
-        break;
-      case 'FNDA':
-        fn = parts[1].split(',');
-        item.functions.details.some((i, k) => {
-          if (i.name === fn[1] &amp;&amp; i.hit === undefined) {
-            item.functions.details[k].hit = Number(fn[0]);
-            return true;
-          }
-        });
-        break;
-      case 'BRDA':
-        fn = parts[1].split(',');
-        item.branches.details.push({
-          line: Number(fn[0]),
-          block: Number(fn[1]),
-          branch: Number(fn[2]),
-          taken: ((fn[3] === '-') ? 0 : Number(fn[3]))
-        });
-        break;
-      case 'BRF':
-        item.branches.found = Number(parts[1]);
-        break;
-      case 'BRH':
-        item.branches.hit = Number(parts[1]);
-        break;
-    }
-
-    if (line.indexOf('end_of_record') > -1) {
-      data.push(item);
-      item = {
-        lines: {
-          found: 0,
-          hit: 0,
-          details: []
-        },
-        functions: {
-          hit: 0,
-          found: 0,
-          details: []
-        },
-        branches: {
-          hit: 0,
-          found: 0,
-          details: []
-        }
-      };
-    }
-  });
-
-  data.shift();
-
-  if (data.length) {
-    cb(undefined, data);
-  } else {
-    cb('Failed to parse lcov');
-  }
+function getCounter(source, type) {
+  return source.counter.filter(function(counter) {
+    return counter.$.type === type;
+  })[0];
 }
 
-/**
- * will clean a lcov string to strip out any unnecessary content
- * @method clean
- * @param  {String} coverage - the coverage string to clean
- * @return {String} - the cleaned version of the coverage string
- */
-function clean(coverage) {
-  return coverage.substr(coverage.indexOf('TN:'), coverage.lastIndexOf('end_of_record') + 'end_of_record'.length);
+function walkFile(xml, cb) {
+  parseString(xml, function(err, parseResult) {
+    if (err) {
+      return cb('Failed to parse coverage');
+    }
+
+    var packages = parseResult.report.package;
+    var output = [];
+
+    packages.forEach(function(pack) {
+        var cov = pack.sourcefile.map(function(s) {
+        var fullPath = pack.$.name + '/' + s.$.name;
+        var className = fullPath.substring(0, fullPath.lastIndexOf('.'));
+
+        var c = pack.class.filter(function(cl) {
+          return cl.$.name === className;
+        })[0];
+
+        var methods = getCounter(s, "METHOD");
+        var lines = getCounter(s, "LINE");
+        var branches = getCounter(s, "BRANCH");
+        if (!branches) {
+          branches = {
+            $: {
+              covered: 0,
+              missed: 0
+            }
+          };
+        }
+        var classCov = {
+          title: s.$.name,
+          file: fullPath,
+          functions: {
+            found: Number(methods.$.covered) + Number(methods.$.missed),
+            hit: Number(methods.$.covered),
+            details: !c.method ? [] : c.method.map(function(m) {
+              var hit = m.counter.some(function(counter) {
+                return counter.$.type === "METHOD" &amp;&amp; counter.$.covered === "1";
+              });
+              return {
+                name: m.$.name,
+                line: Number(m.$.line),
+                hit: hit ? 1 : 0
+              };
+            })
+          },
+          lines: {
+            found: Number(lines.$.covered) + Number(lines.$.missed),
+            hit: Number(lines.$.covered),
+            details: !s.line ? [] : s.line.map(function(l) {
+              return {
+                line: Number(l.$.nr),
+                hit: Number(l.$.ci)
+              };
+            })
+          },
+          branches: {
+            found: Number(branches.$.covered) + Number(branches.$.missed),
+            hit: Number(branches.$.covered),
+            details: !s.line ? [] : [].concat.apply([],
+              s.line.filter(function(l) {
+                return Number(l.$.mb) > 0 || Number(l.$.cb) > 0;
+              })
+              .map(function(l) {
+                var branches = [];
+                var count = Number(l.$.mb) + Number(l.$.cb);
+
+                for (var i = 0; i &lt; count; ++i) {
+                  branches = branches.concat({
+                    line: Number(l.$.nr),
+                    block: 0,
+                    branch: Number(i),
+                    taken: i &lt; Number(l.$.cb) ? 1 : 0
+                  });
+                }
+
+                return branches;
+              })
+            )
+          }
+        };
+
+        return classCov;
+      });
+
+      output = output.concat(cov);
+    });
+
+    cb(null, output);
+  });
 }
 
 /**
@@ -166,13 +156,13 @@ function parse(file) {
         if (err) {
           reject(err);
         }
-        return walkFile(clean(str), function(err, result) {
+        return walkFile(str, function(err, result) {
           if (err) return reject(err);
           resolve(result);
         });
       });
     } else {
-      return walkFile(clean(file), function(err, result) {
+      return walkFile(file, function(err, result) {
         if (err) return reject(err);
         resolve(result);
       });
@@ -182,8 +172,7 @@ function parse(file) {
 
 module.exports = {
   walkFile,
-  parse,
-  clean
+  parse
 };
 </code></pre>
         </article>

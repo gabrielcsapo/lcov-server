@@ -1,4 +1,0 @@
-- [ ] show a pie chart of code types for a specific repo
-- [ ] add more storybook stories for the UI
-- [ ] jsdoc lib code
-- [ ] abstract coverage model into a class
