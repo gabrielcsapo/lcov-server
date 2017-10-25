@@ -1,3 +1,7 @@
+# 1.1.3 (10/24/2017)
+
+- fixes compatibility with older versions of node <8
+
 # 1.1.2 (10/24/2017)
 
 - fixes location of bin
