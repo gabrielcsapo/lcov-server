@@ -1,6 +1,6 @@
 {
   "name": "lcov-server",
-  "version": "1.1.3",
+  "version": "1.1.4",
   "description": "🎯 A simple lcov server & cli parser",
   "main": "index.js",
   "homepage": "https://github.com/gabrielcsapo/lcov-server#readme",
@@ -18,7 +18,9 @@
     "lint": "eslint .",
     "test": "tape test/lib/**/*.js test/index.js",
     "coverage": "tap test/lib/**.js --coverage --coverage-report=lcov",
-    "build": "NODE_ENV=production webpack --progress",
+    "build": "npm run build:client && npm run build:server",
+    "build:server": "babel index.js --out-dir ./distributed && babel lib --out-dir ./distributed/lib && babel bin --out-dir ./distributed/bin && cp package.json ./distributed/ && cp -r dist ./distributed",
+    "build:client": "NODE_ENV=production webpack --progress",
     "start": "./bin/lcov-server.js --serve",
     "dev": "NODE_ENV=development webpack-dev-server --hot --port 5000",
     "pack": "pkg bin/lcov-server.js -c package.json -o packed/lcov-server",
@@ -28,7 +30,7 @@
   },
   "author": "Gabriel J. Csapo <gabecsapo@gmail.com>",
   "bin": {
-    "lcov-server": "./bin/lcov-server.js"
+    "lcov-server": "./distributed/bin/lcov-server.js"
   },
   "pkg": {
     "scripts": [
@@ -43,7 +45,6 @@
     ],
     "targets": [
       "node8-macos-x64",
-      "node8-alpine-x64",
       "node8-linux-x64",
       "node8-win-x64"
     ]
@@ -51,15 +52,12 @@
   "license": "Apache-2.0",
   "dependencies": {
     "babel-polyfill": "^6.26.0",
-    "babel-preset-env": "^1.6.1",
-    "babel-register": "^6.26.0",
     "commander": "^2.11.0",
     "compression": "^1.7.1",
     "express": "^4.16.2",
     "git-url-parse": "^7.0.1",
     "mongoose": "^4.12.1",
     "openbadge": "^1.0.4",
-    "semver": "^5.4.1",
     "serve-static": "^1.13.1",
     "update-notifier": "^2.3.0",
     "xml2js": "^0.4.19"
@@ -67,9 +65,11 @@
   "devDependencies": {
     "@storybook/addon-knobs": "^3.2.12",
     "@storybook/react": "^3.2.12",
+    "babel-cli": "^6.26.0",
     "babel-core": "^6.26.0",
     "babel-loader": "^7.1.2",
     "babel-minify-webpack-plugin": "^0.2.0",
+    "babel-preset-env": "^1.6.1",
     "babel-preset-react": "^6.24.1",
     "body-parser": "^1.18.2",
     "css-loader": "^0.28.7",

@@ -1,3 +1,7 @@
+# 1.1.4 (10/24/2017)
+
+- removes babel-register, ships a pre-compiled bundle
+
 # 1.1.3 (10/24/2017)
 
 - fixes compatibility with older versions of node <8
