@@ -1,7 +1,7 @@
 import 'react-select/dist/react-select.css';
 
 import React from 'react';
-import parse from 'git-url-parse';
+import PropTypes from 'prop-types';
 import Select from 'react-select';
 
 import Loading from '../components/loading';
@@ -24,7 +24,7 @@ class List extends React.Component {
   }
 
   componentDidMount() {
-    const { source, owner, page } = this.props.match.params;
+    const { source, owner } = this.props.match.params;
     const { chunk } = this.state;
 
     let url = '/api/repos';
@@ -99,7 +99,7 @@ class List extends React.Component {
     if(repos.length > 0) {
 
       const options = raw.map((r) => {
-        return { value: r, label: r }
+        return { value: r, label: r };
       });
 
       return <div>
@@ -120,8 +120,8 @@ class List extends React.Component {
           </div>
         : '' }
         <div>
-          { repos[page - 1].map((repo, i) => {
-            return <Item key={`${repo}`} repo={repo} />
+          { repos[page - 1].map((repo) => {
+            return <Item key={`${repo}`} repo={repo} />;
           }) }
         </div>
         <div style={{ position: "relative", width: "80%", height: "50px", textAlign: "center", margin: "0 auto", marginBottom: "50px", lineHeight: "100px" }}>
@@ -131,11 +131,16 @@ class List extends React.Component {
 
           <button className="btn" style={{ right: 0, position: "absolute", top: "25px" }} onClick={this.nextPage.bind(this)}> Next </button>
         </div>
-      </div>
+      </div>;
     } else {
       return (<Loading />);
     }
   }
 }
+
+List.propTypes = {
+  match: PropTypes.object,
+  page: PropTypes.number
+};
 
 export default List;

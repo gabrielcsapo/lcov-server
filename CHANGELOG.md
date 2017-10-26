@@ -1,3 +1,13 @@
+# 1.1.6 (10/25/2017)
+
+- uses the correct values for git
+- reduces error in calculating coverage points by abstracting to helper method
+- ensures that the history is sorted correctly
+- fixes the generation of graphs to be more accurate (using total data instead of just a single file)
+- fixes the generation of badges to be more accurate (using total data instead of just a single file)
+- updates dependencies
+- fixes the calculation of source files
+
 # 1.1.5 (10/25/2017)
 
 - guards retrieval of values

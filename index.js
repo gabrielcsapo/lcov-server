@@ -100,10 +100,16 @@ app.get('/badge/:service/:owner/:repo.svg', asyncMiddleware(async (req, res) => 
     const coverages = await Coverage.get(new RegExp(`${service.replace(/%2E/g, '.')}.*/${owner}/${repo}`), 1);
     const coverage = coverages[0];
     const { history } = coverage;
-    const lastRun = history[history.length - 1];
-    const { lines } = lastRun.source_files[0];
-    const percentage = parseInt((lines.hit / lines.found) * 100);
-    const color = percentage >= 90 ? '#3DB712' : percentage <= 89 && percentage >= 80 ? '#caa300' : '#cc5338';
+    const { source_files } = history[0];
+    let found = 0;
+    let hit = 0;
+    source_files.forEach((file) => {
+      const { lines={hit: 0, found: 0}, branches={hit: 0, found: 0}, functions={hit: 0, found: 0} } = file;
+      found += lines.found + branches.found + functions.found;
+      hit += lines.hit + branches.hit + functions.hit;
+    });
+    const percentage = parseInt((hit / found) * 100);
+    const color = percentage >= 85 ? '#3DB712' : percentage <= 85 && percentage >= 70 ? '#caa300' : '#cc5338';
 
     Badge({ color: { right: color }, text: ['coverage', `${percentage}%`] }, function(err, badge) {
         if(err) { throw new Error(err); }

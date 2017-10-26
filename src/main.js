@@ -1,5 +1,5 @@
 import React from 'react';
-import CoverageChart from './coverage/chart';
+import CoverageChart from './components/coverageChart';
 import pack from '../package.json';
 
 class Main extends React.Component {

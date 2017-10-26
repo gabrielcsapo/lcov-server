@@ -1,10 +1,14 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import moment from 'moment';
 
-import CoverageChart from './chart';
+import CoverageChart from '../components/coverageChart';
 import Error from '../components/error';
+import NoCoverage from '../components/noCoverage';
 import Loading from '../components/loading';
 import FileView from '../components/fileView';
+
+import { parseCoverage } from '../lib/util';
 
 class File extends React.Component {
   constructor(props) {
@@ -39,43 +43,22 @@ class File extends React.Component {
       const { source, owner, name } = this.props.match.params;
 
       if(loading) {
-        return (<Loading />);
-      } else if(error) {
-          return (<Error error={error}/>)
-      } else if(project) {
+        return <Loading />;
+      }
+
+      if(error) {
+          return <Error error={error}/>;
+      }
+
+      if(project) {
           const lineMap = {};
           const file = this.props.match.params.file.replace('$2E', '.');
           let { _id, history } = project;
-          history = history[project.history.length - 1];
+          history = history[0];
 
           const fileSource = history.source_files.filter((f) => {
               return f.title === file;
           })[0];
-          const data = [[],[],[]];
-          project.history.forEach((h) => {
-            h.source_files.forEach((f) => {
-              if(f.title === file) {
-                const { lines={ found: 0, hit: 0 }, branches={ found: 0, hit: 0 }, functions={ found: 0, hit: 0 } } = f;
-
-                if(lines && branches && functions) {
-                  data[0].push(parseInt(((lines.hit / lines.found) || 1) * 100))
-                  data[1].push(parseInt(((branches.hit / branches.found) || 1) * 100))
-                  data[2].push(parseInt(((functions.hit / functions.found) || 1) * 100))
-                } else {
-                  data[0].push(0)
-                  data[1].push(0)
-                  data[2].push(0)
-                }
-              }
-            });
-          });
-
-          // make it a straight line double the values
-          if(data[0].length == 1) {
-            data[0].push(data[0][0])
-            data[1].push(data[1][0])
-            data[2].push(data[2][0])
-          }
 
           const { lines={ found: 0, hit: 0 }, branches={ found: 0, hit: 0 }, functions={ found: 0, hit: 0 } } = fileSource;
 
@@ -92,33 +75,35 @@ class File extends React.Component {
           const commitUrl = `${_id.replace('.git', '')}/commit/${commit}`;
 
           return (<div className="coverage">
-              <div className="coverage-header">
-                 <div style={{display: 'inline-block', width: '100%'}}>
-                   <div style={{float: 'left', textAlign: 'left'}}>
-                       <h3> <a href={`/coverage/${source.replace(/\./g, '%2E')}/${owner}/`}>{owner}</a> / <a href={`/coverage/${source.replace(/\./g, '%2E')}/${owner}/${name}`}>{name}</a> / <a href={`/coverage/${source.replace(/\./g, '%2E')}/${owner}/${name}/${encodeURIComponent(file).replace(/\./g, '$2E')}`}>{file}</a> </h3>
-                       <p>
-                         <a className="coverage-commit-message" href={commitUrl} target="_blank"> {message} </a>
-                         on branch
-                         <b> {branch} </b>
-                         {moment(author_date * 1000).fromNow()}
-                         &nbsp;by
-                         <b> {author_name} </b>
-                       </p>
-                   </div>
-
-                   <h3 style={{float: 'right', color: color}}>{ percentage }%</h3>
+            <div className="coverage-header">
+               <div style={{display: 'inline-block', width: '100%'}}>
+                 <div style={{float: 'left', textAlign: 'left'}}>
+                     <h3> <a href={`/coverage/${source.replace(/\./g, '%2E')}/${owner}/`}>{owner}</a> / <a href={`/coverage/${source.replace(/\./g, '%2E')}/${owner}/${name}`}>{name}</a> / <a href={`/coverage/${source.replace(/\./g, '%2E')}/${owner}/${name}/${encodeURIComponent(file).replace(/\./g, '$2E')}`}>{file}</a> </h3>
+                     <p>
+                       <a className="coverage-commit-message" href={commitUrl} target="_blank"> {message} </a>
+                       on branch
+                       <b> {branch} </b>
+                       {moment(author_date * 1000).fromNow()}
+                       &nbsp;by
+                       <b> {author_name} </b>
+                     </p>
                  </div>
-                 <CoverageChart width={window.innerWidth - 200} data={data} height={100} />
-              </div>
-              <br/>
-              <FileView source={fileSource.source} lineMap={lineMap} extension={file.substr(file.lastIndexOf('.') + 1, file.length)}/>
-            </div>);
+
+                 <h3 style={{float: 'right', color: color}}>{ percentage }%</h3>
+               </div>
+               <CoverageChart width={window.innerWidth - 200} data={parseCoverage(project.history)} height={100} />
+            </div>
+            <br/>
+            <FileView source={fileSource.source} lineMap={lineMap} extension={file.substr(file.lastIndexOf('.') + 1, file.length)}/>
+          </div>);
       } else {
-        return (<div className="text-center" style={{width:"100%", position: "absolute", top: "50%", transform: "translateY(-50%)"}}>
-          No Coverage 🌧
-        </div>);
+        return <NoCoverage/>;
       }
   }
 }
+
+File.propTypes = {
+  match: PropTypes.object
+};
 
 export default File;

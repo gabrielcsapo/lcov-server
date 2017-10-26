@@ -2,6 +2,6 @@
   border: 0;
 }
 
-.table-fileView td, .hljs-string, .hljs-keyword, .hljs-comment, .hljs-meta, .hljs-params, .hljs-function, .hljs-attr, .hljs-built_in, .hljs-title, .hljs-literal {
+.table-fileView tr, .table-fileView tr > *, .table-fileView td span {
   font-family: monospace;
 }

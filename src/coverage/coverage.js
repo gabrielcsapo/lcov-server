@@ -1,12 +1,14 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import moment from 'moment';
 import Select from 'react-select';
 
-import CoverageChart from './chart';
-
+import CoverageChart from '../components/coverageChart';
 import Table from '../components/table';
 import Error from '../components/error';
 import Loading from '../components/loading';
+
+import { parseCoverage } from '../lib/util';
 
 class Coverage extends React.Component {
   constructor(props) {
@@ -42,96 +44,71 @@ class Coverage extends React.Component {
       selectedBranch: branch ? branch.value : ''
     });
   }
+  reduceBuilds(build) {
+    const { git, run_at, source_files } = build;
+    let totalCoverage = source_files.map((f) => {
+      const { lines={ found: 0, hit: 0 }, branches={ found: 0, hit: 0 }, functions={ found: 0, hit: 0 } } = f;
 
+      const totalFound = lines.found + branches.found + functions.found;
+      const totalHit = lines.hit + branches.hit + functions.hit;
+      const totalCoverage = parseInt((totalHit / totalFound) * 100);
+      return totalCoverage;
+    }, []).reduce((p, c, _ ,a) => p + c / a.length, 0);
+
+    return {
+      "Sha": `${git.commit}`.substr(0, 6),
+      "Branch": git.git_branch || git.branch || <span style={{ color: "#9a9a9a" }}> unknown </span>, // backwards compatible
+      "Coverage": `${totalCoverage}%`,
+      "Commit": git.message,
+      "Committer": git.committer_name,
+      "Commit Time": moment(git.committer_date * 1000).fromNow(),
+      "Recieved": moment(run_at).fromNow()
+    };
+  }
+
+  reduceSourceFiles(file) {
+    const { source, owner, name } = this.props.match.params;
+
+    const { lines={ found: 0, hit: 0 }, branches={ found: 0, hit: 0 }, functions={ found: 0, hit: 0 } } = file;
+
+    const totalFound = lines.found + branches.found + functions.found;
+    const totalHit = lines.hit + branches.hit + functions.hit;
+    const totalCoverage = parseInt((totalHit / totalFound) * 100);
+    const fileName = encodeURIComponent(file.title).replace(/\./g, '$2E');
+
+    return {
+      "Coverage": `${totalCoverage}%`,
+      "File": <a href={`/coverage/${source.replace(/\./g, '%2E')}/${owner}/${name}/${fileName}`}>
+          { file.title }
+      </a>,
+      "Lines": `${lines.hit} / ${lines.found}`,
+      "Branches": `${branches.hit} / ${branches.found}`,
+      "Functions": `${functions.hit} / ${functions.found}`
+    };
+  }
   render() {
     const { selectedBranch, project, error, loading } = this.state;
 
     if(loading) {
       return (<Loading/>);
     } else if(error) {
-      return (<Error error={error} />)
+      return (<Error error={error} />);
     } else if(project) {
       const { source, owner, name } = this.props.match.params;
 
       const { _id, history } = project;
-      const allBranches = [];
-      const data = [[], [], []];
-      history.forEach(function(history) {
+      const { message, commit, branch, git_branch, author_name, author_date } = history[0].git;
+
+      const data = parseCoverage(history, selectedBranch);
+
+      const options = history.map(function(history) {
         const { git } = history;
-        const { lines, branches, functions } = history.source_files[0];
-        allBranches.push(git.branch || git.git_branch);
-
-        if(lines && branches && functions) {
-          if(selectedBranch && selectedBranch === (git.branch || git.git_branch)) {
-            data[0].push(parseInt(((lines.hit / lines.found) || 1) * 100))
-            data[1].push(parseInt(((branches.hit / branches.found) || 1) * 100))
-            data[2].push(parseInt(((functions.hit / functions.found) || 1) * 100))
-          } else if(!selectedBranch) {
-            data[0].push(parseInt(((lines.hit / lines.found) || 1) * 100))
-            data[1].push(parseInt(((branches.hit / branches.found) || 1) * 100))
-            data[2].push(parseInt(((functions.hit / functions.found) || 1) * 100))
-          } else {
-            // noop
-          }
-        } else {
-          data[0].push(0)
-          data[1].push(0)
-          data[2].push(0)
-        }
-      }, []);
-
-      // If there is only one data point
-      // add another that is the same value to make a line
-      if(data[0].length == 1) {
-          data[0].push(data[0][0]);
-          data[1].push(data[1][0]);
-          data[2].push(data[2][0]);
-      };
-
-      const { message, commit, branch, git_branch, author_name, author_date } = history[history.length - 1].git;
-      const commitUrl = `${_id.replace('.git', '')}/commit/${commit}`;
-
-      function reduceBuilds(build) {
-        let totalCoverage = build.source_files.map((f) => {
-          const { lines={ found: 0, hit: 0 }, branches={ found: 0, hit: 0 }, functions={ found: 0, hit: 0 } } = f;
-
-          const totalFound = lines.found + branches.found + functions.found;
-          const totalHit = lines.hit + branches.hit + functions.hit;
-          const totalCoverage = parseInt((totalHit / totalFound) * 100);
-          return totalCoverage;
-        }, []).reduce((p, c, _ ,a) => p + c / a.length, 0);
-        return {
-          "Branch": build.git.git_branch || build.git.branch || <span style={{ color: "#9a9a9a" }}> unknown </span>, // backwards compatible
-          "Coverage": `${totalCoverage}%`,
-          "Commit": build.git.message,
-          "Committer": build.git.committer_name,
-          "Commit Time": moment(build.git.committer_date * 1000).fromNow(),
-          "Recieved": moment(build.run_at).fromNow()
-        }
-      }
-
-      const options = allBranches.filter((a, i) => allBranches.indexOf(a) == i && !!a).sort().map((b) => {
-        return { value: b, label: b }
+        return git.branch || git.git_branch;
+      }, []).filter((a, i, array) => array.indexOf(a) == i && !!a).sort().map((b) => {
+        return { value: b, label: b };
       });
 
-      function reduceSourceFiles(file) {
-        const { lines={ found: 0, hit: 0 }, branches={ found: 0, hit: 0 }, functions={ found: 0, hit: 0 } } = file;
-
-        const totalFound = lines.found + branches.found + functions.found;
-        const totalHit = lines.hit + branches.hit + functions.hit;
-        const totalCoverage = parseInt((totalHit / totalFound) * 100);
-        const fileName = encodeURIComponent(file.title).replace(/\./g, '$2E');
-
-        return {
-          "Coverage": `${totalCoverage}%`,
-          "File": <a href={`/coverage/${source.replace(/\./g, '%2E')}/${owner}/${name}/${fileName}`}>
-              { file.title }
-          </a>,
-          "Lines": `${lines.hit} / ${lines.found}`,
-          "Branches": `${branches.hit} / ${branches.found}`,
-          "Functions": `${functions.hit} / ${functions.found}`
-        }
-      }
+      const commitUrl = `${_id.replace('.git', '')}/commit/${commit}`;
 
       return (<div className="coverage">
          <div className="coverage-header">
@@ -161,10 +138,10 @@ class Coverage extends React.Component {
           </div>
           <CoverageChart width={window.innerWidth - 200} data={data} height={100} />
           <hr/>
-          <h4> Source Files ({ history[history.length - 1].source_files.length })</h4>
-          <Table data={history[0].source_files.map(reduceSourceFiles)} chunk={5}/>
+          <h4> Source Files ({ history[0].source_files.length })</h4>
+          <Table data={history[0].source_files.map(this.reduceSourceFiles.bind(this))} chunk={5}/>
           <h4> Recent Builds ({ history.length })</h4>
-          <Table data={history.map(reduceBuilds)} chunk={9}/>
+          <Table data={history.map(this.reduceBuilds)} sort={"Recieved"} chunk={9}/>
          </div>
       </div>);
     } else {
@@ -174,5 +151,9 @@ class Coverage extends React.Component {
     }
   }
 }
+
+Coverage.propTypes = {
+  match: PropTypes.object
+};
 
 export default Coverage;

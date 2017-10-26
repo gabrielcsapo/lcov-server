@@ -1,5 +1,6 @@
 node_modules
-coverage
+/coverage
+/test/fixtures
 docs
 dist
 npm-debug.log

@@ -12,6 +12,8 @@ class Error extends React.Component {
       <pre style={{width: '50%', margin: '0 auto'}}>
         { error || 'Page not found' }
       </pre>
+      <br/>
+      <a href="/"> Go Somewhere Safe 🏝 </a>
     </div>);
   }
 }
