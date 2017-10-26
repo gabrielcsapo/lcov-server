@@ -70,9 +70,6 @@ if(serve) {
 
     let _lcov = {};
     switch(parser) {
-      case 'lcov':
-        _lcov = await lcov.parse(input);
-        break;
       case 'cobertura':
         _lcov = await cobertura.parse(input);
         break;
@@ -81,6 +78,9 @@ if(serve) {
         break;
       case 'jacoco':
         _lcov = await jacoco.parse(input);
+        break;
+      default:
+        _lcov = await lcov.parse(input);
         break;
     }
 

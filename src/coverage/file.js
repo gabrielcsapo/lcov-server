@@ -55,13 +55,17 @@ class File extends React.Component {
           project.history.forEach((h) => {
             h.source_files.forEach((f) => {
               if(f.title === file) {
-                const { lines, branches, functions } = f;
-                const linePercentage = parseInt(((lines.hit / lines.found) || 1) * 100);
-                const branchPercentage = parseInt(((branches.hit / branches.found) || 1) * 100);
-                const functionPercentage = parseInt(((functions.hit / functions.found) || 1) * 100);
-                data[0].push(linePercentage);
-                data[1].push(branchPercentage);
-                data[2].push(functionPercentage);
+                const { lines={ found: 0, hit: 0 }, branches={ found: 0, hit: 0 }, functions={ found: 0, hit: 0 } } = f;
+
+                if(lines && branches && functions) {
+                  data[0].push(parseInt(((lines.hit / lines.found) || 1) * 100))
+                  data[1].push(parseInt(((branches.hit / branches.found) || 1) * 100))
+                  data[2].push(parseInt(((functions.hit / functions.found) || 1) * 100))
+                } else {
+                  data[0].push(0)
+                  data[1].push(0)
+                  data[2].push(0)
+                }
               }
             });
           });
@@ -73,7 +77,8 @@ class File extends React.Component {
             data[2].push(data[2][0])
           }
 
-          const { lines, branches, functions } = fileSource;
+          const { lines={ found: 0, hit: 0 }, branches={ found: 0, hit: 0 }, functions={ found: 0, hit: 0 } } = fileSource;
+
           lines.details.forEach((l) => {
               lineMap[l.line - 1] = l.hit;
           });

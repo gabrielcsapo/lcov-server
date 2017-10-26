@@ -1,3 +1,8 @@
+# 1.1.5 (10/25/2017)
+
+- guards retrieval of values
+- sets the default parser to lcov
+
 # 1.1.4 (10/24/2017)
 
 - removes babel-register, ships a pre-compiled bundle

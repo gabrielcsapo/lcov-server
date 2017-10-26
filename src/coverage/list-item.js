@@ -5,7 +5,7 @@ import parse from 'git-url-parse';
 import CoverageChart from './chart';
 import Error from '../components/error';
 
-class Coverages extends React.Component {
+class ListItem extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -50,9 +50,15 @@ class Coverages extends React.Component {
         const data = [[], [], []];
         history.forEach(function(history) {
           const { lines, branches, functions } = history.source_files[0];
-          data[0].push(parseInt(((lines.hit / lines.found) || 1) * 100))
-          data[1].push(parseInt(((branches.hit / branches.found) || 1) * 100))
-          data[2].push(parseInt(((functions.hit / functions.found) || 1) * 100))
+          if(lines && branches && functions) {
+            data[0].push(parseInt(((lines.hit / lines.found) || 1) * 100))
+            data[1].push(parseInt(((branches.hit / branches.found) || 1) * 100))
+            data[2].push(parseInt(((functions.hit / functions.found) || 1) * 100))
+          } else {
+            data[0].push(0)
+            data[1].push(0)
+            data[2].push(0)
+          }
         }, []);
         // If there is only one data point
         // add another that is the same value to make a line
@@ -107,4 +113,4 @@ class Coverages extends React.Component {
   }
 }
 
-export default Coverages;
+export default ListItem;

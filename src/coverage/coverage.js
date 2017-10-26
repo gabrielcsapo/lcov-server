@@ -61,16 +61,22 @@ class Coverage extends React.Component {
         const { lines, branches, functions } = history.source_files[0];
         allBranches.push(git.branch || git.git_branch);
 
-        if(selectedBranch && selectedBranch === (git.branch || git.git_branch)) {
-          data[0].push(parseInt(((lines.hit / lines.found) || 1) * 100))
-          data[1].push(parseInt(((branches.hit / branches.found) || 1) * 100))
-          data[2].push(parseInt(((functions.hit / functions.found) || 1) * 100))
-        } else if(!selectedBranch) {
-          data[0].push(parseInt(((lines.hit / lines.found) || 1) * 100))
-          data[1].push(parseInt(((branches.hit / branches.found) || 1) * 100))
-          data[2].push(parseInt(((functions.hit / functions.found) || 1) * 100))
+        if(lines && branches && functions) {
+          if(selectedBranch && selectedBranch === (git.branch || git.git_branch)) {
+            data[0].push(parseInt(((lines.hit / lines.found) || 1) * 100))
+            data[1].push(parseInt(((branches.hit / branches.found) || 1) * 100))
+            data[2].push(parseInt(((functions.hit / functions.found) || 1) * 100))
+          } else if(!selectedBranch) {
+            data[0].push(parseInt(((lines.hit / lines.found) || 1) * 100))
+            data[1].push(parseInt(((branches.hit / branches.found) || 1) * 100))
+            data[2].push(parseInt(((functions.hit / functions.found) || 1) * 100))
+          } else {
+            // noop
+          }
         } else {
-          // noop
+          data[0].push(0)
+          data[1].push(0)
+          data[2].push(0)
         }
       }, []);
 
@@ -87,8 +93,10 @@ class Coverage extends React.Component {
 
       function reduceBuilds(build) {
         let totalCoverage = build.source_files.map((f) => {
-          const totalFound = f.lines.found + f.branches.found + f.functions.found;
-          const totalHit = f.lines.hit + f.branches.hit + f.functions.hit;
+          const { lines={ found: 0, hit: 0 }, branches={ found: 0, hit: 0 }, functions={ found: 0, hit: 0 } } = f;
+
+          const totalFound = lines.found + branches.found + functions.found;
+          const totalHit = lines.hit + branches.hit + functions.hit;
           const totalCoverage = parseInt((totalHit / totalFound) * 100);
           return totalCoverage;
         }, []).reduce((p, c, _ ,a) => p + c / a.length, 0);
@@ -107,8 +115,10 @@ class Coverage extends React.Component {
       });
 
       function reduceSourceFiles(file) {
-        const totalFound = file.lines.found + file.branches.found + file.functions.found;
-        const totalHit = file.lines.hit + file.branches.hit + file.functions.hit;
+        const { lines={ found: 0, hit: 0 }, branches={ found: 0, hit: 0 }, functions={ found: 0, hit: 0 } } = file;
+
+        const totalFound = lines.found + branches.found + functions.found;
+        const totalHit = lines.hit + branches.hit + functions.hit;
         const totalCoverage = parseInt((totalHit / totalFound) * 100);
         const fileName = encodeURIComponent(file.title).replace(/\./g, '$2E');
 
@@ -117,9 +127,9 @@ class Coverage extends React.Component {
           "File": <a href={`/coverage/${source.replace(/\./g, '%2E')}/${owner}/${name}/${fileName}`}>
               { file.title }
           </a>,
-          "Lines": `${file.lines.hit} / ${file.lines.found}`,
-          "Branches": `${file.branches.hit} / ${file.branches.found}`,
-          "Functions": `${file.functions.hit} / ${file.functions.found}`
+          "Lines": `${lines.hit} / ${lines.found}`,
+          "Branches": `${branches.hit} / ${branches.found}`,
+          "Functions": `${functions.hit} / ${functions.found}`
         }
       }
 
