@@ -1,3 +1,7 @@
+# 1.1.7 (10/25/2017)
+
+- includes moment as a production dependency
+
 # 1.1.6 (10/25/2017)
 
 - uses the correct values for git
