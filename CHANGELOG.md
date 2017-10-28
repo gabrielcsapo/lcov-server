@@ -1,3 +1,7 @@
+# 1.1.9 (10/27/2017)
+
+- fixes environment overrides for CI 
+
 # 1.1.8 (10/27/2017)
 
 - fixes coverage api to sort before limit is run
