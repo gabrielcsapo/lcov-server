@@ -1,6 +1,10 @@
+# 1.2.0 (10/27/2017)
+
+- don't override commit for travis builds
+
 # 1.1.9 (10/27/2017)
 
-- fixes environment overrides for CI 
+- fixes environment overrides for CI
 
 # 1.1.8 (10/27/2017)
 
