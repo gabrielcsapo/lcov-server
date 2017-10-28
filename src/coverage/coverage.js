@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import moment from 'moment';
+import Moment from 'moment';
 import Select from 'react-select';
 
 import CoverageChart from '../components/coverageChart';
@@ -20,23 +20,23 @@ class Coverage extends React.Component {
     };
   }
 
-  componentDidMount() {
+  async componentDidMount() {
    const { source, owner, name } = this.props.match.params;
+   const url = `/api/coverage/${source}/${owner}/${name}`;
+   try {
+     const response = await fetch(url);
+     const project = await response.json();
 
-   fetch(`/api/coverage/${source}/${owner}/${name}`)
-     .then((response) => {
-       return response.json();
-     }).then((project) => {
-       this.setState({
-         project: project[0],
-         loading: false
-       });
-     }).catch((ex) => {
-       this.setState({
-         error: ex.toString(),
-         loading: false
-       });
+     this.setState({
+       project: project[0],
+       loading: false
      });
+   } catch(ex) {
+     this.setState({
+       error: ex.toString(),
+       loading: false
+     });
+   }
   }
 
   onChangeBranch(branch) {
@@ -61,8 +61,8 @@ class Coverage extends React.Component {
       "Coverage": `${totalCoverage}%`,
       "Commit": git.message,
       "Committer": git.committer_name,
-      "Commit Time": moment(git.committer_date * 1000).fromNow(),
-      "Recieved": moment(run_at).fromNow()
+      "Commit Time": Moment(git.committer_date * 1000).fromNow(),
+      "Recieved": Moment(run_at).fromNow()
     };
   }
 
@@ -121,7 +121,7 @@ class Coverage extends React.Component {
                   <a className="coverage-commit-message" href={commitUrl} target="_blank"> {message} </a>
                   on branch
                   <b> {branch || git_branch} </b>
-                  {moment(author_date * 1000).fromNow()}
+                  {Moment(author_date * 1000).fromNow()}
                   &nbsp;by
                   <b> {author_name} </b>
                 </p>

@@ -1,3 +1,8 @@
+# 1.2.1 (10/28/2017)
+
+- adds a feed of most recent coverage updates
+- moves more functionality to use async await syntax
+
 # 1.2.0 (10/27/2017)
 
 - don't override commit for travis builds

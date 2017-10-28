@@ -68,6 +68,18 @@ app.get('/api/repos', asyncMiddleware(async (req, res) => {
   }
 }));
 
+app.get('/api/feed/:page?', asyncMiddleware(async (req, res) => {
+  const { page } = req.params;
+
+  try {
+    const feed = await Coverage.feed(page);
+    res.send(feed);
+  } catch(error) {
+    res.status(500);
+    res.send({ error });
+  }
+}));
+
 app.get('/api/repos/:service/:owner/', asyncMiddleware(async (req, res) => {
   const { service, owner } = req.params;
 
