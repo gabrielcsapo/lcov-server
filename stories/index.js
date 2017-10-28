@@ -1,3 +1,2 @@
-import './lineChart';
-import './pieChart';
-import './fileView';
+import './components';
+import './charts';

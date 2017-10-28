@@ -5,6 +5,8 @@ import PropTypes from 'prop-types';
 import Select from 'react-select';
 
 import Loading from '../components/loading';
+import Error from '../components/error';
+import NoCoverage from '../components/noCoverage';
 import Item from './list-item';
 
 class List extends React.Component {
@@ -19,11 +21,12 @@ class List extends React.Component {
       selected: '',
       chunk: 6,
       title: '',
-      page: page || 1
+      page: page || 1,
+      loading: true
     };
   }
 
-  componentDidMount() {
+  async componentDidMount() {
     const { source, owner } = this.props.match.params;
     const { chunk } = this.state;
 
@@ -36,19 +39,21 @@ class List extends React.Component {
       });
     }
 
-    fetch(url)
-      .then((response) => {
-        return response.json();
-      }).then((repos) => {
-        this.setState({
-          repos: repos.slice(0,(repos.length+chunk-1)/chunk|0).map(function(c,i) { return repos.slice(chunk*i, chunk*i+chunk); }),
-          raw: repos
-        });
-      }).catch((ex) => {
-        this.setState({
-          error: ex.toString()
-        });
+    try {
+      const response = await fetch(url);
+      const repos = await response.json();
+
+      this.setState({
+        repos: repos.slice(0,(repos.length+chunk-1)/chunk|0).map(function(c,i) { return repos.slice(chunk*i, chunk*i+chunk); }),
+        raw: repos,
+        loading: false
       });
+    } catch(ex) {
+      this.setState({
+        error: ex.toString(),
+        loading: false
+      });
+    }
   }
 
   nextPage() {
@@ -94,7 +99,15 @@ class List extends React.Component {
   }
 
   render() {
-    const { raw, repos, page, selected, title } = this.state;
+    const { raw, repos, page, selected, title, loading, error } = this.state;
+
+    if(error) {
+      return <Error error={error}/>;
+    }
+
+    if(loading) {
+      return <Loading />;
+    }
 
     if(repos.length > 0) {
 
@@ -133,7 +146,7 @@ class List extends React.Component {
         </div>
       </div>;
     } else {
-      return (<Loading />);
+      return <NoCoverage />;
     }
   }
 }

@@ -19,26 +19,27 @@ class ListItem extends React.Component {
     };
   }
 
-  componentDidMount() {
+  async componentDidMount() {
     const { repo } = this.props;
 
     const { resource, owner, name } = parse(repo);
     const protocol = resource.substring(resource.lastIndexOf('.') + 1, resource.length);
+    const url = `/api/coverage/${resource.replace(/\./g, '%2E').replace(`.${protocol}`, '')}/${owner}/${name}?limit=5`;
 
-    fetch(`/api/coverage/${resource.replace(/\./g, '%2E').replace(`.${protocol}`, '')}/${owner}/${name}?limit=5`)
-      .then((response) => {
-        return response.json();
-      }).then((coverage) => {
-        this.setState({
-          coverage: coverage[0],
-          loading: false
-        });
-      }).catch((ex) => {
-        this.setState({
-          error: ex.toString(),
-          loading: false
-        });
+    try {
+      const response = await fetch(url);
+      const coverage = await response.json();
+
+      this.setState({
+        coverage: coverage[0],
+        loading: false
       });
+    } catch(ex) {
+      this.setState({
+        error: ex.toString(),
+        loading: false
+      });
+    }
   }
 
   render() {
@@ -61,7 +62,7 @@ class ListItem extends React.Component {
 
       const data = parseCoverage(history);
 
-      const { message, commit, branch, git_branch, author_name, author_date } = coverage.history[0].git;
+      const { message, commit, branch, git_branch, author_name, author_date } = history[0].git;
       const { resource, owner, name } = parse(_id);
       const protocol = resource.substring(resource.lastIndexOf('.') + 1, resource.length);
       const commitUrl = `${_id.replace('.git', '')}/commit/${commit}`;

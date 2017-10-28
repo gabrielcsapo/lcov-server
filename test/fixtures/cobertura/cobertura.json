@@ -1,6 +1,6 @@
 [{
   "title": "add.js",
-  "file": "controllers\\app\\add.js",
+  "file": "controllers/app/add.js",
   "functions": {
     "found": 16,
     "hit": 14,
@@ -212,7 +212,7 @@
   }
 }, {
   "title": "bundling.js",
-  "file": "controllers\\app\\bundling.js",
+  "file": "controllers/app/bundling.js",
   "functions": {
     "found": 7,
     "hit": 6,
@@ -298,7 +298,7 @@
   }
 }, {
   "title": "_.js",
-  "file": "controllers\\_.js",
+  "file": "controllers/_.js",
   "functions": {
     "found": 8,
     "hit": 5,
@@ -418,7 +418,7 @@
   }
 }, {
   "title": "account.js",
-  "file": "controllers\\account.js",
+  "file": "controllers/account.js",
   "functions": {
     "found": 7,
     "hit": 5,

@@ -8,7 +8,7 @@ const bodyParser = require('body-parser');
 test('lcov-server-cli', (t) => {
   t.plan(1);
 
-  t.test('successfully send coverage to server', (t) => {
+  t.test('successfully send lcov coverage to server', (t) => {
     const port = 8080;
     const wdir = process.cwd();
     const app = express();

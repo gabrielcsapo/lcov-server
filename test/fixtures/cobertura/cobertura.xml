@@ -4,12 +4,12 @@
 branches-covered="270" branch-rate="0.767" timestamp="1434639323782" complexity="0"
 version="0.1">
     <sources>
-        <source>C:\app</source>
+        <source>C:/app</source>
     </sources>
     <packages>
         <package name="build.scripts.project.controllers.app" line-rate="0.8484" branch-rate="0.5943">
             <classes>
-                <class name="add.js" filename="controllers\app\add.js" line-rate="0.8889" branch-rate="0.5">
+                <class name="add.js" filename="controllers/app/add.js" line-rate="0.8889" branch-rate="0.5">
                     <methods>
                         <method name="(anonymous_1)" hits="6" signature="()V">
                             <lines>
@@ -140,7 +140,7 @@ version="0.1">
                         <line number="116" hits="0" branch="false" />
                     </lines>
                 </class>
-                <class name="bundling.js" filename="controllers\app\bundling.js" line-rate="0.9333"
+                <class name="bundling.js" filename="controllers/app/bundling.js" line-rate="0.9333"
                 branch-rate="1">
                     <methods>
                         <method name="(anonymous_1)" hits="127" signature="()V">
@@ -201,7 +201,7 @@ version="0.1">
         </package>
         <package name="build.scripts.project.controllers" line-rate="0.9102" branch-rate="0.8484999999999999">
             <classes>
-                <class name="_.js" filename="controllers\_.js" line-rate="0.88" branch-rate="0.8332999999999999">
+                <class name="_.js" filename="controllers/_.js" line-rate="0.88" branch-rate="0.8332999999999999">
                     <methods>
                         <method name="(anonymous_1)" hits="177" signature="()V">
                             <lines>
@@ -272,7 +272,7 @@ version="0.1">
                         <line number="61" hits="177" branch="false" />
                     </lines>
                 </class>
-                <class name="account.js" filename="controllers\account.js" line-rate="0.875" branch-rate="1">
+                <class name="account.js" filename="controllers/account.js" line-rate="0.875" branch-rate="1">
                     <methods>
                         <method name="(anonymous_1)" hits="7" signature="()V">
                             <lines>

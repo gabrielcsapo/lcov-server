@@ -1,4 +1,4 @@
-# lcov-server [docs](https://www.gabrielcsapo.com/lcov-server)
+# lcov-server [[docs](https://www.gabrielcsapo.com/lcov-server)][[hosted](https://lcov-server.gabrielcsapo.com)]
 
 > 🎯 A simple lcov server & cli parser
 

@@ -1,3 +1,11 @@
+# 1.1.8 (10/27/2017)
+
+- fixes coverage api to sort before limit is run
+- adds more examples to storybook
+- fixes error not propagating on main coverage page
+- fixes a bug when parsing coverage which stops NaN values from being added to array
+- abstracts CLI functionality into library to add more extensive tests
+
 # 1.1.7 (10/25/2017)
 
 - includes moment as a production dependency

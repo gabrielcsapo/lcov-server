@@ -1,6 +1,6 @@
 {
   "name": "lcov-server",
-  "version": "1.1.7",
+  "version": "1.1.8",
   "description": "🎯 A simple lcov server & cli parser",
   "main": "index.js",
   "homepage": "https://github.com/gabrielcsapo/lcov-server#readme",
@@ -24,7 +24,7 @@
     "start": "./bin/lcov-server.js --serve",
     "dev": "NODE_ENV=development webpack-dev-server --hot --port 5000",
     "pack": "pkg bin/lcov-server.js -c package.json -o packed/lcov-server",
-    "generate-docs": "tryitout --template=landing --output=./docs && jsdoc -c jsdoc.json",
+    "generate-docs": "tryitout --output=docs --template=product && jsdoc -c jsdoc.json",
     "storybook": "start-storybook -p 6006",
     "build-storybook": "build-storybook --output-dir ./docs/storybook"
   },
@@ -75,7 +75,7 @@
     "body-parser": "^1.18.2",
     "css-loader": "^0.28.7",
     "docdash": "^0.4.0",
-    "eslint": "^4.9.0",
+    "eslint": "^4.10.0",
     "eslint-plugin-react": "^7.4.0",
     "getstorybook": "^1.7.0",
     "highlight.js": "^9.12.0",
@@ -91,7 +91,7 @@
     "style-loader": "^0.19.0",
     "tap": "^10.7.2",
     "tape": "^4.8.0",
-    "tryitout": "^0.3.6",
+    "tryitout": "^0.3.7",
     "webpack": "^3.8.1",
     "webpack-dev-server": "^2.9.3",
     "whatwg-fetch": "^2.0.3"

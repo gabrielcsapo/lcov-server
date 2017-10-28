@@ -1,3 +1,5 @@
+import 'psychic.css/dist/psychic.min.css';
+
 import { configure } from '@storybook/react';
 
 function loadStories() {

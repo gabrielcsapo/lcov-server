@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import pack from '../package.json';
+import { version } from '../package.json';
 
 class Layout extends React.Component {
   render () {
@@ -31,10 +31,10 @@ class Layout extends React.Component {
             &nbsp;·&nbsp;
             <a className="text-black" target="_blank" rel="noopener noreferrer" href="https://github.com/gabrielcsapo/lcov-server/issues">Bugs</a>
             &nbsp;·&nbsp;
-            <a className="text-black" target="_blank" rel="noopener noreferrer" href={ `https://github.com/gabrielcsapo/lcov-server/releases/${pack.version}` }>v{pack.version}</a>
+            <a className="text-black" target="_blank" rel="noopener noreferrer" href={ `https://github.com/gabrielcsapo/lcov-server/releases/${version}` }>v{version}</a>
           </div>
           <div className="text-black">
-            <p>©2017 <a target="_blank" rel="noopener noreferrer" href="http://gabrielcsapo.com">gabrielcsapo</a></p>
+            <p>©{(new Date()).getFullYear()} <a target="_blank" rel="noopener noreferrer" href="http://gabrielcsapo.com">gabrielcsapo</a></p>
           </div>
         </div>
       </div>

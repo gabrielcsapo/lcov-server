@@ -199,6 +199,7 @@ module.exports.repos = function repos(repo) {
 module.exports.get = function get(repo, limit) {
     return new Promise((resolve, reject) => {
         let options = [
+          { $sort: { "run_at": -1 } },
           { $match: { "git.remotes.url": repo } },
           { $limit: parseInt(limit) },
           {
@@ -211,7 +212,7 @@ module.exports.get = function get(repo, limit) {
         }];
 
         if(!limit) {
-          delete options[1];
+          delete options[2];
           options = options.filter((n) => n !== undefined);
         }
 

@@ -141,7 +141,7 @@ class Coverage extends React.Component {
           <h4> Source Files ({ history[0].source_files.length })</h4>
           <Table data={history[0].source_files.map(this.reduceSourceFiles.bind(this))} chunk={5}/>
           <h4> Recent Builds ({ history.length })</h4>
-          <Table data={history.map(this.reduceBuilds)} sort={"Recieved"} chunk={9}/>
+          <Table data={history.map(this.reduceBuilds)} chunk={9}/>
          </div>
       </div>);
     } else {

@@ -1,4 +1,3 @@
-import 'whatwg-fetch';
 import 'psychic.css/dist/psychic.min.css';
 import './style.css';
 

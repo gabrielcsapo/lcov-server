@@ -19,23 +19,24 @@ class File extends React.Component {
     };
   }
 
-  componentDidMount() {
+  async componentDidMount() {
     const { source, owner, name } = this.props.match.params;
+    const url = `/api/coverage/${source}/${owner}/${name}`;
 
-    fetch(`/api/coverage/${source}/${owner}/${name}`)
-     .then((response) => {
-       return response.json();
-     }).then((project) => {
-       this.setState({
-         project: project[0],
-         loading: false
-       });
-     }).catch((ex) => {
-       this.setState({
-         error: ex.toString(),
-         loading: false
-       });
-     });
+    try {
+      const response = await fetch(url);
+      const project = await response.json();
+
+      this.setState({
+        project: project[0],
+        loading: false
+      });
+    } catch(ex) {
+      this.setState({
+        error: ex.toString(),
+        loading: false
+      });
+    }
   }
 
   render() {

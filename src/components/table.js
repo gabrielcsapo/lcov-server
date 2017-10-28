@@ -47,7 +47,7 @@ class Table extends React.Component {
                 return <td key={`${k}/${i}`}> <div className={ k === 'Commit' ? 'coverage-commit-message' : ''}>{ h[k] }</div> </td>;
               })}
           </tr>);
-        }) }
+        }, []) }
         </tbody>
       </table>
       { data.length > 1 ?
@@ -65,13 +65,11 @@ class Table extends React.Component {
 
 Table.propTypes = {
   data: PropTypes.array,
-  sort: PropTypes.string,
   chunk: PropTypes.number
 };
 
 Table.defaultProps = {
   data: [],
-  sort: '',
   chunk: 5
 };
 
