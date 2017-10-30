@@ -1,3 +1,7 @@
+# 1.2.2 (10/29/2017)
+
+- fixes a bug where coverage.get would kill the entire server
+
 # 1.2.1 (10/28/2017)
 
 - adds a feed of most recent coverage updates
