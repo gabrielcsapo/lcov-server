@@ -1,3 +1,9 @@
+# 1.2.3 (12/07/2017)
+
+- replaces `openbadge` with `badgeit`
+- removes commander and makes arg parser more efficient
+- updates dependencies
+
 # 1.2.2 (10/29/2017)
 
 - fixes a bug where coverage.get would kill the entire server

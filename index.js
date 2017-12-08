@@ -9,7 +9,7 @@ mongoose.connect(process.env.MONGO_URL, { useMongoClient: true }, function(error
 });
 
 const express = require('express');
-const Badge = require('openbadge');
+const Badge = require('badgeit');
 const parse = require('git-url-parse');
 const path = require('path');
 const serveStatic = require('serve-static');
@@ -123,17 +123,13 @@ app.get('/badge/:service/:owner/:repo.svg', asyncMiddleware(async (req, res) => 
     const percentage = parseInt((hit / found) * 100);
     const color = percentage >= 85 ? '#3DB712' : percentage <= 85 && percentage >= 70 ? '#caa300' : '#cc5338';
 
-    Badge({ color: { right: color }, text: ['coverage', `${percentage}%`] }, function(err, badge) {
-        if(err) { throw new Error(err); }
-        res.set('Content-Type', 'image/svg+xml; charset=utf-8');
-        res.send(badge);
-    });
+    const badge = await Badge({ color: { right: color }, text: ['coverage', `${percentage}%`] });
+    res.set('Content-Type', 'image/svg+xml; charset=utf-8');
+    res.send(badge);
   } catch(error) {
-    Badge({ color: { right: "#b63b3b" }, text: ['coverage', 'not found'] }, function(err, badge) {
-        if(err) { throw new Error(err); }
-        res.set('Content-Type', 'image/svg+xml; charset=utf-8');
-        res.send(badge);
-    });
+    const badge = await Badge({ color: { right: "#b63b3b" }, text: ['coverage', 'not found'] });
+    res.set('Content-Type', 'image/svg+xml; charset=utf-8');
+    res.send(badge);
   }
 }));
 

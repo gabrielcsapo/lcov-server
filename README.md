@@ -42,16 +42,18 @@ npm install lcov-server -g
 ```
 Usage: lcov-server [options]
 
+Commands:
+
+	upload, --upload, -u [server ] Set the url to upload lcov data too (default: http://localhost:8080)
+	serve, -s, --serve             Pass this option to startup a lcov-server instance
+	version, -v, --version           output the version number
+	help, -h, --help              output usage information
 
 Options:
 
-	-V, --version           output the version number
-	-u, --upload [server]   Set the url to upload lcov data too
-	-s, --serve             Pass this option to startup a lcov-server instance
-	-d, --db [db]           Set the db connection
-	-p, --parser <parser>   Set the parser value [lcov, cobertura, golang, jacoco], defaults to lcov
-	-bp, --basePath <path>  The path that defines the base directory where the files that were covered will be located
-	-h, --help              output usage information
+	db, -d, --db [db]           Set the db connection (default: mongodb://localhost:32768/lcov-server)
+	parser, -p, --parser <parser>   Set the parser value [lcov, cobertura, golang, jacoco], defaults to lcov (default: lcov)
+	basePath, -bp, --basePath <path>  The path that defines the base directory where the files that were covered will be located
 ```
 
 ## Upload
