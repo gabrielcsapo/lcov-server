@@ -1,3 +1,8 @@
+# 1.2.4 (12/07/2017)
+
+- fixes prepublish step
+- publishes compiled code
+
 # 1.2.3 (12/07/2017)
 
 - replaces `openbadge` with `badgeit`

@@ -1,6 +1,6 @@
 {
   "name": "lcov-server",
-  "version": "1.2.3",
+  "version": "1.2.4",
   "description": "🎯 A simple lcov server & cli parser",
   "main": "index.js",
   "homepage": "https://github.com/gabrielcsapo/lcov-server#readme",
@@ -18,6 +18,7 @@
     "lint": "eslint .",
     "test": "tape test/lib/**/*.js test/index.js",
     "coverage": "tap test/lib/**.js --coverage --coverage-report=lcov",
+    "prepublish": "npm run build",
     "build": "npm run build:client && npm run build:server",
     "build:server": "babel index.js --out-dir ./distributed && babel lib --out-dir ./distributed/lib && babel bin --out-dir ./distributed/bin && cp package.json ./distributed/ && cp -r dist ./distributed",
     "build:client": "NODE_ENV=production webpack --progress",
