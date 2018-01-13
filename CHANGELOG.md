@@ -1,3 +1,7 @@
+# 1.2.6 (01/12/2018)
+
+- fixes linting
+
 # 1.2.5 (01/12/2018)
 
 - updates dependencies
