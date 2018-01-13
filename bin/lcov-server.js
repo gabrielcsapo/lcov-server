@@ -29,7 +29,7 @@ args.forEach((a, i) => {
     Usage: lcov-server [options]
 
     Commands:
-    
+
       upload, --upload, -u [server ] Set the url to upload lcov data too (default: http://localhost:8080)
       serve, -s, --serve             Pass this option to startup a lcov-server instance
       version, -v, --version           output the version number
@@ -77,9 +77,8 @@ args.forEach((a, i) => {
 
 const { parser, upload, serve, db, basePath } = program;
 
-
 if(serve) {
-  process.env.MONGO_URL = process.env.MONGO_URL || db;
+  process.env.MONGO_URL = process.env.MONGO_URL || db || 'mongodb://localhost:32768/lcov-server';
 
   require('../index');
 } else {

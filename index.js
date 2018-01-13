@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 
+console.log(process.env);
 mongoose.Promise = global.Promise;
 mongoose.connect(process.env.MONGO_URL, { useMongoClient: true }, function(error) {
   if(error) {

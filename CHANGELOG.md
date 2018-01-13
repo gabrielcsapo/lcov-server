@@ -1,3 +1,8 @@
+# 1.2.5 (01/12/2018)
+
+- updates dependencies
+- fixes db having a default address
+
 # 1.2.4 (12/07/2017)
 
 - fixes prepublish step

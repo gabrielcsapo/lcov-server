@@ -11,5 +11,7 @@ module.exports = {
 		Docs: './code/index.html',
 		Storybook: './storybook/index.html',
 		Example: 'http://lcov-server.gabrielcsapo.com'
-	}
+	},
+	output: './docs',
+	template: 'product'
 };
