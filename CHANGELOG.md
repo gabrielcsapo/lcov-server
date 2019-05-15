@@ -1,3 +1,7 @@
+# 1.3.1 (05/14/2019)
+
+- moves body-parser to dependencies instead of devDependencies
+
 # 1.3.0 (05/14/2019)
 
 - cleans up cli logic (ensures async block runs and catches)
