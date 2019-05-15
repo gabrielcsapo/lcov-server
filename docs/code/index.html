@@ -1,9 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    
     <meta charset="utf-8">
     <title>Home - Documentation</title>
-
+    
+    
     <script src="scripts/prettify/prettify.js"></script>
     <script src="scripts/prettify/lang-css.js"></script>
     <!--[if lt IE 9]>
@@ -11,6 +13,7 @@
     <![endif]-->
     <link type="text/css" rel="stylesheet" href="styles/prettify.css">
     <link type="text/css" rel="stylesheet" href="styles/jsdoc.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 <body>
 
@@ -21,8 +24,9 @@
 
 <label for="nav-trigger" class="overlay"></label>
 
-<nav>
-    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Coverage.html">Coverage</a><ul class='methods'><li data-type='method'><a href="Coverage.html#.get">get</a></li><li data-type='method'><a href="Coverage.html#.repos">repos</a></li><li data-type='method'><a href="Coverage.html#.save">save</a></li></ul></li></ul><h3>Modules</h3><ul><li><a href="module-lib_ci.html">lib/ci</a></li><li><a href="module-lib_cobertura.html">lib/cobertura</a><ul class='methods'><li data-type='method'><a href="module-lib_cobertura.html#~parse">parse</a></li></ul></li><li><a href="module-lib_git.html">lib/git</a><ul class='methods'><li data-type='method'><a href="module-lib_git.html#~parse">parse</a></li></ul></li><li><a href="module-lib_golang.html">lib/golang</a><ul class='methods'><li data-type='method'><a href="module-lib_golang.html#~parse">parse</a></li></ul></li><li><a href="module-lib_jacoco.html">lib/jacoco</a><ul class='methods'><li data-type='method'><a href="module-lib_jacoco.html#~parse">parse</a></li></ul></li><li><a href="module-lib_lcov.html">lib/lcov</a><ul class='methods'><li data-type='method'><a href="module-lib_lcov.html#~clean">clean</a></li><li data-type='method'><a href="module-lib_lcov.html#~parse">parse</a></li></ul></li></ul>
+<nav >
+    
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Coverage.html">Coverage</a><ul class='methods'><li data-type='method'><a href="Coverage.html#.get">get</a></li><li data-type='method'><a href="Coverage.html#.repos">repos</a></li><li data-type='method'><a href="Coverage.html#.save">save</a></li></ul></li></ul><h3>Modules</h3><ul><li><a href="module-lib_ci.html">lib/ci</a></li><li><a href="module-lib_git.html">lib/git</a><ul class='methods'><li data-type='method'><a href="module-lib_git.html#~parse">parse</a></li></ul></li><li><a href="module-lib_parsers_cobertura.html">lib/parsers/cobertura</a><ul class='methods'><li data-type='method'><a href="module-lib_parsers_cobertura.html#~parse">parse</a></li></ul></li><li><a href="module-lib_parsers_golang.html">lib/parsers/golang</a><ul class='methods'><li data-type='method'><a href="module-lib_parsers_golang.html#~parse">parse</a></li></ul></li><li><a href="module-lib_parsers_jacoco.html">lib/parsers/jacoco</a><ul class='methods'><li data-type='method'><a href="module-lib_parsers_jacoco.html#~parse">parse</a></li></ul></li><li><a href="module-lib_parsers_lcov.html">lib/parsers/lcov</a><ul class='methods'><li data-type='method'><a href="module-lib_parsers_lcov.html#~clean">clean</a></li><li data-type='method'><a href="module-lib_parsers_lcov.html#~parse">parse</a></li></ul></li></ul>
 </nav>
 
 <div id="main">
@@ -35,6 +39,11 @@
     
 
 
+    <section class="package">
+        <h3> </h3>		
+    </section>
+
+
 
 
 
@@ -45,8 +54,10 @@
     
 
 
+
     <section class="readme">
-        <article><h1>lcov-server [<a href="https://www.gabrielcsapo.com/lcov-server">docs</a>][<a href="https://lcov-server.gabrielcsapo.com">hosted</a>]</h1><blockquote>
+        <article><h1>lcov-server [<a href="https://www.gabrielcsapo.com/lcov-server">docs</a>][<a href="https://lcov-server.gabrielcsapo.com">hosted</a>]</h1>
+<blockquote>
 <p>🎯 A simple lcov server &amp; cli parser</p>
 </blockquote>
 <p><a href="https://www.npmjs.com/package/lcov-server"><img src="https://img.shields.io/npm/v/lcov-server.svg" alt="Npm Version"></a>
@@ -62,32 +73,46 @@
 <li><a href="#what-is-this">What is this?</a></li>
 <li><a href="#prerequisites">Prerequisites</a></li>
 <li><a href="#install">Install</a></li>
-<li><a href="#usage">Usage</a><ul>
+<li><a href="#usage">Usage</a>
+<ul>
 <li><a href="#upload">Upload</a></li>
 <li><a href="#server">Server</a></li>
 </ul>
 </li>
 </ul>
 <!-- /TOC -->
-<h1>What is this?</h1><p>It's a lcov server! It stores lcov reports and categorizes them based on their origin repo.</p>
-<h1>Prerequisites</h1><ul>
+<h1>What is this?</h1>
+<p>It's a lcov server! It stores lcov reports and categorizes them based on their origin repo.</p>
+<h1>Prerequisites</h1>
+<ul>
 <li><code>mongodb</code> installed</li>
 <li><code>nodejs</code> installed</li>
 </ul>
-<h1>Install</h1><pre class="prettyprint source"><code>npm install lcov-server -g</code></pre><h1>Usage</h1><pre class="prettyprint source"><code>Usage: lcov-server [options]
+<h1>Install</h1>
+<pre class="prettyprint source"><code>npm install lcov-server -g
+</code></pre>
+<h1>Usage</h1>
+<pre class="prettyprint source"><code>Usage: lcov-server [options]
 
 Commands:
 
-    upload, --upload, -u [server ] Set the url to upload lcov data too (default: http://localhost:8080)
-    serve, -s, --serve             Pass this option to startup a lcov-server instance
-    version, -v, --version           output the version number
-    help, -h, --help              output usage information
+	upload, --upload, -u [server ] Set the url to upload lcov data too (default: http://localhost:8080)
+	serve, -s, --serve             Pass this option to startup a lcov-server instance
+	version, -v, --version           output the version number
+	help, -h, --help              output usage information
 
 Options:
 
-    db, -d, --db [db]           Set the db connection (default: mongodb://localhost:32768/lcov-server)
-    parser, -p, --parser &lt;parser>   Set the parser value [lcov, cobertura, golang, jacoco], defaults to lcov (default: lcov)
-    basePath, -bp, --basePath &lt;path>  The path that defines the base directory where the files that were covered will be located</code></pre><h2>Upload</h2><pre class="prettyprint source"><code>tap test --coverage-report=text-lcov | lcov-server --upload http://...</code></pre><h2>Server</h2><pre class="prettyprint source"><code>lcov-server --serve --db mongodb://localhost:32768/lcov-server</code></pre></article>
+	db, -d, --db [db]           Set the db connection (default: mongodb://localhost:32768/lcov-server)
+	parser, -p, --parser &lt;parser>   Set the parser value [lcov, cobertura, golang, jacoco], defaults to lcov (default: lcov)
+	basePath, -bp, --basePath &lt;path>  The path that defines the base directory where the files that were covered will be located
+</code></pre>
+<h2>Upload</h2>
+<pre class="prettyprint source"><code>tap test --coverage-report=text-lcov | lcov-server --upload http://...
+</code></pre>
+<h2>Server</h2>
+<pre class="prettyprint source"><code>lcov-server --serve --db mongodb://localhost:32768/lcov-server
+</code></pre></article>
     </section>
 
 
@@ -95,15 +120,21 @@ Options:
 
 
 
+    
+    
 </div>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.2</a> using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
 </footer>
 
 <script>prettyPrint();</script>
+<script src="scripts/polyfill.js"></script>
 <script src="scripts/linenumber.js"></script>
+
+
+
 </body>
 </html>

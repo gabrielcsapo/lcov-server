@@ -53,7 +53,7 @@ class File extends React.Component {
 
       if(project) {
           const lineMap = {};
-          const file = this.props.match.params.file.replace('$2E', '.');
+          const file = this.props.match.params.file.replace('%2E', '.');
           let { _id, history } = project;
           history = history[0];
 
@@ -79,7 +79,7 @@ class File extends React.Component {
             <div className="coverage-header">
                <div style={{display: 'inline-block', width: '100%'}}>
                  <div style={{float: 'left', textAlign: 'left'}}>
-                     <h3> <a href={`/coverage/${source.replace(/\./g, '%2E')}/${owner}/`}>{owner}</a> / <a href={`/coverage/${source.replace(/\./g, '%2E')}/${owner}/${name}`}>{name}</a> / <a href={`/coverage/${source.replace(/\./g, '%2E')}/${owner}/${name}/${encodeURIComponent(file).replace(/\./g, '$2E')}`}>{file}</a> </h3>
+                     <h3> <a href={`/coverage/${source.replace(/\./g, '%2E')}/${owner}/`}>{owner}</a> / <a href={`/coverage/${source.replace(/\./g, '%2E')}/${owner}/${name}`}>{name}</a> / <a href={`/coverage/${source.replace(/\./g, '%2E')}/${owner}/${name}/${encodeURIComponent(file).replace(/\./g, '%2E')}`}>{file}</a> </h3>
                      <p>
                        <a className="coverage-commit-message" href={commitUrl} target="_blank" rel="noopener noreferrer"> {message} </a>
                        on branch

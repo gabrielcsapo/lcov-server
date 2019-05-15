@@ -1,3 +1,7 @@
+# 1.3.2 (05/14/2019)
+
+- fix links to not have $2E but %2E
+
 # 1.3.1 (05/14/2019)
 
 - moves body-parser to dependencies instead of devDependencies

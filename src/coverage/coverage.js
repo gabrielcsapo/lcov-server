@@ -74,7 +74,7 @@ class Coverage extends React.Component {
     const totalFound = lines.found + branches.found + functions.found;
     const totalHit = lines.hit + branches.hit + functions.hit;
     const totalCoverage = parseInt((totalHit / totalFound) * 100);
-    const fileName = encodeURIComponent(file.title).replace(/\./g, '$2E');
+    const fileName = encodeURIComponent(file.title).replace(/\./g, '%2E');
 
     return {
       "Coverage": `${totalCoverage}%`,

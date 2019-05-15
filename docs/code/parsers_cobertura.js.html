@@ -3,7 +3,7 @@
 <head>
     
     <meta charset="utf-8">
-    <title>git.js - Documentation</title>
+    <title>parsers/cobertura.js - Documentation</title>
     
     
     <script src="scripts/prettify/prettify.js"></script>
@@ -31,7 +31,7 @@
 
 <div id="main">
     
-    <h1 class="page-title">git.js</h1>
+    <h1 class="page-title">parsers/cobertura.js</h1>
     
 
     
@@ -42,93 +42,102 @@
     <section>
         <article>
             <pre class="prettyprint source linenums"><code>/**
- * @module lib/git
+ * @module lib/parsers/cobertura
  */
 
-const exec = require('child_process').exec;
-const fs = require('fs');
-const path = require('path');
+var fs = require('fs');
+var { parseString } = require('xml2js');
 
-const git = {
-  /**
-   * @function parse
-   * @returns {Promise} - returns a promise that resolves with the git information needed
-   */
-  parse: () => {
-    return new Promise((resolve, reject) => {
-        // check if the directory contains git
-        if (!fs.existsSync(path.resolve(process.cwd(), '.git'))) {
-            return reject('directory does not contain git');
-        }
+function walkFile(xml, cb) {
+  parseString(xml, function(err, parseResult) {
+    if (err) {
+      return cb('Failed to parse coverage');
+    }
 
-        const git = {
-            commit: '',
-            author_name: '',
-            author_email: '',
-            author_date: '',
-            committer_name: '',
-            committer_email: '',
-            committer_date: '',
-            message: '',
-            branch: '',
-            remotes: {
-                name: '',
-                url: ''
-            }
-        };
-
-        exec("git log --pretty=format:'%H\n%an\n%ae\n%at\n%cn\n%ce\n%ct\n%s' -1", {
-            cwd: process.cwd()
-        }, (err, response) => {
-            if (err) {
-                return reject(err);
-            }
-            const raw = response.split('\n');
-
-            git.commit = raw[0];
-            git.author_name = raw[1];
-            git.author_email = raw[2];
-            git.author_date = raw[3];
-            git.committer_name = raw[4];
-            git.committer_email = raw[5];
-            git.committer_date = raw[6];
-            git.message = raw[7];
-
-            exec("git symbolic-ref --short HEAD", {
-                cwd: process.cwd()
-            }, (err, branch) => {
-
-                git.branch = branch.replace('\n', '') || process.env.BRANCH_NAME;
-
-                exec("git remote -v", {
-                    cwd: process.cwd()
-                }, (err, response) => {
-                    if (err) {
-                        return reject(err);
-                    }
-
-                    response.split("\n").forEach((remote) => {
-                        if (!/\s\(push\)$/.test(remote)) {
-                            return;
-                        }
-                        remote = remote.split(/\s+/);
-                        git.remotes.name = remote[0];
-                        git.remotes.url = remote[1];
-                    });
-
-                    if (!git.remotes.url || !git.remotes.name) {
-                        return reject('no remote found');
-                    }
-
-                    return resolve(git);
-                });
-            });
+    var classes = [];
+    var packages = parseResult.coverage.packages;
+    packages.forEach(function(packages) {
+      packages.package.forEach(function(pack) {
+        pack.classes.forEach(function(c) {
+          classes = classes.concat(c.class);
         });
+      });
     });
-  }
-};
 
-module.exports = git;
+    var codeCov = classes.map(function(c) {
+      var classCov = {
+        title: c.$.name,
+        file: c.$.filename,
+        functions: {
+          found: c.methods &amp;&amp; c.methods[0].method ? c.methods[0].method.length : 0,
+          hit: 0,
+          details: !c.methods || !c.methods[0].method ? [] : c.methods[0].method.map(function(m) {
+            return {
+              name: m.$.name,
+              line: Number(m.lines[0].line[0].$.number),
+              hit: Number(m.lines[0].line[0].$.hits)
+            };
+          })
+        },
+        lines: {
+          found: c.lines &amp;&amp; c.lines[0].line ? c.lines[0].line.length : 0,
+          hit: 0,
+          details: !c.lines || !c.lines[0].line ? [] : c.lines[0].line.map(function(l) {
+            return {
+              line: Number(l.$.number),
+              hit: Number(l.$.hits)
+            };
+          })
+        }
+      };
+
+      classCov.functions.hit = classCov.functions.details.reduce(function(acc, val) {
+        return acc + (val.hit > 0 ? 1 : 0);
+      }, 0);
+
+      classCov.lines.hit = classCov.lines.details.reduce(function(acc, val) {
+        return acc + (val.hit > 0 ? 1 : 0);
+      }, 0);
+
+      return classCov;
+    });
+
+    cb(null, codeCov);
+  });
+}
+
+/**
+ * returns a javascript object that represents the coverage data
+ * @method parse
+ * @param  {String|Path} file - this can either be a string or a path to a file
+ * @return {Coverage} - The coverage data structure
+ *
+ */
+function parse(file) {
+  return new Promise(function(resolve, reject) {
+    if (fs.existsSync(file)) {
+      fs.readFile(file, 'utf8', (err, str) => {
+        if (err) {
+          reject(err);
+        }
+        return walkFile(str, function(err, result) {
+          if (err) return reject(err);
+          resolve(result);
+        });
+      });
+    } else {
+      return walkFile(file, function(err, result) {
+        if (err) return reject(err);
+        resolve(result);
+      });
+    }
+  });
+}
+
+module.exports = {
+  walkFile,
+  parse
+};
 </code></pre>
         </article>
     </section>

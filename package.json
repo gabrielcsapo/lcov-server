@@ -1,6 +1,6 @@
 {
   "name": "lcov-server",
-  "version": "1.3.1",
+  "version": "1.3.2",
   "description": "🎯 A simple lcov server & cli parser",
   "main": "index.js",
   "homepage": "https://github.com/gabrielcsapo/lcov-server#readme",
