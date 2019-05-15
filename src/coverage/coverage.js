@@ -118,7 +118,7 @@ class Coverage extends React.Component {
                   <a href={`/coverage/${source.replace(/\./g, '%2E')}/${owner}/`}>{owner}</a> / <a href={`/coverage/${source.replace(/\./g, '%2E')}/${owner}/${name}`}>{name}</a>
                 </h3>
                 <p>
-                  <a className="coverage-commit-message" href={commitUrl} target="_blank"> {message} </a>
+                  <a className="coverage-commit-message" href={commitUrl} target="_blank" rel="noopener noreferrer"> {message} </a>
                   on branch
                   <b> {branch || git_branch} </b>
                   {Moment(author_date * 1000).fromNow()}

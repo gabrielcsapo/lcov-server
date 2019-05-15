@@ -74,7 +74,7 @@ class ListItem extends React.Component {
                <div style={{float: 'left', textAlign: 'left'}}>
                    <h3> <a href={`/coverage/${resource.replace(/\./g, '%2E').replace(`.${protocol}`, '')}/${owner}/`}>{owner}</a> / <a href={`/coverage/${resource.replace(/\./g, '%2E').replace(`.${protocol}`, '')}/${owner}/${name}`}>{name}</a> </h3>
                    <p>
-                     <a className="coverage-commit-message" href={commitUrl} target="_blank"> {message} </a>
+                     <a className="coverage-commit-message" href={commitUrl} target="_blank" rel="noopener noreferrer"> {message} </a>
                      on branch
                      <b> {branch || git_branch} </b>
                      {moment(author_date * 1000).fromNow()}

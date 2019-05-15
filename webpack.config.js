@@ -6,11 +6,11 @@ const MinifyPlugin = require('babel-minify-webpack-plugin');
 var config = {
     entry: {
       app: ['babel-polyfill', 'whatwg-fetch', './src/app.js'],
-      vendor: ['react', 'react-dom', 'react-router-dom', 'prop-types', 'highlight.js', 'whatwg-fetch', 'babel-polyfill'],
+      vendor: ['react', 'react-select', 'react-dom', 'react-router-dom', 'prop-types', 'highlight.js', 'whatwg-fetch', 'babel-polyfill'],
     },
     output: {
-        path: path.resolve(__dirname, 'dist'),
-        filename: 'bundle.js'
+      path: path.resolve(__dirname, 'dist'),
+      filename: '[name].js'
     },
     devServer: {
         proxy: {
@@ -29,16 +29,25 @@ var config = {
               use: ['style-loader', 'css-loader'],
             },
             {
-              test: /\.js$/,
-              exclude: [/node_modules/],
-              use: [{
-                loader: 'babel-loader',
-                options: {
-                  presets: ['env', 'react']
-                }
-              }]
+              test: /.jsx?$/,
+              use: ['babel-loader'],
+              exclude: /node_modules/
             }
         ]
+    },
+    resolve: {
+      modules: [path.resolve(__dirname, 'node_modules'), 'node_modules']
+    },
+    optimization: {
+      splitChunks: {
+        cacheGroups: {
+          commons: {
+            test: /[\\/]node_modules[\\/]/,
+            name: 'vendors',
+            chunks: 'all'
+          }
+        }
+      }
     },
     plugins: [
       new webpack.DefinePlugin({
@@ -54,7 +63,5 @@ var config = {
 if(process.env.NODE_ENV === 'production') {
   config.plugins.push(new MinifyPlugin());
 }
-
-config.plugins.push(new webpack.optimize.CommonsChunkPlugin({ name: 'vendor', filename: 'vendor.bundle.js' }));
 
 module.exports = config;

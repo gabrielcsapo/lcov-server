@@ -1,3 +1,8 @@
+# 1.3.0 (05/14/2019)
+
+- cleans up cli logic (ensures async block runs and catches)
+- updates dependencies
+
 # 1.2.6 (01/12/2018)
 
 - fixes linting

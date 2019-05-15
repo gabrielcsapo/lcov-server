@@ -90,14 +90,15 @@ if(serve) {
   });
   process.stdin.on('end', (async () => {
     try {
-      let response = cli({ parser, input, url: upload, basePath });
+      let response = await cli({ parser, input, url: upload, basePath });
+
       if(response.error) {
-        console.error(`coverage not sent with reason:\n ${response.error}`); // eslint-disable-line
+        console.error(`\n coverage not sent with reason:\n ${response.error}\n`); // eslint-disable-line
       } else {
         console.log('\n coverage sent successfully 💚 \n'); // eslint-disable-line
       }
     } catch(ex) {
-      console.error(`coverage could not be parsed with reason:\n ${ex.toString()}`); // eslint-disable-line
+      console.error(`\n coverage could not be parsed with reason:\n ${ex.toString()}\n`); // eslint-disable-line
     }
   }));
 }

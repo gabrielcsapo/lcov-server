@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 
 mongoose.Promise = global.Promise;
-mongoose.connect(process.env.MONGO_URL, { useMongoClient: true }, function(error) {
+mongoose.connect(process.env.MONGO_URL, {}, function(error) {
   if(error) {
     console.error(error.message); // eslint-disable-line
     process.exit(1);

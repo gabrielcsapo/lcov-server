@@ -81,7 +81,7 @@ class File extends React.Component {
                  <div style={{float: 'left', textAlign: 'left'}}>
                      <h3> <a href={`/coverage/${source.replace(/\./g, '%2E')}/${owner}/`}>{owner}</a> / <a href={`/coverage/${source.replace(/\./g, '%2E')}/${owner}/${name}`}>{name}</a> / <a href={`/coverage/${source.replace(/\./g, '%2E')}/${owner}/${name}/${encodeURIComponent(file).replace(/\./g, '$2E')}`}>{file}</a> </h3>
                      <p>
-                       <a className="coverage-commit-message" href={commitUrl} target="_blank"> {message} </a>
+                       <a className="coverage-commit-message" href={commitUrl} target="_blank" rel="noopener noreferrer"> {message} </a>
                        on branch
                        <b> {branch} </b>
                        {moment(author_date * 1000).fromNow()}
