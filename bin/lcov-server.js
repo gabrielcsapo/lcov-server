@@ -37,7 +37,7 @@ args.forEach((a, i) => {
 
     Options:
 
-      db, -d, --db [db]           Set the db connection (default: mongodb://localhost:32768/lcov-server)
+      db, -d, --db [db]           Set the db connection (default: postgres://localhost:5432/lcov-server)
       parser, -p, --parser <parser>   Set the parser value [lcov, cobertura, golang, jacoco], defaults to lcov (default: lcov)
       basePath, -bp, --basePath <path>  The path that defines the base directory where the files that were covered will be located
   `);
@@ -78,7 +78,7 @@ args.forEach((a, i) => {
 const { parser, upload, serve, db, basePath } = program;
 
 if(serve) {
-  process.env.MONGO_URL = process.env.MONGO_URL || db || 'mongodb://localhost:32768/lcov-server';
+  process.env.DB_CONNECTION_STRING = process.env.DB_CONNECTION_STRING || db || 'postgres://localhost:5432/lcov-server';
 
   require('../index');
 } else {
@@ -98,6 +98,7 @@ if(serve) {
         console.log('\n coverage sent successfully 💚 \n'); // eslint-disable-line
       }
     } catch(ex) {
+      console.log(ex);
       console.error(`\n coverage could not be parsed with reason:\n ${ex.toString()}\n`); // eslint-disable-line
     }
   }));

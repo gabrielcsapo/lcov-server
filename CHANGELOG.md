@@ -1,3 +1,7 @@
+# 1.4.0 (05/14/2019)
+
+- Supports postgres instead of mongo
+
 # 1.3.2 (05/14/2019)
 
 - fix links to not have $2E but %2E

@@ -28,7 +28,7 @@ It's a lcov server! It stores lcov reports and categorizes them based on their o
 
 # Prerequisites
 
-- `mongodb` installed
+- `postgres` installed
 - `nodejs` installed
 
 # Install
@@ -51,7 +51,7 @@ Commands:
 
 Options:
 
-	db, -d, --db [db]           Set the db connection (default: mongodb://localhost:32768/lcov-server)
+	db, -d, --db [db]           Set the db connection (default: postgres://localhost:5432/lcov-server)
 	parser, -p, --parser <parser>   Set the parser value [lcov, cobertura, golang, jacoco], defaults to lcov (default: lcov)
 	basePath, -bp, --basePath <path>  The path that defines the base directory where the files that were covered will be located
 ```
@@ -65,5 +65,5 @@ tap test --coverage-report=text-lcov | lcov-server --upload http://...
 ## Server
 
 ```
-lcov-server --serve --db mongodb://localhost:32768/lcov-server
+lcov-server --serve --db postgres://localhost:5432/lcov-server
 ```

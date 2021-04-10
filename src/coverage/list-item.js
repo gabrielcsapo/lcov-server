@@ -31,7 +31,7 @@ class ListItem extends React.Component {
       const coverage = await response.json();
 
       this.setState({
-        coverage: coverage[0],
+        coverage: coverage,
         loading: false
       });
     } catch(ex) {
@@ -52,27 +52,26 @@ class ListItem extends React.Component {
     if(error) {
       return <Error error={error}/>;
     }
-
+    console.log(coverage)
     if(Object.keys(coverage).length > 0) {
-      const { _id, history } = coverage;
+      const { id, history } = coverage;
 
       if(!history) {
         return (<NoCoverage />);
       }
-
+      console.log(parse(id));
       const data = parseCoverage(history);
-
       const { message, commit, branch, git_branch, author_name, author_date } = history[0].git;
-      const { resource, owner, name } = parse(_id);
-      const protocol = resource.substring(resource.lastIndexOf('.') + 1, resource.length);
-      const commitUrl = `${_id.replace('.git', '')}/commit/${commit}`;
+      const { full_name, owner, name } = parse(id);
+      const protocol = full_name.substring(full_name.lastIndexOf('.') + 1, full_name.length);
+      const commitUrl = `${id.replace('.git', '')}/commit/${commit}`;
 
       return (
         <div className="coverage">
           <div className="coverage-header">
              <div style={{display: 'inline-block', width: '100%'}}>
                <div style={{float: 'left', textAlign: 'left'}}>
-                   <h3> <a href={`/coverage/${resource.replace(/\./g, '%2E').replace(`.${protocol}`, '')}/${owner}/`}>{owner}</a> / <a href={`/coverage/${resource.replace(/\./g, '%2E').replace(`.${protocol}`, '')}/${owner}/${name}`}>{name}</a> </h3>
+                   <h3> <a href={`/coverage/${full_name.replace(/\./g, '%2E').replace(`.${protocol}`, '')}/${owner}/`}>{owner}</a> / <a href={`/coverage/${full_name.replace(/\./g, '%2E').replace(`.${protocol}`, '')}/${owner}/${name}`}>{name}</a> </h3>
                    <p>
                      <a className="coverage-commit-message" href={commitUrl} target="_blank" rel="noopener noreferrer"> {message} </a>
                      on branch
@@ -83,7 +82,7 @@ class ListItem extends React.Component {
                    </p>
                </div>
 
-               <h3 style={{float: 'right' }}> <img src={`/badge/${resource.replace(/\./g, '%2E')}/${owner}/${name}.svg`} /> </h3>
+               <h3 style={{float: 'right' }}> <img src={`/badge/${full_name.replace(/\./g, '%2E')}.svg`} /> </h3>
              </div>
              <CoverageChart width={window.innerWidth - 200} height={100} data={data} />
           </div>
