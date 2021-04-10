@@ -1,13 +1,3 @@
-const mongoose = require('mongoose');
-
-mongoose.Promise = global.Promise;
-mongoose.connect(process.env.MONGO_URL, {}, function(error) {
-  if(error) {
-    console.error(error.message); // eslint-disable-line
-    process.exit(1);
-  }
-});
-
 const express = require('express');
 const Badge = require('badgeit');
 const parse = require('git-url-parse');
@@ -15,9 +5,6 @@ const path = require('path');
 const serveStatic = require('serve-static');
 const compression = require('compression');
 const bodyParser = require('body-parser');
-const zlib = require('zlib');
-
-zlib.level = zlib.Z_BEST_COMPRESSION;
 
 const Coverage = require('./lib/coverage');
 
@@ -37,7 +24,7 @@ app.use(serveStatic(path.resolve(__dirname, 'dist'), {
 }));
 
 app.post('/api/upload', asyncMiddleware(async (req, res) => {
-  let { git, run_at, source_files, service_job_id, service_pull_request, service_name } = req.body;
+  let { git, source_files, service_job_id, service_pull_request, service_name } = req.body;
 
   // Make sure the remote url is set correctly
   git.remotes.url = parse(parse(git.remotes.url).toString("ssh")).toString("https");
@@ -46,7 +33,6 @@ app.post('/api/upload', asyncMiddleware(async (req, res) => {
     const results = await Coverage.save({
         source_files,
         git,
-        run_at,
         service_job_id,
         service_pull_request,
         service_name
@@ -84,9 +70,10 @@ app.get('/api/repos/:service/:owner/', asyncMiddleware(async (req, res) => {
   const { service, owner } = req.params;
 
   try {
-    const coverages = await Coverage.repos(new RegExp(`${service.replace(/%2E/g, '.')}.*/${owner}/`));
+    const coverages = await Coverage.repos(`${service}/${owner}`);
     res.send(coverages);
   } catch(error) {
+    console.log(error);
     res.status(500);
     res.send({ error });
   }
@@ -97,9 +84,10 @@ app.get('/api/coverage/:service/:owner/:repo/', asyncMiddleware(async (req, res)
   const { service, owner, repo } = req.params;
 
   try {
-    const coverages = await Coverage.get(new RegExp(`${service.replace(/%2E/g, '.')}.*/${owner}/${repo}`), limit);
+    const coverages = await Coverage.get(`${service.replace(/%2E/g, '.')}/${owner}/${repo}`, limit);
     res.send(coverages);
   } catch(error) {
+    console.log(error)
     res.status(500);
     res.send({ error });
   }
@@ -109,9 +97,7 @@ app.get('/badge/:service/:owner/:repo.svg', asyncMiddleware(async (req, res) => 
   const { service, owner, repo } = req.params;
 
   try {
-    const coverages = await Coverage.get(new RegExp(`${service.replace(/%2E/g, '.')}.*/${owner}/${repo}`), 1);
-    const coverage = coverages[0];
-    const { history } = coverage;
+    const { history } = await Coverage.get(`${service.replace(/%2E/g, '.')}/${owner}/${repo}`, 1);
     const { source_files } = history[0];
     let found = 0;
     let hit = 0;

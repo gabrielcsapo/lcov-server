@@ -30,7 +30,6 @@ test('cli', function(t) {
       app.post('/api/upload', (req, res) => {
         t.deepEqual(Object.keys(req.body).sort(), [
           'git',
-          'run_at',
           'service_job_id',
           'service_name',
           'service_pull_request',
@@ -80,7 +79,6 @@ test('cli', function(t) {
       app.post('/api/upload', (req, res) => {
         t.deepEqual(Object.keys(req.body).sort(), [
           'git',
-          'run_at',
           'service_job_id',
           'service_name',
           'service_pull_request',
@@ -130,7 +128,6 @@ test('cli', function(t) {
       app.post('/api/upload', (req, res) => {
         t.deepEqual(Object.keys(req.body).sort(), [
           'git',
-          'run_at',
           'service_job_id',
           'service_name',
           'service_pull_request',
@@ -180,7 +177,6 @@ test('cli', function(t) {
       app.post('/api/upload', (req, res) => {
         t.deepEqual(Object.keys(req.body).sort(), [
           'git',
-          'run_at',
           'service_job_id',
           'service_name',
           'service_pull_request',

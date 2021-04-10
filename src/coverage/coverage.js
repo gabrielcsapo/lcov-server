@@ -28,7 +28,7 @@ class Coverage extends React.Component {
      const project = await response.json();
 
      this.setState({
-       project: project[0],
+        project,
        loading: false
      });
    } catch(ex) {
@@ -44,8 +44,9 @@ class Coverage extends React.Component {
       selectedBranch: branch ? branch.value : ''
     });
   }
+
   reduceBuilds(build) {
-    const { git, run_at, source_files } = build;
+    const { git, updatedAt, source_files } = build;
     let totalCoverage = source_files.map((f) => {
       const { lines={ found: 0, hit: 0 }, branches={ found: 0, hit: 0 }, functions={ found: 0, hit: 0 } } = f;
 
@@ -62,7 +63,7 @@ class Coverage extends React.Component {
       "Commit": git.message,
       "Committer": git.committer_name,
       "Commit Time": Moment(git.committer_date * 1000).fromNow(),
-      "Recieved": Moment(run_at).fromNow()
+      "Recieved": Moment(updatedAt).fromNow()
     };
   }
 
@@ -96,7 +97,8 @@ class Coverage extends React.Component {
     } else if(project) {
       const { source, owner, name } = this.props.match.params;
 
-      const { _id, history } = project;
+      const { id, history } = project;
+
       const { message, commit, branch, git_branch, author_name, author_date } = history[0].git;
 
       const data = parseCoverage(history, selectedBranch);
@@ -108,7 +110,7 @@ class Coverage extends React.Component {
         return { value: b, label: b };
       });
 
-      const commitUrl = `${_id.replace('.git', '')}/commit/${commit}`;
+      const commitUrl = `${id.replace('.git', '')}/commit/${commit}`;
 
       return (<div className="coverage">
          <div className="coverage-header">
